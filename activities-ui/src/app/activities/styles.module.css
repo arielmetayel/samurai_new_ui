@@ -62,6 +62,21 @@
   background: #fff;
   border-radius: 10px;
   padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.secondaryBtn:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.buttonIcon {
+  font-size: 14px;
+  line-height: 1;
 }
 
 .searchRow { margin-top: 16px; }

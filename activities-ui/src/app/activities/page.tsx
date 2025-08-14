@@ -156,8 +156,14 @@ export default function ActivitiesPage() {
         <div className={styles.headerRow}>
           <h1 className={styles.pageTitle}>Activities</h1>
           <div className={styles.headerActions}>
-            <button className={styles.secondaryBtn}>Filter</button>
-            <button className={styles.secondaryBtn}>Create Report</button>
+            <button className={styles.secondaryBtn}>
+              <span className={styles.buttonIcon}>🔍</span>
+              Filter
+            </button>
+            <button className={styles.secondaryBtn}>
+              <span className={styles.buttonIcon}>📊</span>
+              Create Report
+            </button>
           </div>
         </div>
         <div className={styles.searchRow}>
