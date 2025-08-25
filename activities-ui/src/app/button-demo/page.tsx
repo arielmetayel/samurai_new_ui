@@ -10,7 +10,7 @@ export default function ButtonDemoPage() {
       {/* Variants */}
       <section style={{ marginBottom: '40px' }}>
         <h2 style={{ color: '#464F60', marginBottom: '20px' }}>Button Variants</h2>
-        <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: '16px', flexWrap: 'nowrap', alignItems: 'center' }}>
           <Button variant="primary">Primary Button</Button>
           <Button variant="secondary">Secondary Button</Button>
           <Button variant="tertiary">Tertiary Button</Button>
