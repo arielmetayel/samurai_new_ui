@@ -1,95 +1,73 @@
-import Image from "next/image";
+import Link from "next/link";
 import styles from "./page.module.css";
 
 export default function Home() {
+  const pages = [
+    {
+      title: "Activities",
+      description: "Comprehensive activity management system with support cases, meeting summaries, and project tracking",
+      path: "/activities",
+      icon: "📋",
+      features: ["Activity tracking", "Status management", "Search & filtering", "Sortable tables", "Question management"]
+    },
+    {
+      title: "Button Demo",
+      description: "Interactive showcase of the design system button components with all variants and states",
+      path: "/button-demo",
+      icon: "🔘",
+      features: ["Multiple variants", "Different sizes", "Icon support", "Interactive states", "Design system"]
+    }
+  ];
+
   return (
     <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+      <header className={styles.header}>
+        <div className={styles.headerContent}>
+          <div className={styles.logo}>
+            <span className={styles.logoIcon}>⚔️</span>
+            <span className={styles.logoText}>Samurai UI</span>
+          </div>
+          <nav className={styles.nav}>
+            <Link href="/" className={styles.navLink}>Home</Link>
+            <Link href="/activities" className={styles.navLink}>Activities</Link>
+            <Link href="/button-demo" className={styles.navLink}>Components</Link>
+          </nav>
+        </div>
+      </header>
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
+      <main className={styles.main}>
+        <div className={styles.hero}>
+          <h1 className={styles.title}>Samurai UI</h1>
+          <p className={styles.subtitle}>Modern, scalable design system for enterprise applications</p>
+          <p className={styles.description}>
+            Built with Next.js and TypeScript, featuring a comprehensive activity management system 
+            and a robust design system for building consistent user interfaces.
+          </p>
+        </div>
+
+        <div className={styles.pagesGrid}>
+          {pages.map((page) => (
+            <Link key={page.path} href={page.path} className={styles.pageCard}>
+              <div className={styles.pageIcon}>{page.icon}</div>
+              <h2 className={styles.pageTitle}>{page.title}</h2>
+              <p className={styles.pageDescription}>{page.description}</p>
+              <div className={styles.pageFeatures}>
+                {page.features.map((feature, index) => (
+                  <span key={index} className={styles.featureTag}>
+                    {feature}
+                  </span>
+                ))}
+              </div>
+              <div className={styles.pageArrow}>→</div>
+            </Link>
+          ))}
+        </div>
+
+        <div className={styles.info}>
+          <h3>Getting Started</h3>
+          <p>Navigate to any page above to explore the application features. The Activities page demonstrates a full-featured data management interface, while the Button Demo showcases our design system components.</p>
         </div>
       </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
+import Link from "next/link";
 import styles from "./styles.module.css";
 import { Activity, SortColumn, SortDirection } from "@/types";
 
@@ -124,6 +125,15 @@ export default function ActivitiesPage() {
 
   return (
     <div className={styles.pageWrapper}>
+      <header className={styles.topHeader}>
+        <div className={styles.topHeaderContent}>
+          <Link href="/" className={styles.backLink}>
+            ← Back to Home
+          </Link>
+          <h1 className={styles.topHeaderTitle}>Activities</h1>
+        </div>
+      </header>
+      
       <aside className={styles.sidebar}>
         <div className={styles.userBlock}>
           <div className={styles.avatar}>UF</div>

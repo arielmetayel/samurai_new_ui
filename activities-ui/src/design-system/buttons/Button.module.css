@@ -19,6 +19,12 @@
   cursor: not-allowed;
 }
 
+/* Click state - shrink effect for all buttons */
+.btn:active:not(:disabled) {
+  transform: scale(0.98);
+  transition: transform 0.15s ease-out;
+}
+
 /* Variants */
 .primary {
   background-color: #0082C8; /* primary[500] */
@@ -34,9 +40,7 @@
   background-color: #026093; /* primary[600] */
 }
 .primary:active:not(:disabled) {
-  border: none;
-  background: var(--Blue-05, #0082C8);
-  box-shadow: inset 0 0 0 2px #026093, inset 0 0 10px 0 rgba(0, 0, 0, 0.46);
+  background-color: #026093; /* primary[600] */
 }
 
 .secondary {
@@ -52,10 +56,10 @@
   border-color: #0066a3;     /* primary[600] */
 }
 .secondary:active:not(:disabled) {
-  border: 2px solid #0082C8;
-  background: var(--White, #FFF);
-  color: #0082C8;
-  box-shadow: inset 0 0px 10px 0 rgba(0, 0, 0, 0.46);
+  border: 2px solid #026093;
+  background: #F6F8FA;
+  color: #026093;
+  border-color: #0066a3;
 }
 
 .tertiary {
@@ -66,8 +70,7 @@
   color: #026093;
 }
 .tertiary:active:not(:disabled) {
-  background-color: #F6F8FA; /* neutral[300] */
-  color: #0082C8;            /* neutral[50] */
+  color: #026093;
 }
 
 .btn.tertiary {
@@ -99,7 +102,7 @@
   color: #026093; 
 }
 .ghost:active:not(:disabled) {
-  color: #0082C8; 
+  color: #026093; 
 }
 
 /* Ghost button typography */
@@ -149,6 +152,28 @@
 .icon {
   display: inline-flex;
   align-items: center;
+  flex-shrink: 0;
+}
+
+/* Icon-only button adjustments - simplified */
+.btn.iconOnly {
+  padding: 8px;
+  min-width: 0;
+}
+
+.btn.iconOnly.sm {
+  min-width: 32px;
+  padding: 6px;
+}
+
+.btn.iconOnly.md {
+  min-width: 40px;
+  padding: 8px;
+}
+
+.btn.iconOnly.lg {
+  min-width: 48px;
+  padding: 10px;
 }
 
 .loadingSpinner {

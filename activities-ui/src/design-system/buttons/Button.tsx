@@ -1,4 +1,5 @@
 import React from 'react';
+import { Icon } from 'react-feather';
 import styles from './Button.module.css';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'tertiary' | 'ghost';
@@ -7,10 +8,10 @@ export type ButtonSize = 'sm' | 'md' | 'lg';
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
   size?: ButtonSize;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   disabled?: boolean;
   loading?: boolean;
-  icon?: React.ReactNode;
+  icon?: Icon;
   iconPosition?: 'left' | 'right';
 }
 
@@ -20,7 +21,7 @@ export const Button: React.FC<ButtonProps> = ({
   children,
   disabled = false,
   loading = false,
-  icon,
+  icon: IconComponent,
   iconPosition = 'left',
   className = '',
   ...props
@@ -29,12 +30,24 @@ export const Button: React.FC<ButtonProps> = ({
     .filter(Boolean)
     .join(' ');
 
+  // Add iconOnly class if no children
+  const finalClassNames = !children ? `${classNames} ${styles.iconOnly}` : classNames;
+
   const renderIcon = () => {
-    if (!icon) return null;
+    if (!IconComponent) return null;
+    
+    // Calculate icon size based on button size
+    let iconSize = 18; // default medium
+    if (size === 'sm') iconSize = 16;
+    else if (size === 'lg') iconSize = 20;
+    
+    // For icon-only buttons, make icon slightly larger
+    if (!children) {
+      iconSize += 2;
+    }
+    
     return (
-      <span className={styles.icon}>
-        {icon}
-      </span>
+      <IconComponent className={styles.icon} size={iconSize} />
     );
   };
 
@@ -49,7 +62,7 @@ export const Button: React.FC<ButtonProps> = ({
 
   return (
     <button
-      className={classNames}
+      className={finalClassNames}
       disabled={disabled || loading}
       {...props}
     >
