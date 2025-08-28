@@ -90,8 +90,20 @@
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
-  line-height: 125%;
+  line-height: 1;
   letter-spacing: 0.18px;
+  /* Center content both horizontally and vertically */
+  justify-content: center;
+  align-items: center;
+  /* Text alignment like Figma's "align middle" */
+  vertical-align: middle;
+}
+
+.btn.tertiary.sm {
+  height: 24px;
+  padding: 4px 8px;
+  font-size: 12px;
+  border-radius: 8px;
 }
 
 .ghost {
@@ -115,6 +127,12 @@
   font-weight: 400;
   line-height: 125%; /* 22.5px */
   letter-spacing: 0.18px;
+}
+
+.btn.ghost.sm {
+  font-size: 11px;
+  line-height: 1.25;
+  letter-spacing: 0.01em;
 }
 
 /* Sizes */
@@ -152,7 +170,10 @@
 .icon {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   flex-shrink: 0;
+  /* Ensure icon is vertically centered with text */
+  line-height: 1;
 }
 
 /* Icon-only button adjustments - simplified */

@@ -13,6 +13,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   loading?: boolean;
   icon?: Icon;
   iconPosition?: 'left' | 'right';
+  iconSize?: number;
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -23,6 +24,7 @@ export const Button: React.FC<ButtonProps> = ({
   loading = false,
   icon: IconComponent,
   iconPosition = 'left',
+  iconSize,
   className = '',
   ...props
 }) => {
@@ -36,18 +38,21 @@ export const Button: React.FC<ButtonProps> = ({
   const renderIcon = () => {
     if (!IconComponent) return null;
     
-    // Calculate icon size based on button size
-    let iconSize = 18; // default medium
-    if (size === 'sm') iconSize = 16;
-    else if (size === 'lg') iconSize = 20;
-    
-    // For icon-only buttons, make icon slightly larger
-    if (!children) {
-      iconSize += 2;
+    // Use custom icon size if provided, otherwise calculate based on button size
+    let finalIconSize = iconSize;
+    if (!finalIconSize) {
+      finalIconSize = 18; // default medium
+      if (size === 'sm') finalIconSize = 16;
+      else if (size === 'lg') finalIconSize = 20;
+      
+      // For icon-only buttons, make icon slightly larger
+      if (!children) {
+        finalIconSize += 2;
+      }
     }
     
     return (
-      <IconComponent className={styles.icon} size={iconSize} />
+      <IconComponent className={styles.icon} size={finalIconSize} />
     );
   };
 

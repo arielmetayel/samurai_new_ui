@@ -4,6 +4,10 @@ import React, { useMemo, useState } from "react";
 import Link from "next/link";
 import styles from "./styles.module.css";
 import { Activity, SortColumn, SortDirection } from "@/types";
+import { Button, Checkbox } from "@/design-system";
+import { colors } from "@/design-system/colors/tokens";
+import { typography } from "@/design-system/typography/tokens";
+import { ChevronDown, ChevronUp, MoreVertical, Filter, FileText } from "react-feather";
 
 const mockActivities: Activity[] = [
   {
@@ -54,7 +58,10 @@ const mockActivities: Activity[] = [
     projectName: "FoodChain Suppliers",
     status: "To Review",
     assignees: ["IJ", "KL", "MN", "OP"],
-    questions: [],
+    questions: [
+      { id: "q7", title: "Meeting notes", answer: "Discussion about project timeline and deliverables" },
+      { id: "q8", title: "Action items", answer: "Follow up on budget approval and resource allocation" },
+    ],
   },
   {
     id: "4",
@@ -64,7 +71,10 @@ const mockActivities: Activity[] = [
     projectName: "Legal Pro Consulting",
     status: "Confirmed",
     assignees: ["QR"],
-    questions: [],
+    questions: [
+      { id: "q9", title: "Phase details", answer: "Phase 2 implementation plan and milestones" },
+      { id: "q10", title: "Dependencies", answer: "External vendor coordination and legal review" },
+    ],
   },
   {
     id: "5",
@@ -74,7 +84,10 @@ const mockActivities: Activity[] = [
     projectName: "Event Masters",
     status: "Done",
     assignees: ["ST"],
-    questions: [],
+    questions: [
+      { id: "q11", title: "Bug fixes", answer: "Resolved authentication issues and UI responsiveness" },
+      { id: "q12", title: "Testing", answer: "Unit tests passed and integration testing completed" },
+    ],
   },
 ];
 
@@ -159,21 +172,21 @@ export default function ActivitiesPage() {
           ))}
         </nav>
         <div className={styles.createWrap}>
-          <button className={styles.createBtn}>+ Create New</button>
+          <Button variant="primary" size="md" className={styles.createBtn}>
+            + Create New
+          </Button>
         </div>
       </aside>
       <main className={styles.main}>
         <div className={styles.headerRow}>
           <h1 className={styles.pageTitle}>Activities</h1>
           <div className={styles.headerActions}>
-            <button className={styles.secondaryBtn}>
-              <span className={styles.buttonIcon}>🔍</span>
+            <Button variant="tertiary" icon={Filter} iconSize={22}>
               Filter
-            </button>
-            <button className={styles.secondaryBtn}>
-              <span className={styles.buttonIcon}>📊</span>
+            </Button>
+            <Button variant="tertiary" icon={FileText} iconSize={22}>
               Create Report
-            </button>
+            </Button>
           </div>
         </div>
         <div className={styles.searchRow}>
@@ -189,72 +202,75 @@ export default function ActivitiesPage() {
           <div className={styles.tableHeader}>
             <div className={styles.colCheckbox}></div>
             <div className={styles.colIcon}></div>
-            <button className={styles.colHeaderBtn} onClick={() => toggleSort("dateTime")}>
-              Date & Time
-              {sortBy === "dateTime" && <span className={styles.sortIcon}>{sortDir === "asc" ? "▲" : "▼"}</span>}
-            </button>
-            <div className={styles.colActivityType}>Project type</div>
-            <button className={styles.colHeaderBtn} onClick={() => toggleSort("projectName")}>
-              Project name
-              {sortBy === "projectName" && (
-                <span className={styles.sortIcon}>{sortDir === "asc" ? "▲" : "▼"}</span>
-              )}
-            </button>
-            <button className={styles.colHeaderBtn} onClick={() => toggleSort("status")}>
-              Status
-              {sortBy === "status" && <span className={styles.sortIcon}>{sortDir === "asc" ? "▲" : "▼"}</span>}
-            </button>
-            <button className={styles.colHeaderBtn} onClick={() => toggleSort("assignees")}>
-              Assignees
-              {sortBy === "assignees" && (
-                <span className={styles.sortIcon}>{sortDir === "asc" ? "▲" : "▼"}</span>
-              )}
-            </button>
+            <div className={styles.colDate}>Date & Time</div>
+            <div className={styles.colActivityType}>Project Name</div>
+            <div className={styles.colStatus}>Status</div>
+            <div className={styles.colAssignees}>Assignee</div>
             <div className={styles.colActions}></div>
+            <div className={styles.colMenu}></div>
           </div>
 
           {filtered.map((a) => {
             const expanded = !!expandedRowIds[a.id];
             return (
-              <div key={a.id} className={styles.rowWrapper}>
-                <div className={styles.row}>
-                  <div className={styles.colCheckbox}>
-                    <input type="checkbox" />
-                  </div>
-                  <div className={styles.colIcon}>{a.icon}</div>
-                  <div className={styles.colDate}>{formatDate(a.dateTime)}</div>
-                  <div className={styles.colActivityType}>{a.activityType}</div>
-                  <div className={styles.colProject}>{a.projectName}</div>
-                  <div className={styles.colStatus} data-status={a.status}>
-                    {a.status}
-                  </div>
-                  <div className={styles.colAssignees}>
-                    {a.assignees.map((s) => (
-                      <span key={s} className={styles.badge}>
-                        {s}
-                      </span>
-                    ))}
-                  </div>
-                  <div className={styles.colActions}>
-                    {a.questions.length > 0 && (
-                      <button className={styles.linkBtn} onClick={() => toggleExpand(a.id)}>
-                        {expanded ? "Show less" : "Show more"}
-                      </button>
-                    )}
-                  </div>
+              <div key={a.id} className={styles.rowWrapper} data-status={a.status}>
+                <div className={styles.colCheckbox}>
+                  <Checkbox size="md" />
                 </div>
-                {a.questions.length > 0 && (
-                  <div className={`${styles.accordion} ${expanded ? styles.accordionOpen : ""}`}>
-                    <div className={styles.questionsGrid}>
-                      {a.questions.map((q) => (
-                        <div key={q.id} className={styles.questionItem}>
-                          <div className={styles.questionTitle}>{q.title}</div>
-                          <div className={styles.questionAnswer}>{q.answer}</div>
-                        </div>
+                <div className={styles.columnBlock}>
+                  <div className={styles.row}>
+                    <div className={styles.colIcon}>
+                      <div className={styles.iconWrapper}>
+                        <div className={styles.icon}>{a.icon}</div>
+                        <div className={styles.iconId}>12345678</div>
+                      </div>
+                    </div>
+                    <div className={styles.colDate}>{formatDate(a.dateTime)}</div>
+                    <div className={styles.colActivityType}>
+                      <div className={styles.activityType}>{a.activityType}</div>
+                      <div className={styles.projectName}>{a.projectName}</div>
+                    </div>
+                    <div className={styles.colStatus} data-status={a.status}>
+                      {a.status}
+                    </div>
+                    <div className={styles.colAssignees}>
+                      {a.assignees.map((s) => (
+                        <span key={s} className={styles.badge}>
+                          {s}
+                        </span>
                       ))}
                     </div>
+                    <div className={styles.colActions}>
+                      <div className={styles.actionButtons}>
+                        {a.questions.length > 0 && (
+                          <Button 
+                            variant="tertiary" 
+                            size="sm"
+                            icon={expanded ? ChevronUp : ChevronDown}
+                            onClick={() => toggleExpand(a.id)} 
+                          />
+                        )}
+                      </div>
+                    </div>
+                    <div className={styles.colMenu}>
+                      <div className={styles.ellipsisMenu} onClick={() => {}}>
+                        <MoreVertical size={24} />
+                      </div>
+                    </div>
                   </div>
-                )}
+                  {a.questions.length > 0 && (
+                    <div className={`${styles.accordion} ${expanded ? styles.accordionOpen : ""}`}>
+                      <div className={styles.questionsGrid}>
+                        {a.questions.map((q) => (
+                          <div key={q.id} className={styles.questionItem}>
+                            <div className={styles.questionTitle}>{q.title}</div>
+                            <div className={styles.questionAnswer}>{q.answer}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             );
           })}

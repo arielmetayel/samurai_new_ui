@@ -25,25 +25,25 @@
 
 .backLink {
   text-decoration: none;
-  color: #6b7280;
+  color: #868FA0;
   font-weight: 500;
   padding: 8px 16px;
   border-radius: 8px;
   transition: all 0.2s ease;
-  border: 1px solid #e5e7eb;
+  border: 1px solid #E3E8EE;
 }
 
 .backLink:hover {
-  background: #f3f4f6;
-  color: #374151;
-  border-color: #d1d5db;
+  background: #F6F8FA;
+  color: #2F3036;
+  border-color: #868FA0;
 }
 
 .topHeaderTitle {
   margin: 0;
   font-size: 1.5rem;
   font-weight: 600;
-  color: #1f2937;
+  color: #2F3036;
 }
 
 .sidebar {
@@ -65,66 +65,47 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: #e6f0ff;
-  color: #3b82f6;
+  background: #e6f4ff;
+  color: #0082C8;
   display: grid;
   place-items: center;
   font-weight: 700;
 }
 
-.userName { font-weight: 600; color: #1f2937; }
+.userName { font-weight: 600; color: #2F3036; }
 
 .menu { padding: 8px; display: flex; flex-direction: column; gap: 4px; }
 .menuItem, .menuItemActive {
   padding: 10px 12px;
   border-radius: 8px;
-  color: #4b5563;
+  color: #464F60;
   cursor: pointer;
 }
-.menuItem:hover { background: #f0f4f8; }
-.menuItemActive { background: #e9efff; color: #1f49ff; font-weight: 600; }
+.menuItem:hover { background: #F6F8FA; }
+.menuItemActive { background: #e6f4ff; color: #0082C8; font-weight: 600; }
 
 .createWrap { margin-top: auto; padding: 16px; }
 .createBtn {
   width: 100%;
-  background: #0ea5e9;
-  color: white;
-  border: none;
-  border-radius: 999px;
-  padding: 10px 14px;
-  font-weight: 600;
 }
 
-.main { padding: 24px 32px; }
+.main { 
+  padding: 24px 32px; 
+  padding-top: 80px; /* Account for fixed header height */
+}
 .headerRow { display: flex; justify-content: space-between; align-items: center; }
-.pageTitle { margin: 0; font-size: 28px; }
-.headerActions { display: flex; gap: 8px; }
-.secondaryBtn {
-  border: 1px solid #d1d5db;
-  background: #fff;
-  border-radius: 10px;
-  padding: 8px 12px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
+.pageTitle { margin: 0; font-size: 28px; color: #2F3036; }
+.headerActions { display: flex; gap: 12px; }
 
-.secondaryBtn:hover {
-  background: #f9fafb;
-  border-color: #9ca3af;
-}
 
 .buttonIcon {
   font-size: 14px;
-  line-height: 1;
 }
 
 .searchRow { margin-top: 16px; }
 .searchInput {
   width: 360px;
-  padding: 10px 12px;
+  padding: 12px 12px;
   border: 1px solid #e5e7eb;
   border-radius: 12px;
   outline: none;
@@ -133,15 +114,53 @@
 .table { margin-top: 16px; background: #fff; border: 1px solid #e6e9ef; border-radius: 12px; overflow: hidden; }
 .tableHeader, .row {
   display: grid;
-  grid-template-columns: 40px 48px 180px 160px 1fr 140px 220px 120px;
+  grid-template-columns: 60px 120px 1fr 100px 120px 60px 40px;
   align-items: center;
-  gap: 8px;
+  justify-items: start;
+  gap: 6px;
+}
+
+/* Ensure consistent column behavior */
+.colFirst, .colIcon, .colDate, .colActivityType, .colStatus, .colAssignees, .colActions, .colMenu {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.colActivityType {
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+.columnBlock {
+  flex: 1;
+  border-left: 5px solid var(--status-color, #0082C8);
+  border-radius: 10px;
+  background: #fff;
+  overflow: hidden;
+  width: 100%;
 }
 .tableHeader {
-  background: #f9fafb;
-  border-bottom: 1px solid #eceff3;
+  background: #F6F8FA;
+  border-bottom: 1px solid #E3E8EE;
+  color: var(--Gray-04, #464F60);
+  min-height: 60px;
+  display: grid;
+  grid-template-columns: 60px 60px 120px 1fr 100px 120px 60px 40px;
+  align-items: center;
+  gap: 10px;
+  font-family: Rubik;
+  font-size: 14px;
+  font-style: normal;
   font-weight: 600;
-  color: #6b7280;
+  line-height: 150%;
+  letter-spacing: 0.14px;
+}
+
+/* Add consistent padding to all header columns for alignment */
+.tableHeader > div {
+  padding: 0 6px;
 }
 .colHeaderBtn {
   appearance: none;
@@ -150,21 +169,186 @@
   text-align: left;
   padding: 12px;
   cursor: pointer;
-  color: #374151;
+  color: #2F3036;
+  font-family: Rubik;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 150%;
+  letter-spacing: 0.14px;
 }
-.sortIcon { margin-left: 6px; font-size: 10px; color: #9ca3af; }
+.sortIcon { margin-left: 6px; font-size: 10px; color: #868FA0; }
 
-.row { padding: 10px 0; border-bottom: 1px solid #f1f5f9; }
-.rowWrapper:last-child .row { border-bottom: none; }
-.colCheckbox { display: grid; place-items: center; }
-.colIcon { display: grid; place-items: center; font-size: 18px; }
-.colDate, .colActivityType, .colProject, .colStatus, .colAssignees, .colActions { padding: 0 12px; }
+.row { 
+  padding: 10px 10px; 
+  border-radius: 10px;
+  position: relative;
+  margin: 1.5px 0;
+  background: #fff;
+  min-height: 60px;
+  display: grid;
+  align-items: center;
+}
 
-.colStatus[data-status="In Progress"] { color: #ec4899; background: #ffe4f0; border-radius: 999px; padding: 4px 10px; width: max-content; }
-.colStatus[data-status="Tested"] { color: #6d28d9; background: #ede9fe; border-radius: 999px; padding: 4px 10px; width: max-content; }
-.colStatus[data-status="To Review"] { color: #d97706; background: #ffedd5; border-radius: 999px; padding: 4px 10px; width: max-content; }
-.colStatus[data-status="Confirmed"] { color: #059669; background: #d1fae5; border-radius: 999px; padding: 4px 10px; width: max-content; }
-.colStatus[data-status="Done"] { color: #2563eb; background: #dbeafe; border-radius: 999px; padding: 4px 10px; width: max-content; }
+/* Using real border instead of pseudo-element */
+/* Remove this rule since we're using individual card borders now */
+
+/* Remove the new styles */
+
+.colCheckbox { 
+  display: grid; 
+  place-items: center; 
+  padding: 0 6px;
+  align-self: center;
+  width: 60px;
+  justify-self: start;
+}
+.colIcon { 
+  display: grid; 
+  place-items: center; 
+  position: relative;
+}
+
+.rowWrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 0px;
+  position: relative;
+  box-shadow: 1.2px 1.2px 1.2px 0px rgba(232, 232, 232, 0.8);
+  border-radius: 10px;
+  background: #fff;
+  margin-bottom: 16px;
+  /* Ensure the wrapper covers the full expanded height */
+  min-height: fit-content;
+}
+
+
+
+/* Remove the line from the header row */
+.tableHeader .colIcon::before {
+  display: none;
+}
+.iconWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.icon { font-size: 24px; }
+.iconId {
+  font-size: 11px;
+  color: #868FA0;
+  font-weight: 400;
+}
+.colDate, .colProject, .colAssignees { padding: 0 6px; }
+
+.colDate {
+  color: var(--Gray-05, #2F3036);
+  font-family: Rubik;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%; /* 24px */
+}
+
+/* Header-specific styles for date column */
+.tableHeader .colDate {
+  color: var(--Gray-04, #464F60);
+  font-weight: 600;
+  line-height: 150%;
+  letter-spacing: 0.14px;
+  padding: 0 6px;
+}
+
+.colActions { 
+  padding: 0 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 40px;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  height: 100%;
+}
+
+.ellipsisMenu {
+  cursor: pointer;
+  color: #464F60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+}
+
+.ellipsisMenu:hover {
+  color: #2F3036;
+}
+
+.colActivityType {
+  padding: 0 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.activityType {
+  font-family: Rubik;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.25;
+  color: #868FA0;
+}
+
+.projectName {
+  font-family: Rubik;
+  font-size: 14px !important;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.25;
+  color: #2F3036;
+}
+
+.colStatus {
+  border-radius: 6px;
+  padding: 6px 6px;
+  width: max-content;
+  font-family: Rubik !important;
+  font-size: 14px !important;
+  font-style: normal !important;
+  font-weight: 400 !important;
+  line-height: 125% !important;
+  letter-spacing: 0.36px !important;
+}
+
+/* Header-specific styles for status column */
+.tableHeader .colStatus {
+  color: var(--Gray-04, #464F60) !important;
+  font-weight: 600 !important;
+  line-height: 150% !important;
+  letter-spacing: 0.14px !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  padding: 0px 6px !important;
+  width: auto !important;
+}
+
+.colStatus[data-status="In Progress"] { color: #E477AF; background: #F7D5E6; }
+.colStatus[data-status="Tested"] { color: #6d28d9; background: #ede9fe; }
+.colStatus[data-status="To Review"] { color: #f59e0b; background: #ffedd5; }
+.colStatus[data-status="Confirmed"] { color: #10b981; background: #d1fae5; }
+.colStatus[data-status="Done"] { color: #0082C8; background: #e6f4ff; }
+
+/* Set the left border color based on status background colors */
+.rowWrapper[data-status="In Progress"] .columnBlock { --status-color: #F7D5E6; }
+.rowWrapper[data-status="Tested"] .columnBlock { --status-color: #ede9fe; }
+.rowWrapper[data-status="To Review"] .columnBlock { --status-color: #ffedd5; }
+.rowWrapper[data-status="Confirmed"] .columnBlock { --status-color: #d1fae5; }
+.rowWrapper[data-status="Done"] .columnBlock { --status-color: #e6f4ff; }
 
 .badge {
   display: inline-flex;
@@ -178,29 +362,38 @@
   font-size: 12px;
 }
 
-.linkBtn { background: transparent; border: none; color: #2563eb; cursor: pointer; }
+
 
 .accordion {
   max-height: 0;
   overflow: hidden;
   transition: max-height 250ms ease;
-  background: #f9fafb;
+  background: #fff;
 }
-.accordionOpen { max-height: 300px; }
+.accordionOpen { 
+  max-height: 400px; 
+  background: #fff;
+}
 
 .questionsGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 12px;
   padding: 12px 24px 16px 92px;
+  background: #fff;
 }
-.questionItem { background: #fff; border: 1px solid #e6e9ef; border-radius: 10px; padding: 10px 12px; }
+.questionItem { 
+  background: #fff; 
+  border: 1px solid #e6e9ef; 
+  border-radius: 10px; 
+  padding: 10px 12px; 
+}
 .questionTitle { font-weight: 600; color: #374151; }
 .questionAnswer { color: #6b7280; font-size: 14px; margin-top: 6px; }
 
 @media (max-width: 1100px) {
   .tableHeader, .row {
-    grid-template-columns: 32px 40px 160px 140px 1fr 120px 160px 100px;
+    grid-template-columns: 32px 40px 160px 1fr 120px 140px 100px;
   }
   .questionsGrid { grid-template-columns: 1fr; padding-left: 92px; }
 }

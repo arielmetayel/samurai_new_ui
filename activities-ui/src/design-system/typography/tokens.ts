@@ -45,6 +45,13 @@ export const typography = {
       lineHeight: '1.25',
       letterSpacing: '0.01em',
     },
+    'text-sm-semibold': {
+      fontFamily: 'Rubik',
+      fontWeight: '600', // semibold
+      fontSize: '0.875rem', // 14px
+      lineHeight: '1.5',
+      letterSpacing: '0.14px',
+    },
     
     // 16px combinations
     'text-base-regular': {
