@@ -66,6 +66,13 @@ export const typography = {
       fontSize: '1rem', // 16px
       lineHeight: '1.25',
     },
+    'text-base-list': {
+      fontFamily: 'Rubik',
+      fontWeight: '400', // normal
+      fontSize: '1rem', // 16px
+      lineHeight: '1.4', // 140%
+      color: 'var(--Gray-04, #464F60)',
+    },
     
     // Heading combinations
     'heading-small': {
@@ -79,6 +86,13 @@ export const typography = {
       fontWeight: '600', // semibold
       fontSize: '1.5rem', // 24px
       lineHeight: '1.25',
+    },
+    'header-m02': {
+      fontFamily: 'Rubik',
+      fontWeight: '500', // medium
+      fontSize: '1.375rem', // 22px
+      lineHeight: '1.25', // 125%
+      color: 'var(--Gray-04, #464F60)',
     },
     'heading-large': {
       fontFamily: 'Rubik',

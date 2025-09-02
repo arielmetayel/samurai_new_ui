@@ -397,3 +397,422 @@
   }
   .questionsGrid { grid-template-columns: 1fr; padding-left: 92px; }
 }
+
+/* Popup Modal Styles */
+.popupOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.popupContent {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  width: 1000px;
+  height: 880px;
+  max-height: 90vh;
+  overflow: hidden;
+  animation: popupSlideIn 0.3s ease-out;
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes popupSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.popupHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 24px 24px 0 24px;
+  border-bottom: 1px solid #e6e9ef;
+  padding-bottom: 16px;
+  height: 100px;
+}
+
+.backButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 6px;
+  color: #868FA0;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 24px;
+}
+
+.backButton:hover {
+  background: #F6F8FA;
+  color: #2F3036;
+}
+
+.popupTitle {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #2F3036;
+}
+
+.popupBody {
+  padding: 24px;
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+}
+
+.cubeContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 20px;
+  border: 2px solid #e6e9ef;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: white;
+  width: 200px;
+  height: 140px;
+  flex-shrink: 0;
+}
+
+.cubeContainer:hover {
+  border-color: #0082C8;
+  background: #F6F8FA;
+}
+
+.cubeContainer.selected {
+  border-color: #0082C8;
+  background: #e6f4ff;
+}
+
+.cubeIcon {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cubeIcon svg {
+  stroke-width: 1px;
+  stroke: var(--Gray-04, #464F60);
+}
+
+.cubeContent {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cubeTitle {
+  font-weight: 600;
+  color: #2F3036;
+  font-size: 16px;
+  margin: 0;
+}
+
+.cubeDescription {
+  color: #868FA0;
+  font-size: 14px;
+  margin: 0;
+}
+
+.popupFooter {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 24px 24px 24px 24px;
+  border-top: 1px solid #e6e9ef;
+  background: white;
+  border-radius: 0 0 12px 12px;
+  height: 100px;
+}
+
+.cancelButton {
+  flex: 1;
+  max-width: 380px;
+}
+
+.nextButton {
+  flex: 1;
+  max-width: 380px;
+}
+
+/* Choose Activity Type Popup Styles */
+.searchContainer {
+  padding: 0 24px 16px 24px;
+  margin-top: 36px;
+}
+
+.searchWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 500px;
+  margin: 0 auto;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 12px;
+  color: #868FA0;
+  z-index: 1;
+}
+
+.searchInput {
+  width: 500px;
+  padding: 12px 12px 12px 44px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  outline: none;
+  font-size: 14px;
+  background: #fff;
+  margin: 0 auto;
+}
+
+.searchInput:focus {
+  border-color: #0082C8;
+  box-shadow: 0 0 0 3px rgba(0, 130, 200, 0.1);
+}
+
+.activityTypesList {
+  flex: 1;
+  padding: 0 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 650px;
+  margin: 0 auto;
+  margin-top: 8px;
+  margin-bottom: 36px;
+}
+
+.activityTypeItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: #fff;
+}
+
+.activityTypeItem:hover {
+  background: #F6F8FA;
+}
+
+.activityTypeItem.selectedType {
+  background: #e6f4ff;
+}
+
+.typeIcon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #e6e9ef;
+  flex-shrink: 0;
+}
+
+.typeText {
+  font-family: Rubik;
+  font-size: 14px;
+  font-weight: 400;
+  color: #2F3036;
+  line-height: 1.4;
+}
+
+/* Schedule Activity Date & Time Popup Styles */
+.dateTimeInputContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  gap: 24px;
+}
+
+.dateInputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 500px;
+  margin: 0 auto;
+}
+
+.calendarIcon {
+  position: absolute;
+  left: 12px;
+  color: #868FA0;
+  z-index: 1;
+}
+
+.dateInput {
+  width: 100%;
+  padding: 12px 12px 12px 44px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  outline: none;
+  font-size: 16px;
+  background: #fff;
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 125%;
+  letter-spacing: 0.18px;
+  color: #868FA0 !important;
+}
+
+.dateInput:focus {
+  border-color: #0082C8;
+  box-shadow: 0 0 0 3px rgba(0, 130, 200, 0.1);
+}
+
+.dateInput:not(:placeholder-shown):not([value=""]),
+.dateInput:valid:not([value=""]) {
+  color: #2F3036 !important;
+}
+
+.dateInput::placeholder {
+  color: #868FA0;
+  opacity: 1;
+}
+
+.dateInput::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.timeInputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 500px;
+  margin: 0 auto;
+}
+
+.clockIcon {
+  position: absolute;
+  left: 12px;
+  color: #868FA0;
+  z-index: 1;
+}
+
+.timeInput {
+  width: 100%;
+  padding: 12px 12px 12px 44px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  outline: none;
+  font-size: 16px;
+  background: #fff;
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 125%;
+  letter-spacing: 0.18px;
+  color: #868FA0 !important;
+}
+
+.timeInput:focus {
+  border-color: #0082C8;
+  box-shadow: 0 0 0 3px rgba(0, 130, 200, 0.1);
+}
+
+.timeInput:not(:placeholder-shown):not([value=""]),
+.timeInput:valid:not([value=""]) {
+  color: #2F3036 !important;
+}
+
+.timeInput::placeholder {
+  color: #868FA0;
+  opacity: 1;
+}
+
+.timeInput::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+/* Activity Overview Popup Styles */
+.overviewContainer {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.overviewContent {
+  width: 500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.overviewItem {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.overviewLabel {
+  font-family: Rubik;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 125%;
+  letter-spacing: 0.18px;
+  color: #868FA0;
+}
+
+.overviewValue {
+  font-family: Rubik;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 125%;
+  letter-spacing: 0.18px;
+  color: #2F3036;
+}

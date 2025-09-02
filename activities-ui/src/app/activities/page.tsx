@@ -8,6 +8,7 @@ import { Button, Checkbox } from "@/design-system";
 import { colors } from "@/design-system/colors/tokens";
 import { typography } from "@/design-system/typography/tokens";
 import { ChevronDown, ChevronUp, MoreVertical, Filter, FileText } from "react-feather";
+import CreateNewPopup from "./CreateNewPopup";
 
 const mockActivities: Activity[] = [
   {
@@ -106,6 +107,7 @@ export default function ActivitiesPage() {
   const [expandedRowIds, setExpandedRowIds] = useState<Record<string, boolean>>({});
   const [sortBy, setSortBy] = useState<SortColumn>("dateTime");
   const [sortDir, setSortDir] = useState<SortDirection>("asc");
+  const [isCreatePopupOpen, setIsCreatePopupOpen] = useState(false);
 
   const filtered = useMemo(() => {
     const lower = search.toLowerCase();
@@ -172,7 +174,12 @@ export default function ActivitiesPage() {
           ))}
         </nav>
         <div className={styles.createWrap}>
-          <Button variant="primary" size="md" className={styles.createBtn}>
+          <Button 
+            variant="primary" 
+            size="md" 
+            className={styles.createBtn}
+            onClick={() => setIsCreatePopupOpen(true)}
+          >
             + Create New
           </Button>
         </div>
@@ -276,6 +283,11 @@ export default function ActivitiesPage() {
           })}
         </div>
       </main>
+      
+      <CreateNewPopup 
+        isOpen={isCreatePopupOpen}
+        onClose={() => setIsCreatePopupOpen(false)}
+      />
     </div>
   );
 }
