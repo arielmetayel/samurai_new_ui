@@ -1,0 +1,54 @@
+{
+  "projects": [
+    {
+      "name": "Project Alpha",
+      "assignedUsers": ["Alice Johnson", "Bob Smith", "Carol Davis"],
+      "photo": "/images/projects/project-alpha.jpg"
+    },
+    {
+      "name": "Project Beta",
+      "assignedUsers": ["David Wilson", "Eva Brown"],
+      "photo": "/images/projects/project-beta.jpg"
+    },
+    {
+      "name": "Project Gamma",
+      "assignedUsers": ["Frank Miller", "Grace Lee", "Henry Taylor", "Ivy Chen"],
+      "photo": "/images/projects/project-gamma.jpg"
+    },
+    {
+      "name": "Project Delta",
+      "assignedUsers": ["Jack Anderson", "Kate White"],
+      "photo": "/images/projects/project-delta.jpg"
+    },
+    {
+      "name": "Project Epsilon",
+      "assignedUsers": ["Liam Garcia", "Maya Rodriguez", "Noah Martinez"],
+      "photo": "/images/projects/project-epsilon.jpg"
+    },
+    {
+      "name": "Project Zeta",
+      "assignedUsers": ["Olivia Thompson", "Paul Jackson"],
+      "photo": "/images/projects/project-zeta.jpg"
+    },
+    {
+      "name": "Project Eta",
+      "assignedUsers": ["Quinn Harris", "Rachel Clark", "Sam Lewis"],
+      "photo": "/images/projects/project-eta.jpg"
+    },
+    {
+      "name": "Project Theta",
+      "assignedUsers": ["Tom Walker", "Uma Hall", "Victor Young"],
+      "photo": "/images/projects/project-theta.jpg"
+    }
+  ],
+  "activityTypes": [
+    "Job Type 01",
+    "Job Type 02", 
+    "Job Type 03",
+    "Job Type 04",
+    "Job Type 05",
+    "Job Type 06",
+    "Job Type 07",
+    "Job Type 08"
+  ]
+}

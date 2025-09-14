@@ -4,8 +4,8 @@ import React, { useState } from "react";
 import styles from "./styles.module.css";
 import { Button } from "@/design-system";
 import { typography } from "@/design-system";
-import { ArrowLeft, Calendar, Clock } from "react-feather";
-import ActivityOverviewPopup from "./ActivityOverviewPopup";
+import { ArrowLeft, Calendar, Clock, Briefcase } from "react-feather";
+
 
 interface ScheduleActivityPopupProps {
   isOpen: boolean;
@@ -27,7 +27,6 @@ export default function ScheduleActivityPopup({
 }: ScheduleActivityPopupProps) {
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [selectedTime, setSelectedTime] = useState<string>("");
-  const [showOverviewPopup, setShowOverviewPopup] = useState(false);
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedDate(e.target.value);
@@ -39,37 +38,12 @@ export default function ScheduleActivityPopup({
 
   const handleNext = () => {
     if (selectedDate && selectedTime) {
-      setShowOverviewPopup(true);
+      const dateTime = `${selectedDate}T${selectedTime}`;
+      onNext(dateTime);
     }
   };
 
-  const handleOverviewBack = () => {
-    setShowOverviewPopup(false);
-  };
-
-  const handleOverviewComplete = () => {
-    const dateTime = `${selectedDate}T${selectedTime}`;
-    onNext(dateTime);
-  };
-
   if (!isOpen) return null;
-
-  // Show the overview popup if it's open
-  if (showOverviewPopup) {
-    return (
-      <ActivityOverviewPopup
-        isOpen={true}
-        onClose={onClose}
-        onBack={handleOverviewBack}
-        onComplete={handleOverviewComplete}
-        activityData={{
-          activityType: activityData.activityType,
-          project: activityData.project,
-          dateTime: `${selectedDate}T${selectedTime}`
-        }}
-      />
-    );
-  }
 
   return (
     <div className={styles.popupOverlay} onClick={onClose}>
@@ -84,6 +58,22 @@ export default function ScheduleActivityPopup({
         
         {/* Date and Time Inputs */}
         <div className={styles.dateTimeInputContainer}>
+          {/* Selected Activity Type and Project Display */}
+          <div className={styles.overviewContent}>
+            <div className={styles.overviewItemVertical}>
+              <div className={styles.overviewItemHorizontalRow}>
+                <span className={styles.overviewLabel}>Activity Type:</span>
+                <div className={styles.overviewValueWithIcon}>
+                  <Briefcase size={16} className={styles.activityIcon} />
+                  <span className={styles.overviewValue}>{activityData.activityType}</span>
+                </div>
+              </div>
+              <div className={styles.overviewItemHorizontalRow}>
+                <span className={styles.overviewLabel}>Project:</span>
+                <span className={styles.overviewValue}>{activityData.project}</span>
+              </div>
+            </div>
+          </div>
           <div className={styles.dateInputWrapper}>
             <Calendar size={20} className={styles.calendarIcon} />
             <input
@@ -124,7 +114,7 @@ export default function ScheduleActivityPopup({
             disabled={!selectedDate || !selectedTime}
             className={styles.nextButton}
           >
-            Next
+            Create New
           </Button>
         </div>
       </div>

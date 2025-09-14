@@ -6,6 +6,7 @@ import { Button } from "@/design-system";
 import { typography } from "@/design-system";
 import { ArrowLeft, Search } from "react-feather";
 import ChooseProjectPopup from "./ChooseProjectPopup";
+import dbData from "@/data/db.json";
 
 interface ChooseActivityTypePopupProps {
   isOpen: boolean;
@@ -24,16 +25,7 @@ export default function ChooseActivityTypePopup({
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [showProjectPopup, setShowProjectPopup] = useState(false);
 
-  const activityTypes = [
-    "Job Type 01",
-    "Job Type 02", 
-    "Job Type 03",
-    "Job Type 04",
-    "Job Type 05",
-    "Job Type 06",
-    "Job Type 07",
-    "Job Type 08"
-  ];
+  const activityTypes = dbData.activityTypes;
 
   const filteredTypes = activityTypes.filter(type =>
     type.toLowerCase().includes(searchQuery.toLowerCase())

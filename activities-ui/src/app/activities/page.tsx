@@ -9,6 +9,7 @@ import { colors } from "@/design-system/colors/tokens";
 import { typography } from "@/design-system/typography/tokens";
 import { ChevronDown, ChevronUp, MoreVertical, Filter, FileText } from "react-feather";
 import CreateNewPopup from "./CreateNewPopup";
+import ActivityDetailSidePanel from "./ActivityDetailSidePanel";
 
 const mockActivities: Activity[] = [
   {
@@ -108,6 +109,8 @@ export default function ActivitiesPage() {
   const [sortBy, setSortBy] = useState<SortColumn>("dateTime");
   const [sortDir, setSortDir] = useState<SortDirection>("asc");
   const [isCreatePopupOpen, setIsCreatePopupOpen] = useState(false);
+  const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
+  const [isSidePanelOpen, setIsSidePanelOpen] = useState(false);
 
   const filtered = useMemo(() => {
     const lower = search.toLowerCase();
@@ -136,6 +139,16 @@ export default function ActivitiesPage() {
 
   function toggleExpand(id: string) {
     setExpandedRowIds((prev) => ({ ...prev, [id]: !prev[id] }));
+  }
+
+  function handleActivityClick(activity: Activity) {
+    setSelectedActivity(activity);
+    setIsSidePanelOpen(true);
+  }
+
+  function handleCloseSidePanel() {
+    setIsSidePanelOpen(false);
+    setSelectedActivity(null);
   }
 
   return (
@@ -224,7 +237,7 @@ export default function ActivitiesPage() {
                 <div className={styles.colCheckbox}>
                   <Checkbox size="md" />
                 </div>
-                <div className={styles.columnBlock}>
+                <div className={styles.columnBlock} onClick={() => handleActivityClick(a)}>
                   <div className={styles.row}>
                     <div className={styles.colIcon}>
                       <div className={styles.iconWrapper}>
@@ -287,6 +300,12 @@ export default function ActivitiesPage() {
       <CreateNewPopup 
         isOpen={isCreatePopupOpen}
         onClose={() => setIsCreatePopupOpen(false)}
+      />
+      
+      <ActivityDetailSidePanel
+        activity={selectedActivity}
+        isOpen={isSidePanelOpen}
+        onClose={handleCloseSidePanel}
       />
     </div>
   );

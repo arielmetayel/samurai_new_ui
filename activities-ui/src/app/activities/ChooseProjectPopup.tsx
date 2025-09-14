@@ -6,6 +6,7 @@ import { Button } from "@/design-system";
 import { typography } from "@/design-system";
 import { ArrowLeft, Search } from "react-feather";
 import ScheduleActivityPopup from "./ScheduleActivityPopup";
+import dbData from "@/data/db.json";
 
 interface ChooseProjectPopupProps {
   isOpen: boolean;
@@ -26,23 +27,14 @@ export default function ChooseProjectPopup({
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [showSchedulePopup, setShowSchedulePopup] = useState(false);
 
-  const projects = [
-    "Project Alpha",
-    "Project Beta", 
-    "Project Gamma",
-    "Project Delta",
-    "Project Epsilon",
-    "Project Zeta",
-    "Project Eta",
-    "Project Theta"
-  ];
+  const projects = dbData.projects;
 
   const filteredProjects = projects.filter(project =>
-    project.toLowerCase().includes(searchQuery.toLowerCase())
+    project.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const handleProjectSelect = (project: string) => {
-    setSelectedProject(project);
+  const handleProjectSelect = (projectName: string) => {
+    setSelectedProject(projectName);
   };
 
   const handleNext = () => {
@@ -109,12 +101,12 @@ export default function ChooseProjectPopup({
         <div className={styles.activityTypesList}>
           {filteredProjects.map((project) => (
             <div
-              key={project}
-              className={`${styles.activityTypeItem} ${selectedProject === project ? styles.selectedType : ''}`}
-              onClick={() => handleProjectSelect(project)}
+              key={project.name}
+              className={`${styles.activityTypeItem} ${selectedProject === project.name ? styles.selectedType : ''}`}
+              onClick={() => handleProjectSelect(project.name)}
             >
               <div className={styles.typeIcon}></div>
-              <span className={styles.typeText}>{project}</span>
+              <span className={styles.typeText}>{project.name}</span>
             </div>
           ))}
         </div>

@@ -140,6 +140,13 @@
   background: #fff;
   overflow: hidden;
   width: 100%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.columnBlock:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 .tableHeader {
   background: #F6F8FA;
@@ -659,7 +666,7 @@
   align-items: center;
   justify-content: center;
   padding: 24px;
-  gap: 24px;
+  gap: 36px;
 }
 
 .dateInputWrapper {
@@ -815,4 +822,28 @@
   line-height: 125%;
   letter-spacing: 0.18px;
   color: #2F3036;
+}
+
+.overviewItemVertical {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  align-items: flex-start;
+}
+
+.overviewItemHorizontalRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.overviewValueWithIcon {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.activityIcon {
+  color: #0082C8;
+  flex-shrink: 0;
 }
