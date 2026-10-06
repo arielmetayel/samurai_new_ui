@@ -1,0 +1,288 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(47, 48, 54, 0.16);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.modal {
+  width: min(960px, 96vw);
+  max-height: 92vh;
+  background: #ffffff;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid #e3e8ee;
+}
+
+.header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 92px;
+  border-bottom: 1px solid #e3e8ee;
+}
+
+.backButton {
+  position: absolute;
+  left: 16px;
+  border: 0;
+  background: transparent;
+  color: #464f60;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+}
+
+.title {
+  margin: 0;
+  color: #464f60 !important;
+}
+
+.body {
+  padding: 16px 24px 24px;
+  overflow-y: auto;
+}
+
+.quickFilters {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  padding: 8px 0 16px;
+}
+
+.checkboxRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #464f60;
+  font-size: 14px;
+  line-height: 1.25;
+}
+
+.sectionRow {
+  width: 100%;
+  background: transparent;
+  border-left: 0;
+  border-right: 0;
+  border-top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #464f60;
+  font-size: 16px;
+  font-family: Rubik, sans-serif;
+  line-height: 1.25;
+  padding: 16px 0;
+  border-bottom: 1px solid #e3e8ee;
+  cursor: pointer;
+  text-align: left;
+}
+
+.sectionRowNoBorder {
+  border-bottom: 0;
+  padding-bottom: 10px;
+}
+
+.chevron {
+  color: #868fa0;
+  transition: transform 0.2s ease;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+.sectionContent {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  padding: 0;
+  border-bottom: 1px solid #e3e8ee;
+  transition: max-height 260ms ease, opacity 220ms ease, padding 220ms ease;
+}
+
+.sectionContentInner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.sectionContentOpen {
+  max-height: 180px;
+  opacity: 1;
+  padding: 0 0 16px;
+}
+
+.chipsWrap {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  padding: 0;
+  border-bottom: 1px solid #e3e8ee;
+  transition: max-height 260ms ease, opacity 220ms ease, padding 220ms ease;
+}
+
+.chipsWrap.sectionContentOpen {
+  max-height: 180px;
+  opacity: 1;
+  padding: 0 0 16px;
+}
+
+.dateChip,
+.statusChip {
+  border-radius: 999px;
+  border: 1px solid transparent;
+  padding: 4px 10px;
+  font-size: 12px;
+  line-height: 1.2;
+  background: #e6f4ff;
+  color: #0082c8;
+  cursor: pointer;
+}
+
+.statusChip {
+  background: #fff;
+  border-color: #e3e8ee;
+  color: #464f60;
+}
+
+.statusChipTested {
+  color: #6d28d9;
+  border-color: #c4b5fd;
+  background: #ede9fe;
+}
+
+.statusChipDone {
+  color: #0082c8;
+  border-color: #b3e0ff;
+  background: #e6f4ff;
+}
+
+.statusChipReported {
+  color: #0284c7;
+  border-color: #7dd3fc;
+  background: #e0f2fe;
+}
+
+.statusChipConfirmed {
+  color: #10b981;
+  border-color: #86efac;
+  background: #d1fae5;
+}
+
+.statusChipOpen {
+  color: #65a30d;
+  border-color: #bef264;
+  background: #ecfccb;
+}
+
+.statusChipToReview {
+  color: #f59e0b;
+  border-color: #fcd34d;
+  background: #ffedd5;
+}
+
+.statusChipAssigned {
+  color: #f97316;
+  border-color: #fdba74;
+  background: #fff7ed;
+}
+
+.statusChipCompleteReport {
+  color: #ef4444;
+  border-color: #fca5a5;
+  background: #fef2f2;
+}
+
+.statusChipInstructraCare {
+  color: #e477af;
+  border-color: #f9a8d4;
+  background: #fdf2f8;
+}
+
+.statusChipRejected {
+  color: #374151;
+  border-color: #d1d5db;
+  background: #f3f4f6;
+}
+
+.optionChip {
+  border-radius: 999px;
+  border: 1px solid #e3e8ee;
+  padding: 4px 10px;
+  font-size: 12px;
+  line-height: 1.2;
+  background: #fff;
+  color: #464f60;
+  cursor: pointer;
+}
+
+.footer {
+  border-top: 1px solid #e3e8ee;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.clearButton {
+  border: 0;
+  background: transparent;
+  color: #0082c8;
+  font-size: 14px;
+  font-family: Rubik, sans-serif;
+  cursor: pointer;
+  padding: 0;
+}
+
+.saveTabButton {
+  min-width: 220px;
+}
+
+.applyButton {
+  margin-left: auto;
+  min-width: 200px;
+}
+
+@media (max-width: 900px) {
+  .modal {
+    width: 100%;
+    max-height: 100vh;
+    border-radius: 0;
+  }
+
+  .title {
+    font-size: 20px !important;
+  }
+
+  .checkboxRow,
+  .sectionRow,
+  .clearButton {
+    font-size: 16px;
+  }
+
+  .dateChip,
+  .statusChip {
+    font-size: 12px;
+  }
+
+  .footer {
+    flex-wrap: wrap;
+  }
+
+  .applyButton,
+  .saveTabButton {
+    min-width: 0;
+  }
+}

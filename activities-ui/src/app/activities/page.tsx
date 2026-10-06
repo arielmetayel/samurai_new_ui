@@ -3,13 +3,12 @@
 import React, { useMemo, useState } from "react";
 import Link from "next/link";
 import styles from "./styles.module.css";
-import { Activity, SortColumn, SortDirection } from "@/types";
+import { Activity } from "@/types";
 import { Button, Checkbox } from "@/design-system";
-import { colors } from "@/design-system/colors/tokens";
-import { typography } from "@/design-system/typography/tokens";
-import { ChevronDown, ChevronUp, MoreVertical, Filter, FileText } from "react-feather";
+import { ChevronDown, ChevronUp, MoreVertical, Filter, FileText, Search } from "react-feather";
 import CreateNewPopup from "./CreateNewPopup";
 import ActivityDetailSidePanel from "./ActivityDetailSidePanel";
+import FilterActivitiesPopup from "./FilterActivitiesPopup";
 
 const mockActivities: Activity[] = [
   {
@@ -106,9 +105,8 @@ function formatDate(iso: string) {
 export default function ActivitiesPage() {
   const [search, setSearch] = useState("");
   const [expandedRowIds, setExpandedRowIds] = useState<Record<string, boolean>>({});
-  const [sortBy, setSortBy] = useState<SortColumn>("dateTime");
-  const [sortDir, setSortDir] = useState<SortDirection>("asc");
   const [isCreatePopupOpen, setIsCreatePopupOpen] = useState(false);
+  const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false);
   const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
   const [isSidePanelOpen, setIsSidePanelOpen] = useState(false);
 
@@ -118,24 +116,8 @@ export default function ActivitiesPage() {
       .filter((a) =>
         [a.projectName, a.activityType, a.status].some((v) => v.toLowerCase().includes(lower))
       )
-      .sort((a, b) => {
-        let compare = 0;
-        if (sortBy === "dateTime") compare = a.dateTime.localeCompare(b.dateTime);
-        if (sortBy === "projectName") compare = a.projectName.localeCompare(b.projectName);
-        if (sortBy === "status") compare = a.status.localeCompare(b.status);
-        if (sortBy === "assignees") compare = a.assignees.length - b.assignees.length;
-        return sortDir === "asc" ? compare : -compare;
-      });
-  }, [search, sortBy, sortDir]);
-
-  function toggleSort(column: SortColumn) {
-    if (sortBy === column) {
-      setSortDir((d) => (d === "asc" ? "desc" : "asc"));
-    } else {
-      setSortBy(column);
-      setSortDir("asc");
-    }
-  }
+      .sort((a, b) => a.dateTime.localeCompare(b.dateTime));
+  }, [search]);
 
   function toggleExpand(id: string) {
     setExpandedRowIds((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -168,23 +150,35 @@ export default function ActivitiesPage() {
           <div className={styles.userName}>User Full Name</div>
         </div>
         <nav className={styles.menu}>
-          {[
-            "Home",
-            "Activities",
-            "Projects",
-            "Users",
-            "Data Analysis",
-            "Files",
-            "Apps",
-            "Placement",
-            "Blueprint",
-            "Skills",
-            "Automations",
-          ].map((item) => (
-            <div key={item} className={item === "Activities" ? styles.menuItemActive : styles.menuItem}>
-              {item}
-            </div>
-          ))}
+          {(
+            [
+              { label: "Home", href: "/" },
+              { label: "Activities", href: "/activities" },
+              { label: "Projects", href: "/projects" },
+              { label: "Users", href: "/users" },
+              { label: "Data Analysis", href: "/data-analysis" },
+              { label: "Files" },
+              { label: "Apps" },
+              { label: "Placement", href: "/placement" },
+              { label: "Blueprint" },
+              { label: "Skills" },
+              { label: "Automations" },
+            ] as { label: string; href?: string }[]
+          ).map((item) =>
+            item.href ? (
+              <Link
+                key={item.label}
+                href={item.href}
+                className={item.label === "Activities" ? styles.menuItemActive : styles.menuItem}
+              >
+                {item.label}
+              </Link>
+            ) : (
+              <div key={item.label} className={styles.menuItem}>
+                {item.label}
+              </div>
+            )
+          )}
         </nav>
         <div className={styles.createWrap}>
           <Button 
@@ -200,22 +194,30 @@ export default function ActivitiesPage() {
       <main className={styles.main}>
         <div className={styles.headerRow}>
           <h1 className={styles.pageTitle}>Activities</h1>
+        </div>
+        <div className={styles.searchRow}>
+          <div className={styles.mainSearchWrapper}>
+            <Search size={18} className={styles.mainSearchIcon} />
+            <input
+              placeholder="search"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className={styles.searchInput}
+            />
+          </div>
           <div className={styles.headerActions}>
-            <Button variant="tertiary" icon={Filter} iconSize={22}>
+            <Button
+              variant="tertiary"
+              icon={Filter}
+              iconSize={22}
+              onClick={() => setIsFilterPopupOpen(true)}
+            >
               Filter
             </Button>
             <Button variant="tertiary" icon={FileText} iconSize={22}>
               Create Report
             </Button>
           </div>
-        </div>
-        <div className={styles.searchRow}>
-          <input
-            placeholder="search"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className={styles.searchInput}
-          />
         </div>
 
         <div className={styles.table}>
@@ -267,7 +269,10 @@ export default function ActivitiesPage() {
                             variant="tertiary" 
                             size="sm"
                             icon={expanded ? ChevronUp : ChevronDown}
-                            onClick={() => toggleExpand(a.id)} 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleExpand(a.id);
+                            }} 
                           />
                         )}
                       </div>
@@ -279,16 +284,31 @@ export default function ActivitiesPage() {
                     </div>
                   </div>
                   {a.questions.length > 0 && (
-                    <div className={`${styles.accordion} ${expanded ? styles.accordionOpen : ""}`}>
-                      <div className={styles.questionsGrid}>
-                        {a.questions.map((q) => (
-                          <div key={q.id} className={styles.questionItem}>
-                            <div className={styles.questionTitle}>{q.title}</div>
-                            <div className={styles.questionAnswer}>{q.answer}</div>
-                          </div>
-                        ))}
+                    <>
+                      <div className={`${styles.accordion} ${expanded ? styles.accordionOpen : ""}`}>
+                        <div className={styles.questionsGrid}>
+                          {a.questions.map((q) => (
+                            <div key={q.id} className={styles.questionItem}>
+                              <div className={styles.questionTitle}>{q.title}</div>
+                              <div className={styles.questionAnswer}>{q.answer}</div>
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                    </div>
+                      <div className={styles.mobileAccordionToggleWrap}>
+                        <button
+                          type="button"
+                          className={styles.mobileAccordionToggle}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleExpand(a.id);
+                          }}
+                        >
+                          {expanded ? "Show less" : "Show more"}
+                          {expanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                        </button>
+                      </div>
+                    </>
                   )}
                 </div>
               </div>
@@ -300,6 +320,11 @@ export default function ActivitiesPage() {
       <CreateNewPopup 
         isOpen={isCreatePopupOpen}
         onClose={() => setIsCreatePopupOpen(false)}
+      />
+
+      <FilterActivitiesPopup
+        isOpen={isFilterPopupOpen}
+        onClose={() => setIsFilterPopupOpen(false)}
       />
       
       <ActivityDetailSidePanel

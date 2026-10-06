@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { Button } from '@/design-system/buttons/Button';
 import { Search, BarChart, Plus, Download, Settings, User, Mail, Calendar } from 'react-feather';
-import { typography } from '@/design-system/typography/tokens';
 
 export default function ButtonDemoPage() {
   return (

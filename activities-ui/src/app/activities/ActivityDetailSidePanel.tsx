@@ -61,6 +61,7 @@ export default function ActivityDetailSidePanel({
           hasComment: false,
           hasAttachment: false,
           isRequired: false,
+          hasYellowBg: true,
         },
         {
           id: "q2", 
@@ -70,6 +71,7 @@ export default function ActivityDetailSidePanel({
           hasComment: false,
           hasAttachment: false,
           isRequired: false,
+          hasYellowBg: false,
         },
         {
           id: "q3",
@@ -79,6 +81,7 @@ export default function ActivityDetailSidePanel({
           hasComment: true,
           hasAttachment: true,
           isRequired: true,
+          hasYellowBg: true,
         },
         {
           id: "q4",
@@ -88,6 +91,7 @@ export default function ActivityDetailSidePanel({
           hasComment: true,
           hasAttachment: false,
           isRequired: false,
+          hasYellowBg: false,
         },
         {
           id: "q5",
@@ -97,6 +101,7 @@ export default function ActivityDetailSidePanel({
           hasComment: false,
           hasAttachment: false,
           isRequired: true,
+          hasYellowBg: true,
         },
         {
           id: "q6",
@@ -106,6 +111,7 @@ export default function ActivityDetailSidePanel({
           hasComment: false,
           hasAttachment: true,
           isRequired: true,
+          hasYellowBg: false,
         },
       ],
     },
@@ -120,6 +126,7 @@ export default function ActivityDetailSidePanel({
           hasComment: false,
           hasAttachment: false,
           isRequired: false,
+          hasYellowBg: false,
         },
         {
           id: "q8",
@@ -129,6 +136,7 @@ export default function ActivityDetailSidePanel({
           hasComment: false,
           hasAttachment: false,
           isRequired: false,
+          hasYellowBg: false,
         },
         {
           id: "q9",
@@ -138,6 +146,7 @@ export default function ActivityDetailSidePanel({
           hasComment: false,
           hasAttachment: false,
           isRequired: false,
+          hasYellowBg: true,
         },
         {
           id: "q10",
@@ -147,6 +156,7 @@ export default function ActivityDetailSidePanel({
           hasComment: false,
           hasAttachment: false,
           isRequired: true,
+          hasYellowBg: false,
         },
         {
           id: "q11",
@@ -156,6 +166,7 @@ export default function ActivityDetailSidePanel({
           hasComment: false,
           hasAttachment: false,
           isRequired: true,
+          hasYellowBg: false,
         },
         {
           id: "q12",
@@ -165,6 +176,7 @@ export default function ActivityDetailSidePanel({
           hasComment: false,
           hasAttachment: false,
           isRequired: true,
+          hasYellowBg: false,
         },
         {
           id: "q13",
@@ -174,6 +186,7 @@ export default function ActivityDetailSidePanel({
           hasComment: false,
           hasAttachment: false,
           isRequired: true,
+          hasYellowBg: false,
         },
       ],
     },
@@ -280,8 +293,10 @@ export default function ActivityDetailSidePanel({
                 <div key={question.id} className={styles.question}>
                   <div className={styles.questionHeader}>
                     <div className={styles.questionTitle}>
-                      {question.isRequired && <div className={styles.requiredIndicator} />}
-                      {question.title}
+                      <div className={styles.questionTitleContent}>
+                        {question.isRequired && <div className={styles.requiredIndicator} />}
+                        <span>{question.title}</span>
+                      </div>
                     </div>
                     <div className={styles.questionActions}>
                       {question.hasComment && (
@@ -302,7 +317,7 @@ export default function ActivityDetailSidePanel({
                       <input
                         type="text"
                         placeholder={question.placeholder}
-                        className={styles.inputField}
+                        className={`${styles.inputField} ${question.hasYellowBg ? styles.inputFieldYellow : styles.inputFieldWhite}`}
                       />
                     )}
                     {question.type === "select" && (
