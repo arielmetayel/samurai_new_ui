@@ -5,15 +5,27 @@ import Link from "next/link";
 import styles from "./styles.module.css";
 import { Activity } from "@/types";
 import { Button, Checkbox } from "@/design-system";
-import { ChevronDown, ChevronUp, MoreVertical, Filter, FileText, Search } from "react-feather";
+import {
+  Briefcase,
+  ChevronDown,
+  ChevronUp,
+  Filter,
+  FileText,
+  Link as LinkIcon,
+  MoreVertical,
+  Search,
+  Tool,
+  Truck,
+} from "react-feather";
 import CreateNewPopup from "./CreateNewPopup";
 import ActivityDetailSidePanel from "./ActivityDetailSidePanel";
 import FilterActivitiesPopup from "./FilterActivitiesPopup";
+import { NavLabel, navItems } from "../navItems";
 
 const mockActivities: Activity[] = [
   {
     id: "1",
-    icon: "🚚",
+    icon: "link",
     dateTime: "2025-12-13T00:00:00Z",
     activityType: "Support Case",
     projectName: "FoodChain Suppliers",
@@ -39,7 +51,7 @@ const mockActivities: Activity[] = [
   },
   {
     id: "2",
-    icon: "🚚",
+    icon: "link",
     dateTime: "2025-12-13T00:00:00Z",
     activityType: "Support Case",
     projectName: "Event Masters",
@@ -53,7 +65,7 @@ const mockActivities: Activity[] = [
   },
   {
     id: "3",
-    icon: "🚚",
+    icon: "link",
     dateTime: "2025-12-13T00:00:00Z",
     activityType: "Meeting Summary",
     projectName: "FoodChain Suppliers",
@@ -66,7 +78,7 @@ const mockActivities: Activity[] = [
   },
   {
     id: "4",
-    icon: "📦",
+    icon: "truck",
     dateTime: "2025-12-13T00:00:00Z",
     activityType: "Phase Execution",
     projectName: "Legal Pro Consulting",
@@ -79,7 +91,7 @@ const mockActivities: Activity[] = [
   },
   {
     id: "5",
-    icon: "🛠️",
+    icon: "tool",
     dateTime: "2025-12-13T00:00:00Z",
     activityType: "Fixes",
     projectName: "Event Masters",
@@ -91,6 +103,14 @@ const mockActivities: Activity[] = [
     ],
   },
 ];
+
+function ActivityGlyph({ icon, size = 18 }: { icon: string; size?: number }) {
+  const props = { size, strokeWidth: 2 };
+  if (icon === "truck") return <Truck {...props} />;
+  if (icon === "link") return <LinkIcon {...props} />;
+  if (icon === "tool") return <Tool {...props} />;
+  return <Briefcase {...props} />;
+}
 
 function formatDate(iso: string) {
   const date = new Date(iso);
@@ -150,32 +170,18 @@ export default function ActivitiesPage() {
           <div className={styles.userName}>User Full Name</div>
         </div>
         <nav className={styles.menu}>
-          {(
-            [
-              { label: "Home", href: "/" },
-              { label: "Activities", href: "/activities" },
-              { label: "Projects", href: "/projects" },
-              { label: "Users", href: "/users" },
-              { label: "Data Analysis", href: "/data-analysis" },
-              { label: "Files" },
-              { label: "Apps" },
-              { label: "Placement", href: "/placement" },
-              { label: "Blueprint" },
-              { label: "Skills" },
-              { label: "Automations" },
-            ] as { label: string; href?: string }[]
-          ).map((item) =>
+          {navItems.map((item) =>
             item.href ? (
               <Link
                 key={item.label}
                 href={item.href}
                 className={item.label === "Activities" ? styles.menuItemActive : styles.menuItem}
               >
-                {item.label}
+                <NavLabel item={item} />
               </Link>
             ) : (
               <div key={item.label} className={styles.menuItem}>
-                {item.label}
+                <NavLabel item={item} />
               </div>
             )
           )}
@@ -243,7 +249,9 @@ export default function ActivitiesPage() {
                   <div className={styles.row}>
                     <div className={styles.colIcon}>
                       <div className={styles.iconWrapper}>
-                        <div className={styles.icon}>{a.icon}</div>
+                        <div className={styles.icon}>
+                          <ActivityGlyph icon={a.icon} size={18} />
+                        </div>
                         <div className={styles.iconId}>12345678</div>
                       </div>
                     </div>

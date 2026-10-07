@@ -80,7 +80,9 @@
   color: #464F60;
   cursor: pointer;
   text-decoration: none;
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 .menuItem:hover { background: #F6F8FA; }
 .menuItemActive { background: #e6f4ff; color: #0082C8; font-weight: 600; }

@@ -119,7 +119,9 @@
   color: #464f60;
   cursor: pointer;
   text-decoration: none;
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .menuItem:hover {

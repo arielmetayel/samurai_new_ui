@@ -6,106 +6,8 @@ import styles from "./styles.module.css";
 import { Button, Checkbox } from "@/design-system";
 import { MoreVertical, Filter, FileText, Search } from "react-feather";
 import CreateNewPopup from "../activities/CreateNewPopup";
-
-interface Project {
-  id: string;
-  projectNumber: string;
-  name: string;
-  address: string | null;
-  contractStatus: "Signed Contract" | "No Contract" | null;
-  buildingsCount: number;
-  assignees: string[];
-  thumbTone: "rose" | "sand" | "sage" | "sky" | "lilac";
-}
-
-const mockProjects: Project[] = [
-  {
-    id: "1",
-    projectNumber: "216790",
-    name: "B.S.T - Ichilov North",
-    address: null,
-    contractStatus: null,
-    buildingsCount: 0,
-    assignees: ["MK"],
-    thumbTone: "rose",
-  },
-  {
-    id: "2",
-    projectNumber: "216789",
-    name: "Yuvalim Ganim - Jerusalem",
-    address: null,
-    contractStatus: null,
-    buildingsCount: 0,
-    assignees: ["DL"],
-    thumbTone: "sand",
-  },
-  {
-    id: "3",
-    projectNumber: "216788",
-    name: "HaGiborim - Bat Yam",
-    address: null,
-    contractStatus: null,
-    buildingsCount: 0,
-    assignees: ["RS"],
-    thumbTone: "sage",
-  },
-  {
-    id: "4",
-    projectNumber: "216787",
-    name: "Dania Sibus - Plot 112 Ramat Efal",
-    address: "Shacham 13, Ramat Gan, Israel",
-    contractStatus: null,
-    buildingsCount: 0,
-    assignees: ["AV", "TK"],
-    thumbTone: "sky",
-  },
-  {
-    id: "5",
-    projectNumber: "216786",
-    name: "Ariel Gabay - Dubnov 3 Tel Aviv",
-    address: null,
-    contractStatus: "Signed Contract",
-    buildingsCount: 0,
-    assignees: ["MK"],
-    thumbTone: "lilac",
-  },
-  {
-    id: "6",
-    projectNumber: "216785",
-    name: "Dania Sibus - HaDam Bank",
-    address: null,
-    contractStatus: "No Contract",
-    buildingsCount: 0,
-    assignees: ["DL"],
-    thumbTone: "rose",
-  },
-  {
-    id: "7",
-    projectNumber: "216783",
-    name: "Dania Sibus - Givat Shmuel 1006-1007",
-    address: "Heyn 57, Petah Tikva, Israel",
-    contractStatus: "No Contract",
-    buildingsCount: 0,
-    assignees: ["RS"],
-    thumbTone: "sand",
-  },
-];
-
-const TOTAL_PROJECTS = 348;
-
-const menuItems: { label: string; href?: string }[] = [
-  { label: "Home", href: "/" },
-  { label: "Activities", href: "/activities" },
-  { label: "Projects", href: "/projects" },
-  { label: "Users", href: "/users" },
-  { label: "Data Analysis", href: "/data-analysis" },
-  { label: "Files" },
-  { label: "Apps" },
-  { label: "Placement", href: "/placement" },
-  { label: "Blueprint" },
-  { label: "Skills" },
-  { label: "Automations" },
-];
+import { NavLabel, navItems } from "../navItems";
+import { mockProjects, TOTAL_PROJECTS } from "./data";
 
 function displayValue(value: string | number | null | undefined) {
   if (value === null || value === undefined || value === "") return "0";
@@ -147,18 +49,18 @@ export default function ProjectsPage() {
           <div className={styles.userName}>User Full Name</div>
         </div>
         <nav className={styles.menu}>
-          {menuItems.map((item) =>
+          {navItems.map((item) =>
             item.href ? (
               <Link
                 key={item.label}
                 href={item.href}
                 className={item.label === "Projects" ? styles.menuItemActive : styles.menuItem}
               >
-                {item.label}
+                <NavLabel item={item} />
               </Link>
             ) : (
               <div key={item.label} className={styles.menuItem}>
-                {item.label}
+                <NavLabel item={item} />
               </div>
             )
           )}
@@ -224,7 +126,6 @@ export default function ProjectsPage() {
                 key={p.id}
                 className={`${styles.rowWrapper} ${selected ? styles.rowSelected : ""}`}
                 data-status={p.contractStatus ?? "None"}
-                onClick={() => toggleSelected(p.id)}
               >
                 <div
                   className={styles.colCheckbox}
@@ -236,7 +137,7 @@ export default function ProjectsPage() {
                     onChange={() => toggleSelected(p.id)}
                   />
                 </div>
-                <div className={styles.columnBlock}>
+                <Link href={`/projects/${p.id}`} className={styles.columnBlock}>
                   <div className={styles.row}>
                     <div className={styles.colThumb}>
                       <div
@@ -285,7 +186,7 @@ export default function ProjectsPage() {
                       </div>
                     </div>
                   </div>
-                </div>
+                </Link>
               </div>
             );
           })}

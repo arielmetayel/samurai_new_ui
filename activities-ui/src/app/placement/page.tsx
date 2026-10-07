@@ -10,20 +10,7 @@ import TopBar from "./TopBar";
 import EmployeeSidebar from "./EmployeeSidebar";
 import AssignmentBoard from "./AssignmentBoard";
 import styles from "./placement.module.css";
-
-const menuItems: { label: string; href?: string }[] = [
-  { label: "Home", href: "/" },
-  { label: "Activities", href: "/activities" },
-  { label: "Projects", href: "/projects" },
-  { label: "Users", href: "/users" },
-  { label: "Data Analysis", href: "/data-analysis" },
-  { label: "Files" },
-  { label: "Apps" },
-  { label: "Placement", href: "/placement" },
-  { label: "Blueprint" },
-  { label: "Skills" },
-  { label: "Automations" },
-];
+import { NavLabel, navItems } from "../navItems";
 
 export default function PlacementPage() {
   const [selectedDay, setSelectedDay] = useState<BoardDayKey>("today");
@@ -117,18 +104,18 @@ export default function PlacementPage() {
           <div className={styles.appUserName}>User Full Name</div>
         </div>
         <nav className={styles.menu}>
-          {menuItems.map((item) =>
+          {navItems.map((item) =>
             item.href ? (
               <Link
                 key={item.label}
                 href={item.href}
                 className={item.label === "Placement" ? styles.menuItemActive : styles.menuItem}
               >
-                {item.label}
+                <NavLabel item={item} />
               </Link>
             ) : (
               <div key={item.label} className={styles.menuItem}>
-                {item.label}
+                <NavLabel item={item} />
               </div>
             )
           )}

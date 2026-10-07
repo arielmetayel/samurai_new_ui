@@ -82,7 +82,9 @@
   color: #464f60;
   cursor: pointer;
   text-decoration: none;
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .menuItem:hover {
@@ -144,13 +146,13 @@
 
 .stat {
   background: #fff;
-  border: 1px solid #e6e9ef;
+  border: 0;
   border-radius: 12px;
   padding: 16px 18px;
   display: flex;
   flex-direction: column;
   gap: 4px;
-  box-shadow: 1.2px 1.2px 1.2px 0 rgba(232, 232, 232, 0.8);
+  box-shadow: 0 4px 12px rgba(47, 48, 54, 0.06);
 }
 
 .statValue {
@@ -166,22 +168,6 @@
   font-size: 13px;
   font-weight: 500;
   color: #868fa0;
-}
-
-.statBlue {
-  border-top: 3px solid #0082c8;
-}
-
-.statOrange {
-  border-top: 3px solid #f59e0b;
-}
-
-.statRed {
-  border-top: 3px solid #ef4444;
-}
-
-.statGreen {
-  border-top: 3px solid #10b981;
 }
 
 .carouselSection,
@@ -200,8 +186,8 @@
   width: 28px;
   height: 28px;
   border-radius: 8px;
-  background: #e6f4ff;
-  color: #0082c8;
+  background: #f6f8fa;
+  color: #464f60;
   display: grid;
   place-items: center;
   flex-shrink: 0;
@@ -226,8 +212,8 @@
   height: 22px;
   padding: 0 7px;
   border-radius: 999px;
-  background: #e6f4ff;
-  color: #0082c8;
+  background: #f6f8fa;
+  color: #464f60;
   font-size: 12px;
   font-weight: 700;
 }
@@ -333,16 +319,6 @@
   overflow: hidden;
 }
 
-.cardMeta {
-  margin-top: 6px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-family: Rubik, sans-serif;
-  font-size: 12px;
-  color: #868fa0;
-}
-
 .cardBottom {
   margin-top: auto;
   display: flex;
@@ -390,17 +366,17 @@
 }
 
 .personBadge {
-  width: 26px;
-  height: 26px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   background: #e6f4ff;
   color: #0082c8;
   border: 2px solid #fff;
-  margin-left: -6px;
+  margin-left: -8px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 700;
   flex-shrink: 0;
 }
@@ -502,6 +478,33 @@
   .listsGrid {
     grid-template-columns: 1fr;
   }
+
+  .listRow {
+    grid-template-columns: 36px 48px minmax(0, 1fr) auto;
+    overflow: hidden;
+    border-left: 4px solid var(--status-color, #e3e8ee);
+  }
+
+  .listRow[data-status="In Progress"] {
+    --status-color: #f7d5e6;
+  }
+
+  .listRow[data-status="To Review"] {
+    --status-color: #ffedd5;
+  }
+
+  .listRow[data-status="Confirmed"] {
+    --status-color: #d1fae5;
+  }
+
+  .listRow[data-status="Overdue"],
+  .listRow[data-status="Pinned"] {
+    --status-color: #fee2e2;
+  }
+
+  .listRow .statusChip {
+    display: none;
+  }
 }
 
 @media (max-width: 900px) {
@@ -538,13 +541,5 @@
 
   .card {
     flex-basis: 200px;
-  }
-
-  .listRow {
-    grid-template-columns: 36px 48px minmax(0, 1fr) auto;
-  }
-
-  .listRow .statusChip {
-    display: none;
   }
 }

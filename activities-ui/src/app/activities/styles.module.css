@@ -81,7 +81,9 @@
   color: #464F60;
   cursor: pointer;
   text-decoration: none;
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 .menuItem:hover { background: #F6F8FA; }
 .menuItemActive { background: #e6f4ff; color: #0082C8; font-weight: 600; }
@@ -264,7 +266,16 @@
   align-items: center;
   gap: 4px;
 }
-.icon { font-size: 24px; }
+.icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #f6f8fa;
+  color: #464f60;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
 .iconId {
   font-size: 11px;
   color: #868FA0;
@@ -589,24 +600,28 @@
   .row {
     grid-template-columns: 56px 1fr auto;
     grid-template-areas:
-      "icon details assignees"
-      "meta meta meta";
-    gap: 10px 12px;
+      "icon date assignees"
+      ". details details";
+    gap: 8px 12px;
     padding: 14px 14px 6px;
     min-height: unset;
     align-items: start;
   }
 
-  .colIcon { grid-area: icon; }
+  .colIcon {
+    grid-area: icon;
+    align-self: center;
+  }
   .colActivityType { grid-area: details; padding: 0; }
   .colDate {
-    grid-area: meta;
+    grid-area: date;
     padding: 0;
     font-size: 16px;
     font-weight: 500;
     color: #2f3036;
     line-height: 1.2;
-    margin-top: 6px;
+    margin-top: 0;
+    align-self: center;
   }
   .colStatus { display: none; }
   .colAssignees { grid-area: assignees; padding: 0; justify-content: flex-end; }
@@ -614,7 +629,9 @@
   .colMenu { display: none; }
 
   .icon {
-    font-size: 20px;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
   }
 
   .iconId {

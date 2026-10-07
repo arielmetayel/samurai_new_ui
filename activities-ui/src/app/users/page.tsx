@@ -6,6 +6,7 @@ import styles from "./styles.module.css";
 import { Button } from "@/design-system";
 import { MoreVertical, Filter, FileText, Search } from "react-feather";
 import CreateNewPopup from "../activities/CreateNewPopup";
+import { NavLabel, navItems } from "../navItems";
 
 interface User {
   id: string;
@@ -93,20 +94,6 @@ const mockUsers: User[] = [
 
 const TOTAL_USERS = 60;
 
-const menuItems: { label: string; href?: string }[] = [
-  { label: "Home", href: "/" },
-  { label: "Activities", href: "/activities" },
-  { label: "Projects", href: "/projects" },
-  { label: "Users", href: "/users" },
-  { label: "Data Analysis", href: "/data-analysis" },
-  { label: "Files" },
-  { label: "Apps" },
-  { label: "Placement", href: "/placement" },
-  { label: "Blueprint" },
-  { label: "Skills" },
-  { label: "Automations" },
-];
-
 export default function UsersPage() {
   const [search, setSearch] = useState("");
   const [isCreatePopupOpen, setIsCreatePopupOpen] = useState(false);
@@ -137,18 +124,18 @@ export default function UsersPage() {
           <div className={styles.userName}>User Full Name</div>
         </div>
         <nav className={styles.menu}>
-          {menuItems.map((item) =>
+          {navItems.map((item) =>
             item.href ? (
               <Link
                 key={item.label}
                 href={item.href}
                 className={item.label === "Users" ? styles.menuItemActive : styles.menuItem}
               >
-                {item.label}
+                <NavLabel item={item} />
               </Link>
             ) : (
               <div key={item.label} className={styles.menuItem}>
-                {item.label}
+                <NavLabel item={item} />
               </div>
             )
           )}

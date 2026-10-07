@@ -6,6 +6,7 @@ import styles from "./styles.module.css";
 import { Button } from "@/design-system";
 import { MoreVertical, Search } from "react-feather";
 import CreateNewPopup from "../activities/CreateNewPopup";
+import { NavLabel, navItems } from "../navItems";
 
 type ReportVisibility = "Public" | "Shared" | "Private";
 
@@ -71,20 +72,6 @@ const mockReports: Report[] = [
 
 const TOTAL_REPORTS = 158;
 
-const menuItems: { label: string; href?: string }[] = [
-  { label: "Home", href: "/" },
-  { label: "Activities", href: "/activities" },
-  { label: "Projects", href: "/projects" },
-  { label: "Users", href: "/users" },
-  { label: "Data Analysis", href: "/data-analysis" },
-  { label: "Files" },
-  { label: "Apps" },
-  { label: "Placement", href: "/placement" },
-  { label: "Blueprint" },
-  { label: "Skills" },
-  { label: "Automations" },
-];
-
 function formatDate(iso: string) {
   const date = new Date(iso);
   const dd = String(date.getUTCDate()).padStart(2, "0");
@@ -128,18 +115,18 @@ export default function DataAnalysisPage() {
           <div className={styles.userName}>User Full Name</div>
         </div>
         <nav className={styles.menu}>
-          {menuItems.map((item) =>
+          {navItems.map((item) =>
             item.href ? (
               <Link
                 key={item.label}
                 href={item.href}
                 className={item.label === "Data Analysis" ? styles.menuItemActive : styles.menuItem}
               >
-                {item.label}
+                <NavLabel item={item} />
               </Link>
             ) : (
               <div key={item.label} className={styles.menuItem}>
-                {item.label}
+                <NavLabel item={item} />
               </div>
             )
           )}

@@ -12,26 +12,12 @@ import {
   Clock,
   Folder,
   Link as LinkIcon,
-  MapPin,
   Tool,
   Truck,
 } from "react-feather";
 import CreateNewPopup from "./activities/CreateNewPopup";
+import { NavLabel, navItems } from "./navItems";
 import styles from "./page.module.css";
-
-const menuItems: { label: string; href?: string }[] = [
-  { label: "Home", href: "/" },
-  { label: "Activities", href: "/activities" },
-  { label: "Projects", href: "/projects" },
-  { label: "Users", href: "/users" },
-  { label: "Data Analysis", href: "/data-analysis" },
-  { label: "Files" },
-  { label: "Apps" },
-  { label: "Placement", href: "/placement" },
-  { label: "Blueprint" },
-  { label: "Skills" },
-  { label: "Automations" },
-];
 
 type CardTone = "green" | "orange" | "red";
 type ActivityIcon = "truck" | "link" | "tool" | "briefcase";
@@ -297,12 +283,6 @@ function CarouselCard({ card }: { card: DashboardCard }) {
       </div>
       <div className={styles.cardType}>{card.type}</div>
       <div className={styles.cardTitle}>{card.project}</div>
-      {card.location ? (
-        <div className={styles.cardMeta}>
-          <MapPin size={12} />
-          {card.location}
-        </div>
-      ) : null}
       <div className={styles.cardBottom}>
         <span className={`${styles.statusChip} ${statusClass(card.status)}`}>{card.status}</span>
         <div className={styles.cardPeople}>
@@ -319,7 +299,7 @@ function CarouselCard({ card }: { card: DashboardCard }) {
 
 function ActivityRow({ row }: { row: DashboardRow }) {
   return (
-    <Link href="/activities" className={styles.listRow}>
+    <Link href="/activities" className={styles.listRow} data-status={row.status}>
       <span className={styles.rowIcon}>
         <ActivityGlyph icon={row.icon} size={16} />
       </span>
@@ -385,18 +365,18 @@ export default function Home() {
           <div className={styles.userName}>User Full Name</div>
         </div>
         <nav className={styles.menu}>
-          {menuItems.map((item) =>
+          {navItems.map((item) =>
             item.href ? (
               <Link
                 key={item.label}
                 href={item.href}
                 className={item.label === "Home" ? styles.menuItemActive : styles.menuItem}
               >
-                {item.label}
+                <NavLabel item={item} />
               </Link>
             ) : (
               <div key={item.label} className={styles.menuItem}>
-                {item.label}
+                <NavLabel item={item} />
               </div>
             )
           )}
@@ -422,19 +402,19 @@ export default function Home() {
         </div>
 
         <div className={styles.stats}>
-          <div className={`${styles.stat} ${styles.statBlue}`}>
+          <div className={styles.stat}>
             <span className={styles.statValue}>{myOpenActivities.length}</span>
             <span className={styles.statLabel}>Open activities</span>
           </div>
-          <div className={`${styles.stat} ${styles.statOrange}`}>
+          <div className={styles.stat}>
             <span className={styles.statValue}>{toReviewCount}</span>
             <span className={styles.statLabel}>Need review</span>
           </div>
-          <div className={`${styles.stat} ${styles.statRed}`}>
+          <div className={styles.stat}>
             <span className={styles.statValue}>{pinnedActivities.length}</span>
             <span className={styles.statLabel}>Pinned / overdue</span>
           </div>
-          <div className={`${styles.stat} ${styles.statGreen}`}>
+          <div className={styles.stat}>
             <span className={styles.statValue}>{todayActivities.length}</span>
             <span className={styles.statLabel}>Scheduled today</span>
           </div>
