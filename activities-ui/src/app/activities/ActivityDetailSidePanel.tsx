@@ -3,7 +3,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Activity } from "@/types";
 import { Button } from "@/design-system";
-import { ArrowLeft, MoreVertical, MessageCircle, Paperclip, Check, FileText, Copy, Share, Eye, Trash2 } from "react-feather";
+import { ArrowLeft, MessageCircle, Paperclip, Check } from "react-feather";
+import ActivityActionsMenu from "./ActivityActionsMenu";
 import styles from "./ActivityDetailSidePanel.module.css";
 
 interface ActivityDetailSidePanelProps {
@@ -18,23 +19,6 @@ export default function ActivityDetailSidePanel({
   onClose 
 }: ActivityDetailSidePanelProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setIsMenuOpen(false);
-      }
-    }
-
-    if (isMenuOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isMenuOpen]);
 
   if (!activity || !isOpen) return null;
 

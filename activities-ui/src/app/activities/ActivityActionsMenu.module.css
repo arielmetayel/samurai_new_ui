@@ -1,0 +1,63 @@
+.menuContainer {
+  position: relative;
+}
+
+.menuButton {
+  appearance: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  color: #464f60;
+}
+
+.menuButton:hover,
+.menuButton:focus-visible {
+  background: #f6f8fa;
+  color: #2f3036;
+}
+
+.contextMenu {
+  position: fixed;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(47, 48, 54, 0.16);
+  padding: 8px 0;
+  min-width: 180px;
+  z-index: 400;
+}
+
+.menuItem {
+  appearance: none;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-family: Rubik, sans-serif;
+  font-size: 14px;
+  color: #464f60;
+  text-align: left;
+}
+
+.menuItem:hover,
+.menuItem:focus-visible {
+  background: #f6f8fa;
+  color: #2f3036;
+}
+
+.menuItemDanger {
+  color: #dc2626;
+}
+
+.menuItemDanger:hover,
+.menuItemDanger:focus-visible {
+  background: #fef2f2;
+  color: #dc2626;
+}

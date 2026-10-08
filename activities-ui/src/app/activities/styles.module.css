@@ -102,6 +102,131 @@
 .pageTitle { margin: 0; font-size: 28px; color: #2F3036; }
 .headerActions { display: flex; gap: 12px; }
 
+.filterBtnWrap {
+  position: relative;
+}
+
+.filterCount {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: #0082c8;
+  color: #fff;
+  font-family: Rubik, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+}
+
+.filterTabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.filterTab {
+  appearance: none;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid #e3e8ee;
+  background: #fff;
+  color: #464f60;
+  font-family: Rubik, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.filterTab:hover {
+  border-color: #c5cad3;
+}
+
+.filterTabActive {
+  background: #e6f4ff;
+  border-color: #0082c8;
+  color: #0082c8;
+}
+
+.filterTabClose {
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  color: inherit;
+}
+
+.filterTabClose:hover {
+  background: rgba(0, 130, 200, 0.12);
+}
+
+.activeFilters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.activeFilterChip {
+  appearance: none;
+  border: 0;
+  background: #e6f4ff;
+  color: #0082c8;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-family: Rubik, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.clearFilters {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: #868fa0;
+  font-family: Rubik, sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.filterResultCount {
+  margin-left: auto;
+  color: #0082c8;
+  font-family: Rubik, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.emptyFilters {
+  padding: 40px 16px;
+  text-align: center;
+  color: #868fa0;
+  font-family: Rubik, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.emptyFilters p {
+  margin: 0;
+}
+
 
 .buttonIcon {
   font-size: 14px;
@@ -136,7 +261,12 @@
   outline: none;
 }
 
-.table { margin-top: 16px; background: #fff; border: 1px solid #e6e9ef; border-radius: 12px; overflow: hidden; }
+.table {
+  margin-top: 8px;
+  background: transparent;
+  border: 0;
+  overflow: visible;
+}
 .tableHeader, .row {
   display: grid;
   grid-template-columns: 60px 120px 1fr 100px 120px 60px 40px;
@@ -174,25 +304,35 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 .tableHeader {
-  background: #F6F8FA;
-  border-bottom: 1px solid #E3E8EE;
-  color: var(--Gray-04, #464F60);
-  min-height: 60px;
+  background: transparent;
+  border-bottom: 0;
+  color: #868fa0;
+  min-height: 36px;
+  margin-bottom: 6px;
   display: grid;
   grid-template-columns: 60px 60px 120px 1fr 100px 120px 60px 40px;
   align-items: center;
   gap: 10px;
-  font-family: Rubik;
-  font-size: 14px;
+  font-family: Rubik, sans-serif;
+  font-size: 12px;
   font-style: normal;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 150%;
-  letter-spacing: 0.14px;
+  letter-spacing: 0.04em;
 }
 
-/* Add consistent padding to all header columns for alignment */
-.tableHeader > div {
+.tableHeader > div,
+.tableHeader .colDate,
+.tableHeader .colActivityType,
+.tableHeader .colStatus,
+.tableHeader .colAssignees {
   padding: 0 6px;
+  font-family: Rubik, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 150%;
+  letter-spacing: 0.04em;
+  color: #868fa0;
 }
 .colHeaderBtn {
   appearance: none;
@@ -246,11 +386,11 @@
   align-items: flex-start;
   gap: 0px;
   position: relative;
-  box-shadow: 1.2px 1.2px 1.2px 0px rgba(232, 232, 232, 0.8);
-  border-radius: 10px;
+  box-shadow: 0 1px 2px rgba(47, 48, 54, 0.06);
+  border: 1px solid #e6e9ef;
+  border-radius: 12px;
   background: #fff;
-  margin-bottom: 16px;
-  /* Ensure the wrapper covers the full expanded height */
+  margin-bottom: 6px;
   min-height: fit-content;
 }
 
@@ -298,13 +438,8 @@
   line-height: 150%; /* 24px */
 }
 
-/* Header-specific styles for date column */
 .tableHeader .colDate {
-  color: var(--Gray-04, #464F60);
-  font-weight: 600;
-  line-height: 150%;
-  letter-spacing: 0.14px;
-  padding: 0 6px;
+  font-weight: 500;
 }
 
 .colActions { 
@@ -374,13 +509,14 @@
 
 /* Header-specific styles for status column */
 .tableHeader .colStatus {
-  color: var(--Gray-04, #464F60) !important;
-  font-weight: 600 !important;
+  color: #868fa0 !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
   line-height: 150% !important;
-  letter-spacing: 0.14px !important;
+  letter-spacing: 0.04em !important;
   background: transparent !important;
   border-radius: 0 !important;
-  padding: 0px 6px !important;
+  padding: 0 6px !important;
   width: auto !important;
 }
 

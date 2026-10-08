@@ -1,7 +1,9 @@
 .pageWrapper {
   display: grid;
   grid-template-columns: 240px 1fr;
+  height: 100vh;
   min-height: 100vh;
+  overflow: hidden;
   background: #f7f9fb;
 }
 
@@ -43,6 +45,8 @@
   border-right: 1px solid #e6e9ef;
   display: flex;
   flex-direction: column;
+  height: 100vh;
+  overflow-y: auto;
 }
 
 .userBlock {
@@ -110,6 +114,8 @@
   padding: 24px 32px 48px;
   padding-top: 96px;
   min-width: 0;
+  min-height: 0;
+  overflow: auto;
   display: flex;
   flex-direction: column;
   gap: 28px;
@@ -510,6 +516,8 @@
 @media (max-width: 900px) {
   .pageWrapper {
     display: block;
+    height: auto;
+    overflow: visible;
   }
 
   .sidebar {
@@ -533,6 +541,8 @@
     padding: 16px 16px 28px;
     padding-top: 80px;
     gap: 22px;
+    overflow: visible;
+    min-height: unset;
   }
 
   .pageTitle {
