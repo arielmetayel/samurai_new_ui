@@ -15,7 +15,10 @@ import {
   Tool,
   Truck,
 } from "react-feather";
+import ActivityDetailSidePanel from "./activities/ActivityDetailSidePanel";
 import CreateNewPopup from "./activities/CreateNewPopup";
+import { getActivityById } from "./activities/data";
+import { Activity } from "@/types";
 import { NavLabel, navItems } from "./navItems";
 import styles from "./page.module.css";
 
@@ -24,6 +27,7 @@ type ActivityIcon = "truck" | "link" | "tool" | "briefcase";
 
 type DashboardCard = {
   id: string;
+  activityId: string;
   project: string;
   type: string;
   dateLabel: string;
@@ -36,6 +40,7 @@ type DashboardCard = {
 
 type DashboardRow = {
   id: string;
+  activityId: string;
   project: string;
   type: string;
   date: string;
@@ -48,6 +53,7 @@ type DashboardRow = {
 const myOpenActivities: DashboardCard[] = [
   {
     id: "open-1",
+    activityId: "1",
     project: "FoodChain Suppliers",
     type: "Support Case",
     dateLabel: "21/03/25  12:00",
@@ -59,6 +65,7 @@ const myOpenActivities: DashboardCard[] = [
   },
   {
     id: "open-2",
+    activityId: "6",
     project: "Event Masters",
     type: "Meeting Summary",
     dateLabel: "21/03/25  12:00",
@@ -70,6 +77,7 @@ const myOpenActivities: DashboardCard[] = [
   },
   {
     id: "open-3",
+    activityId: "4",
     project: "Legal Pro Consulting",
     type: "Phase Execution",
     dateLabel: "21/03/25  12:00",
@@ -81,6 +89,7 @@ const myOpenActivities: DashboardCard[] = [
   },
   {
     id: "open-4",
+    activityId: "7",
     project: "Ichilov North",
     type: "Site Visit",
     dateLabel: "21/03/25  14:30",
@@ -95,6 +104,7 @@ const myOpenActivities: DashboardCard[] = [
 const projectActivities: DashboardCard[] = [
   {
     id: "proj-1",
+    activityId: "8",
     project: "Yuvalim Ganim",
     type: "Support Case",
     dateLabel: "21/03/25  12:00",
@@ -106,6 +116,7 @@ const projectActivities: DashboardCard[] = [
   },
   {
     id: "proj-2",
+    activityId: "9",
     project: "HaGiborim",
     type: "Maintenance",
     dateLabel: "21/03/25  12:00",
@@ -117,6 +128,7 @@ const projectActivities: DashboardCard[] = [
   },
   {
     id: "proj-3",
+    activityId: "10",
     project: "Dania Sibus",
     type: "Installation",
     dateLabel: "21/03/25  12:00",
@@ -128,6 +140,7 @@ const projectActivities: DashboardCard[] = [
   },
   {
     id: "proj-4",
+    activityId: "11",
     project: "Ariel Gabay",
     type: "Office Hours",
     dateLabel: "21/03/25  16:00",
@@ -142,6 +155,7 @@ const projectActivities: DashboardCard[] = [
 const pinnedActivities: DashboardCard[] = [
   {
     id: "pin-1",
+    activityId: "5",
     project: "Event Masters",
     type: "Fixes",
     dateLabel: "21/03/25  12:00",
@@ -153,6 +167,7 @@ const pinnedActivities: DashboardCard[] = [
   },
   {
     id: "pin-2",
+    activityId: "3",
     project: "FoodChain Suppliers",
     type: "To Review",
     dateLabel: "21/03/25  12:00",
@@ -164,6 +179,7 @@ const pinnedActivities: DashboardCard[] = [
   },
   {
     id: "pin-3",
+    activityId: "12",
     project: "HaDam Bank",
     type: "Contract Check",
     dateLabel: "21/03/25  12:00",
@@ -178,6 +194,7 @@ const pinnedActivities: DashboardCard[] = [
 const todayActivities: DashboardRow[] = [
   {
     id: "today-1",
+    activityId: "1",
     project: "FoodChain Suppliers",
     type: "Support Case",
     date: "21/03",
@@ -188,6 +205,7 @@ const todayActivities: DashboardRow[] = [
   },
   {
     id: "today-2",
+    activityId: "4",
     project: "Legal Pro Consulting",
     type: "Phase Execution",
     date: "21/03",
@@ -198,6 +216,7 @@ const todayActivities: DashboardRow[] = [
   },
   {
     id: "today-3",
+    activityId: "9",
     project: "HaGiborim Bat Yam",
     type: "Maintenance",
     date: "21/03",
@@ -211,6 +230,7 @@ const todayActivities: DashboardRow[] = [
 const tomorrowActivities: DashboardRow[] = [
   {
     id: "tom-1",
+    activityId: "13",
     project: "Yuvalim Ganim",
     type: "Site Visit",
     date: "22/03",
@@ -221,6 +241,7 @@ const tomorrowActivities: DashboardRow[] = [
   },
   {
     id: "tom-2",
+    activityId: "10",
     project: "Dania Sibus",
     type: "Installation",
     date: "22/03",
@@ -231,6 +252,7 @@ const tomorrowActivities: DashboardRow[] = [
   },
   {
     id: "tom-3",
+    activityId: "5",
     project: "Event Masters",
     type: "Fixes",
     date: "22/03",
@@ -272,9 +294,13 @@ function statusClass(status: string) {
   return styles.statusProgress;
 }
 
-function CarouselCard({ card }: { card: DashboardCard }) {
+function CarouselCard({ card, onOpen }: { card: DashboardCard; onOpen: (id: string) => void }) {
   return (
-    <Link href="/activities" className={`${styles.card} ${styles[`tone_${card.tone}`]}`}>
+    <button
+      type="button"
+      onClick={() => onOpen(card.activityId)}
+      className={`${styles.card} ${styles[`tone_${card.tone}`]}`}
+    >
       <div className={styles.cardTop}>
         <span className={styles.cardIcon}>
           <ActivityGlyph icon={card.icon} size={16} />
@@ -293,13 +319,18 @@ function CarouselCard({ card }: { card: DashboardCard }) {
           ))}
         </div>
       </div>
-    </Link>
+    </button>
   );
 }
 
-function ActivityRow({ row }: { row: DashboardRow }) {
+function ActivityRow({ row, onOpen }: { row: DashboardRow; onOpen: (id: string) => void }) {
   return (
-    <Link href="/activities" className={styles.listRow} data-status={row.status}>
+    <button
+      type="button"
+      onClick={() => onOpen(row.activityId)}
+      className={styles.listRow}
+      data-status={row.status}
+    >
       <span className={styles.rowIcon}>
         <ActivityGlyph icon={row.icon} size={16} />
       </span>
@@ -313,7 +344,7 @@ function ActivityRow({ row }: { row: DashboardRow }) {
       </div>
       <span className={`${styles.statusChip} ${statusClass(row.status)}`}>{row.status}</span>
       <span className={styles.rowAssignee}>{row.assignee}</span>
-    </Link>
+    </button>
   );
 }
 
@@ -345,7 +376,13 @@ function SectionHead({
 
 export default function Home() {
   const [isCreatePopupOpen, setIsCreatePopupOpen] = useState(false);
+  const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
   const now = useMemo(() => new Date(), []);
+
+  function openActivity(id: string) {
+    const activity = getActivityById(id);
+    if (activity) setSelectedActivity(activity);
+  }
   const toReviewCount =
     myOpenActivities.filter((a) => a.tone === "orange").length +
     pinnedActivities.filter((a) => a.status === "Overdue").length;
@@ -420,48 +457,6 @@ export default function Home() {
           </div>
         </div>
 
-        <section className={styles.carouselSection}>
-          <SectionHead
-            icon={<Clock size={16} />}
-            title="My Open Activities"
-            count={myOpenActivities.length}
-            href="/activities"
-          />
-          <div className={styles.carousel}>
-            {myOpenActivities.map((card) => (
-              <CarouselCard key={card.id} card={card} />
-            ))}
-          </div>
-        </section>
-
-        <section className={styles.carouselSection}>
-          <SectionHead
-            icon={<Folder size={16} />}
-            title="Open activities in my projects"
-            count={projectActivities.length}
-            href="/activities"
-          />
-          <div className={styles.carousel}>
-            {projectActivities.map((card) => (
-              <CarouselCard key={card.id} card={card} />
-            ))}
-          </div>
-        </section>
-
-        <section className={styles.carouselSection}>
-          <SectionHead
-            icon={<Bookmark size={16} />}
-            title="My Pinned activities"
-            count={pinnedActivities.length}
-            href="/activities"
-          />
-          <div className={styles.carousel}>
-            {pinnedActivities.map((card) => (
-              <CarouselCard key={card.id} card={card} />
-            ))}
-          </div>
-        </section>
-
         <div className={styles.listsGrid}>
           <section className={styles.listSection}>
             <SectionHead
@@ -472,7 +467,7 @@ export default function Home() {
             />
             <div className={styles.list}>
               {todayActivities.map((row) => (
-                <ActivityRow key={row.id} row={row} />
+                <ActivityRow key={row.id} row={row} onOpen={openActivity} />
               ))}
             </div>
           </section>
@@ -486,16 +481,64 @@ export default function Home() {
             />
             <div className={styles.list}>
               {tomorrowActivities.map((row) => (
-                <ActivityRow key={row.id} row={row} />
+                <ActivityRow key={row.id} row={row} onOpen={openActivity} />
               ))}
             </div>
           </section>
         </div>
+
+        <section className={styles.carouselSection}>
+          <SectionHead
+            icon={<Clock size={16} />}
+            title="My Open Activities"
+            count={myOpenActivities.length}
+            href="/activities"
+          />
+          <div className={styles.carousel}>
+            {myOpenActivities.map((card) => (
+              <CarouselCard key={card.id} card={card} onOpen={openActivity} />
+            ))}
+          </div>
+        </section>
+
+        <section className={styles.carouselSection}>
+          <SectionHead
+            icon={<Folder size={16} />}
+            title="Open activities in my projects"
+            count={projectActivities.length}
+            href="/activities"
+          />
+          <div className={styles.carousel}>
+            {projectActivities.map((card) => (
+              <CarouselCard key={card.id} card={card} onOpen={openActivity} />
+            ))}
+          </div>
+        </section>
+
+        <section className={styles.carouselSection}>
+          <SectionHead
+            icon={<Bookmark size={16} />}
+            title="My Pinned activities"
+            count={pinnedActivities.length}
+            href="/activities"
+          />
+          <div className={styles.carousel}>
+            {pinnedActivities.map((card) => (
+              <CarouselCard key={card.id} card={card} onOpen={openActivity} />
+            ))}
+          </div>
+        </section>
       </main>
 
       <CreateNewPopup
         isOpen={isCreatePopupOpen}
         onClose={() => setIsCreatePopupOpen(false)}
+      />
+
+      <ActivityDetailSidePanel
+        activity={selectedActivity}
+        isOpen={Boolean(selectedActivity)}
+        onClose={() => setSelectedActivity(null)}
       />
     </div>
   );

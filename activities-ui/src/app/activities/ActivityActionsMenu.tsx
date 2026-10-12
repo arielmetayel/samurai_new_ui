@@ -2,12 +2,11 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { Copy, Eye, FileText, MoreVertical, Paperclip, Share, Trash2 } from "react-feather";
+import { Copy, Eye, FileText, MoreVertical, Share, Trash2 } from "react-feather";
 import styles from "./ActivityActionsMenu.module.css";
 
 const ACTIONS = [
   { id: "pdf", label: "Create PDF", icon: FileText },
-  { id: "files", label: "Show Files", icon: Paperclip },
   { id: "duplicate", label: "Duplicate", icon: Copy },
   { id: "share", label: "Share", icon: Share },
   { id: "history", label: "Show History", icon: Eye },
@@ -18,12 +17,14 @@ type ActivityActionsMenuProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   iconSize?: number;
+  buttonClassName?: string;
 };
 
 export default function ActivityActionsMenu({
   open,
   onOpenChange,
   iconSize = 20,
+  buttonClassName,
 }: ActivityActionsMenuProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -89,7 +90,7 @@ export default function ActivityActionsMenu({
       <button
         ref={buttonRef}
         type="button"
-        className={styles.menuButton}
+        className={`${styles.menuButton} ${buttonClassName ?? ""}`}
         aria-haspopup="menu"
         aria-expanded={open}
         aria-label="Activity actions"

@@ -260,6 +260,7 @@
 }
 
 .card {
+  appearance: none;
   flex: 0 0 240px;
   scroll-snap-align: start;
   background: #fff;
@@ -273,6 +274,9 @@
   min-height: 168px;
   box-shadow: 0 4px 12px rgba(47, 48, 54, 0.06);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
 }
 
 .card:hover {
@@ -375,8 +379,8 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: #e6f4ff;
-  color: #0082c8;
+  background: #f3f4f6;
+  color: #464f60;
   border: 2px solid #fff;
   margin-left: -8px;
   display: inline-flex;
@@ -405,6 +409,8 @@
 }
 
 .listRow {
+  appearance: none;
+  width: 100%;
   display: grid;
   grid-template-columns: 36px 52px minmax(0, 1fr) auto auto;
   align-items: center;
@@ -416,6 +422,9 @@
   text-decoration: none;
   color: inherit;
   box-shadow: 1.2px 1.2px 1.2px 0 rgba(232, 232, 232, 0.8);
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
 }
 
 .listRow:hover {
@@ -468,8 +477,8 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: #e6f4ff;
-  color: #0082c8;
+  background: #f3f4f6;
+  color: #464f60;
   display: grid;
   place-items: center;
   font-size: 11px;

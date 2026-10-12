@@ -6,6 +6,7 @@ import { Button } from "@/design-system";
 import { ChevronDown, ChevronUp, Edit2, Info, Plus, Search, Trash2, X } from "react-feather";
 import CreateNewPopup from "../activities/CreateNewPopup";
 import { NavLabel, navItems } from "../navItems";
+import AutomationSetupWizard, { AutomationDraftResult } from "./AutomationSetupWizard";
 import { Automation, mockAutomations } from "./data";
 import styles from "./styles.module.css";
 
@@ -26,7 +27,9 @@ export default function AutomationsPage() {
   const [sort, setSort] = useState<{ key: SortKey; dir: SortDir } | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [infoId, setInfoId] = useState<string | null>(null);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
   const [isCreatePopupOpen, setIsCreatePopupOpen] = useState(false);
+  const [isSetupOpen, setIsSetupOpen] = useState(false);
 
   const filtered = useMemo(() => {
     const lower = search.toLowerCase();
@@ -56,6 +59,7 @@ export default function AutomationsPage() {
   }
 
   const infoItem = items.find((item) => item.id === infoId) ?? null;
+  const deleteItem = items.find((item) => item.id === deleteId) ?? null;
 
   function toggleActive(id: string) {
     setItems((current) =>
@@ -71,22 +75,26 @@ export default function AutomationsPage() {
     setItems((current) => current.filter((item) => item.id !== id));
     if (editingId === id) setEditingId(null);
     if (infoId === id) setInfoId(null);
+    setDeleteId(null);
   }
 
-  function addAutomation() {
+  function addAutomation(draft: AutomationDraftResult) {
     const id = `new-${Date.now()}`;
     setItems((current) => [
       {
         id,
-        name: "New automation",
-        topic: "Time based",
-        event: "Once a week",
-        action: "Action send report",
+        name: draft.name,
+        topic: draft.topic,
+        event: draft.event,
+        action: draft.action,
         active: false,
+        condition: draft.condition,
+        emailTo: draft.emailTo,
+        emailSubject: draft.emailSubject,
       },
       ...current,
     ]);
-    setEditingId(id);
+    setIsSetupOpen(false);
     setSearch("");
   }
 
@@ -138,7 +146,7 @@ export default function AutomationsPage() {
       <main className={styles.main}>
         <div className={styles.headerRow}>
           <h1 className={styles.pageTitle}>Automations</h1>
-          <Button variant="primary" size="md" icon={Plus} onClick={addAutomation}>
+          <Button variant="primary" size="md" icon={Plus} onClick={() => setIsSetupOpen(true)}>
             Add new
           </Button>
         </div>
@@ -248,7 +256,7 @@ export default function AutomationsPage() {
                       type="button"
                       className={`${styles.iconBtn} ${styles.iconDanger}`}
                       aria-label={`Delete ${item.name}`}
-                      onClick={() => removeItem(item.id)}
+                      onClick={() => setDeleteId(item.id)}
                     >
                       <Trash2 size={16} />
                     </button>
@@ -259,6 +267,31 @@ export default function AutomationsPage() {
           )}
         </div>
       </main>
+
+      {deleteItem ? (
+        <div className={styles.overlay} onClick={() => setDeleteId(null)}>
+          <div className={styles.infoCard} role="dialog" aria-modal="true" aria-labelledby="delete-automation-title" onClick={(event) => event.stopPropagation()}>
+            <div className={styles.infoHead}>
+              <h2 id="delete-automation-title">Delete automation</h2>
+              <button type="button" className={styles.iconBtn} aria-label="Close" onClick={() => setDeleteId(null)}>
+                <X size={18} />
+              </button>
+            </div>
+            <p className={styles.confirmText} dir="rtl">
+              האם אתה בטוח שאתה רוצה למחוק את האוטומציה הזאת?
+            </p>
+            <p className={styles.confirmName}>{deleteItem.name}</p>
+            <div className={styles.confirmActions}>
+              <button type="button" className={styles.confirmCancel} onClick={() => setDeleteId(null)}>
+                Cancel
+              </button>
+              <button type="button" className={styles.confirmDelete} onClick={() => removeItem(deleteItem.id)}>
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
 
       {infoItem ? (
         <div className={styles.overlay} onClick={() => setInfoId(null)}>
@@ -286,6 +319,24 @@ export default function AutomationsPage() {
                 <dt>Action</dt>
                 <dd>{infoItem.action}</dd>
               </div>
+              {infoItem.condition ? (
+                <div>
+                  <dt>Conditions</dt>
+                  <dd>{infoItem.condition}</dd>
+                </div>
+              ) : null}
+              {infoItem.emailTo ? (
+                <div>
+                  <dt>Send to</dt>
+                  <dd>{infoItem.emailTo}</dd>
+                </div>
+              ) : null}
+              {infoItem.emailSubject ? (
+                <div>
+                  <dt>Subject</dt>
+                  <dd>{infoItem.emailSubject}</dd>
+                </div>
+              ) : null}
               <div>
                 <dt>Active</dt>
                 <dd>{infoItem.active ? "Active" : "Inactive"}</dd>
@@ -293,6 +344,10 @@ export default function AutomationsPage() {
             </dl>
           </div>
         </div>
+      ) : null}
+
+      {isSetupOpen ? (
+        <AutomationSetupWizard onClose={() => setIsSetupOpen(false)} onCreate={addAutomation} />
       ) : null}
 
       <CreateNewPopup isOpen={isCreatePopupOpen} onClose={() => setIsCreatePopupOpen(false)} />

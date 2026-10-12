@@ -27,7 +27,7 @@
   box-shadow: 0 4px 12px rgba(47, 48, 54, 0.16);
   padding: 8px 0;
   min-width: 180px;
-  z-index: 400;
+  z-index: 1300;
 }
 
 .menuItem {

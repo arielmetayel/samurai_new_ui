@@ -19,6 +19,12 @@ export type ProjectFile = {
   date: string;
 };
 
+export type PreviewQuestion = {
+  id: string;
+  title: string;
+  answer: string;
+};
+
 export type ProjectActivity = {
   id: string;
   number: string;
@@ -30,7 +36,38 @@ export type ProjectActivity = {
   statusTone: "progress" | "review" | "confirmed" | "done";
   note?: string;
   assignee?: string;
+  previewQuestions?: PreviewQuestion[];
 };
+
+export function activityPreviewQuestions(activity: ProjectActivity): PreviewQuestion[] {
+  if (activity.previewQuestions?.length) return activity.previewQuestions;
+  if (activity.type === "Site Visit") {
+    return [
+      { id: `${activity.id}-purpose`, title: "Visit purpose", answer: "Progress check" },
+      { id: `${activity.id}-findings`, title: "Findings", answer: activity.note ?? "Formwork ready, access road muddy." },
+    ];
+  }
+  if (activity.type === "Wall maintenance" || activity.type === "Maintenance") {
+    return [
+      {
+        id: `${activity.id}-what`,
+        title: "What needs fixing?",
+        answer: activity.note && activity.note !== "NO" ? activity.note : "Wall maintenance",
+      },
+      { id: `${activity.id}-done`, title: "Fix completed?", answer: activity.note === "NO" ? "No" : "Yes" },
+    ];
+  }
+  if (activity.type === "Full wall approval") {
+    return [
+      { id: `${activity.id}-item`, title: "Work item", answer: activity.note ?? "Formwork wall" },
+      { id: `${activity.id}-ok`, title: "Approved?", answer: activity.status === "Confirmed" ? "Yes" : "Pending" },
+    ];
+  }
+  return [
+    { id: `${activity.id}-type`, title: "Activity type", answer: activity.type },
+    { id: `${activity.id}-note`, title: "Note", answer: activity.note ?? "—" },
+  ];
+}
 
 export type Project = {
   id: string;
@@ -432,9 +469,126 @@ export function getProject(id: string) {
   return mockProjects.find((project) => project.id === id);
 }
 
-export function displayValue(value: string | number | null | undefined) {
+const activityProjectFallbacks: Record<string, Partial<Project>> = {
+  "FoodChain Suppliers": {
+    projectNumber: "214882",
+    address: "HaMasger 12, Tel Aviv",
+    city: "Tel Aviv",
+    startDate: "04/02/25",
+    operator: "Noa Bar",
+    developer: "FoodChain Ltd",
+    team: ["AB", "CD", "EF"],
+    customers: ["FoodChain Ltd"],
+    elements: ["Slabs", "Columns", "Beams"],
+    contacts: [
+      { name: "Noa Bar", role: "Project operator", phone: "052-4419088", email: "noa@foodchain.co.il" },
+      { name: "Eli Cohen", role: "Site manager", phone: "03-5612200", email: "eli@foodchain.co.il" },
+    ],
+    files: [
+      { id: "fc1", name: "Supplier-brief.pdf", kind: "pdf", size: "860 KB", date: "02/10/26" },
+      { id: "fc2", name: "Pour-plan.xlsx", kind: "sheet", size: "120 KB", date: "30/09/26" },
+    ],
+  },
+  "Event Masters": {
+    projectNumber: "215104",
+    address: "Yigal Alon 94, Tel Aviv",
+    city: "Tel Aviv",
+    startDate: "18/01/25",
+    operator: "Dana Levi",
+    developer: "Event Masters",
+    team: ["GH", "ST"],
+    customers: ["Event Masters"],
+    elements: ["Stairs", "Slabs"],
+  },
+  "Legal Pro Consulting": {
+    projectNumber: "213990",
+    address: "Rothschild 45, Tel Aviv",
+    city: "Tel Aviv",
+    startDate: "09/11/24",
+    operator: "Yael Azulay",
+    developer: "Legal Pro",
+    team: ["QR"],
+    customers: ["Legal Pro Consulting"],
+    elements: ["Core walls", "Slabs"],
+  },
+};
+
+export function getProjectForActivity(projectName: string) {
+  const needle = projectName.trim().toLowerCase();
+  const matched = mockProjects.find((project) => {
+    const name = project.name.toLowerCase();
+    const shortName = name.split(" - ")[0];
+    return name.includes(needle) || needle.includes(shortName) || shortName.includes(needle);
+  });
+  if (matched) return matched;
+
+  const extra = activityProjectFallbacks[projectName] ?? {};
+  return {
+    id: "",
+    projectNumber: extra.projectNumber ?? "000000",
+    name: projectName,
+    address: extra.address ?? "Not specified",
+    city: extra.city ?? "Tel Aviv",
+    startDate: extra.startDate ?? "01/03/25",
+    contractStatus: extra.contractStatus ?? "Signed Contract",
+    buildingsCount: extra.buildingsCount ?? 1,
+    assignees: extra.assignees ?? extra.team ?? [],
+    thumbTone: extra.thumbTone ?? "sky",
+    projectStatus: extra.projectStatus ?? "In Progress",
+    projectStatusTone: extra.projectStatusTone ?? "ok",
+    elements: extra.elements ?? ["Slabs", "Columns", "Beams"],
+    mixes: extra.mixes ?? ["C30", "C40"],
+    methods: extra.methods ?? ["Cast in situ"],
+    customers: extra.customers ?? [projectName],
+    operator: extra.operator ?? "Site operator",
+    developer: extra.developer ?? projectName,
+    tags: extra.tags ?? [],
+    team: extra.team ?? [],
+    contacts: extra.contacts ?? [
+      { name: "Project contact", role: "Site manager", phone: "03-0000000", email: "ops@project.co.il" },
+    ],
+    files: extra.files ?? [
+      { id: "pf1", name: "Project-brief.pdf", kind: "pdf", size: "1.1 MB", date: "01/10/26" },
+    ],
+    authorizations: extra.authorizations ?? ["Concrete works"],
+    quoteFixes: extra.quoteFixes ?? [],
+    materials: extra.materials ?? [],
+    activities: extra.activities ?? [],
+  } satisfies Project;
+}
+
+export function displayValue(value: string | number | null | undefined | string[]) {
   if (value === null || value === undefined || value === "") return "—";
+  if (Array.isArray(value)) return value.length ? value.join(", ") : "—";
   return String(value);
+}
+
+export function getProjectListValues(project: Project, source?: string) {
+  if (!source) return [];
+  const value = project[source as keyof Project];
+  return Array.isArray(value) ? value.map(String) : [];
+}
+
+export function getProjectFieldValue(project: Project, source?: string) {
+  if (!source) return "—";
+  return displayValue(project[source as keyof Project] as string | number | null | string[]);
+}
+
+export const SYSTEM_USERS = [
+  "Gavriel Hadad",
+  "Yair Yefet",
+  "Adiel Susi Atia",
+  "Ariel Nexc",
+  "Elisaf Gito",
+  "Yaakov Eisen",
+  "Noa Bar",
+  "Maya Cohen",
+];
+
+export function getSystemListValues(project: Project, source?: string) {
+  if (source === "users") return SYSTEM_USERS;
+  if (source === "projects") return mockProjects.map((item) => item.name);
+  return getProjectListValues(project, source);
 }
 
 export function statusToneFor(status: WorkflowStatus) {

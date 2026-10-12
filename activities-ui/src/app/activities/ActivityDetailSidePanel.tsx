@@ -1,11 +1,28 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import Link from "next/link";
 import { Activity } from "@/types";
-import { Button } from "@/design-system";
-import { ArrowLeft, MessageCircle, Paperclip, Check } from "react-feather";
+import { displayValue, getProjectForActivity } from "../projects/data";
+import {
+  Briefcase,
+  Calendar,
+  Check,
+  FileText,
+  Paperclip,
+  Phone,
+  Tool,
+  Truck,
+  Users,
+  X,
+  Link as LinkIcon,
+} from "react-feather";
 import ActivityActionsMenu from "./ActivityActionsMenu";
+import ActivityAnswerWizard from "./ActivityAnswerWizard";
+import { ActivityQuestions, type AnswerValue } from "./ActivityQuestions";
 import styles from "./ActivityDetailSidePanel.module.css";
+
+type TabId = "qa" | "project" | "files";
 
 interface ActivityDetailSidePanelProps {
   activity: Activity | null;
@@ -13,318 +30,264 @@ interface ActivityDetailSidePanelProps {
   onClose: () => void;
 }
 
-export default function ActivityDetailSidePanel({ 
-  activity, 
-  isOpen, 
-  onClose 
+function ActivityGlyph({ icon, size = 18 }: { icon: string; size?: number }) {
+  const props = { size, strokeWidth: 2 };
+  if (icon === "truck") return <Truck {...props} />;
+  if (icon === "link") return <LinkIcon {...props} />;
+  if (icon === "tool") return <Tool {...props} />;
+  return <Briefcase {...props} />;
+}
+
+function formatDate(iso: string) {
+  const date = new Date(iso);
+  const dd = String(date.getUTCDate()).padStart(2, "0");
+  const mm = String(date.getUTCMonth() + 1).padStart(2, "0");
+  const yy = String(date.getUTCFullYear()).slice(2);
+  const hh = String(date.getUTCHours()).padStart(2, "0");
+  const min = String(date.getUTCMinutes()).padStart(2, "0");
+  return `${dd}/${mm}/${yy}, ${hh}:${min}`;
+}
+
+function statusClass(status: string) {
+  const key = status.replace(/\s+/g, "");
+  return `status${key}`;
+}
+
+export default function ActivityDetailSidePanel({
+  activity,
+  isOpen,
+  onClose,
 }: ActivityDetailSidePanelProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [tab, setTab] = useState<TabId>("qa");
+  const [editing, setEditing] = useState(false);
+  const [answering, setAnswering] = useState(false);
+  const [answers, setAnswers] = useState<Record<string, AnswerValue>>({});
+  const bodyRef = useRef<HTMLDivElement>(null);
 
-  if (!activity || !isOpen) return null;
+  const project = useMemo(
+    () => (activity ? getProjectForActivity(activity.projectName) : null),
+    [activity]
+  );
 
-  const formatDate = (iso: string) => {
-    const date = new Date(iso);
-    const dd = String(date.getUTCDate()).padStart(2, "0");
-    const mm = String(date.getUTCMonth() + 1).padStart(2, "0");
-    const yy = String(date.getUTCFullYear()).slice(2);
-    const hh = String(date.getUTCHours()).padStart(2, "0");
-    const min = String(date.getUTCMinutes()).padStart(2, "0");
-    return `${dd}/${mm}/${yy}, ${hh}:${min}`;
-  };
+  useEffect(() => {
+    setTab("qa");
+    setEditing(false);
+    setAnswering(false);
+    setIsMenuOpen(false);
+    if (!activity) return;
+    const next: Record<string, AnswerValue> = {};
+    for (const question of activity.questions) {
+      next[question.id] = question.answer;
+    }
+    setAnswers(next);
+  }, [activity]);
 
-  // Mock data for the detailed view based on the mockup
-  const sections = [
-    {
-      title: "Section Title",
-      questions: [
-        {
-          id: "q1",
-          title: "Question title",
-          type: "input",
-          placeholder: "Placeholder",
-          hasComment: false,
-          hasAttachment: false,
-          isRequired: false,
-          hasYellowBg: true,
-        },
-        {
-          id: "q2", 
-          title: "Question title",
-          type: "input",
-          placeholder: "Placeholder",
-          hasComment: false,
-          hasAttachment: false,
-          isRequired: false,
-          hasYellowBg: false,
-        },
-        {
-          id: "q3",
-          title: "Question title", 
-          type: "input",
-          placeholder: "Placeholder",
-          hasComment: true,
-          hasAttachment: true,
-          isRequired: true,
-          hasYellowBg: true,
-        },
-        {
-          id: "q4",
-          title: "Question title",
-          type: "input", 
-          placeholder: "Placeholder",
-          hasComment: true,
-          hasAttachment: false,
-          isRequired: false,
-          hasYellowBg: false,
-        },
-        {
-          id: "q5",
-          title: "Question title",
-          type: "input",
-          placeholder: "Placeholder", 
-          hasComment: false,
-          hasAttachment: false,
-          isRequired: true,
-          hasYellowBg: true,
-        },
-        {
-          id: "q6",
-          title: "Question title",
-          type: "select",
-          options: ["Value 1", "Value 2", "Value 3"],
-          hasComment: false,
-          hasAttachment: true,
-          isRequired: true,
-          hasYellowBg: false,
-        },
-      ],
-    },
-    {
-      title: "Section Title",
-      questions: [
-        {
-          id: "q7",
-          title: "Question title",
-          type: "input",
-          placeholder: "Placeholder",
-          hasComment: false,
-          hasAttachment: false,
-          isRequired: false,
-          hasYellowBg: false,
-        },
-        {
-          id: "q8",
-          title: "Question title",
-          type: "select",
-          options: ["Value 1", "Value 2"],
-          hasComment: false,
-          hasAttachment: false,
-          isRequired: false,
-          hasYellowBg: false,
-        },
-        {
-          id: "q9",
-          title: "Question title",
-          type: "input",
-          placeholder: "Placeholder",
-          hasComment: false,
-          hasAttachment: false,
-          isRequired: false,
-          hasYellowBg: true,
-        },
-        {
-          id: "q10",
-          title: "Question title",
-          type: "select",
-          options: ["Value 1", "Value 2", "Value 3"],
-          hasComment: false,
-          hasAttachment: false,
-          isRequired: true,
-          hasYellowBg: false,
-        },
-        {
-          id: "q11",
-          title: "Question title",
-          type: "select",
-          options: ["Value 1", "Value 2"],
-          hasComment: false,
-          hasAttachment: false,
-          isRequired: true,
-          hasYellowBg: false,
-        },
-        {
-          id: "q12",
-          title: "Question title",
-          type: "select",
-          options: ["Value 1", "Value 2"],
-          hasComment: false,
-          hasAttachment: false,
-          isRequired: true,
-          hasYellowBg: false,
-        },
-        {
-          id: "q13",
-          title: "Question title",
-          type: "boolean",
-          value: "Yes",
-          hasComment: false,
-          hasAttachment: false,
-          isRequired: true,
-          hasYellowBg: false,
-        },
-      ],
-    },
-  ];
+  useEffect(() => {
+    bodyRef.current?.scrollTo({ top: 0 });
+  }, [tab, editing, activity?.id]);
+
+  if (!activity || !isOpen || !project) return null;
 
   return (
-    <div className={`${styles.overlay} ${isOpen ? styles.overlayOpen : ""}`} onClick={onClose}>
-      <div className={styles.sidePanel} onClick={(e) => e.stopPropagation()}>
-        {/* Header */}
-        <div className={styles.header}>
-          <div className={styles.headerTop}>
-            <button className={styles.backButton} onClick={onClose}>
-              <ArrowLeft size={20} />
-            </button>
-            <div className={styles.jobType}>
-              <span className={styles.jobTypeIcon}>🚚</span>
-              <span>Job type</span>
-            </div>
-            <div className={styles.menuContainer} ref={menuRef}>
-              <button 
-                className={styles.menuButton}
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-              >
-                <MoreVertical size={20} />
-              </button>
-              
-              {isMenuOpen && (
-                <div className={styles.contextMenu}>
-                  <div className={styles.menuItem}>
-                    <FileText size={16} />
-                    <span>Create PDF</span>
-                  </div>
-                  <div className={styles.menuItem}>
-                    <Paperclip size={16} />
-                    <span>Show Files</span>
-                  </div>
-                  <div className={styles.menuItem}>
-                    <Copy size={16} />
-                    <span>Duplicate</span>
-                  </div>
-                  <div className={styles.menuItem}>
-                    <Share size={16} />
-                    <span>Share</span>
-                  </div>
-                  <div className={styles.menuItem}>
-                    <Eye size={16} />
-                    <span>Show History</span>
-                  </div>
-                  <div className={`${styles.menuItem} ${styles.menuItemDanger}`}>
-                    <Trash2 size={16} />
-                    <span>Delete</span>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-          
-          <div className={styles.statusRow}>
-            <div className={styles.statusBadge}>Open</div>
-          </div>
+    <div className={styles.overlay} onClick={onClose}>
+      <aside className={styles.panel} role="dialog" aria-modal="true" onClick={(event) => event.stopPropagation()}>
+        <div className={styles.toolbar}>
+          <button type="button" className={styles.iconButton} aria-label="Close activity" onClick={onClose}>
+            <X size={18} />
+          </button>
+          <ActivityActionsMenu
+            open={isMenuOpen}
+            onOpenChange={setIsMenuOpen}
+            iconSize={18}
+            buttonClassName={styles.iconButton}
+          />
+        </div>
 
-          <div className={styles.headerMiddle}>
-            <h1 className={styles.projectTitle}>{activity.projectName}</h1>
-            <div className={styles.dateTimeRow}>
-              <div className={styles.dateTime}>{formatDate(activity.dateTime)}</div>
-              <div className={styles.jobId}># Job Id</div>
-            </div>
+        <div className={styles.hero}>
+          <div className={styles.typeChip}>
+            <span className={styles.typeIcon}>
+              <ActivityGlyph icon={activity.icon} size={14} />
+            </span>
+            {activity.activityType}
           </div>
-
-          <div className={styles.headerBottom}>
-            <Button variant="tertiary" size="sm" className={styles.approveButton}>
-              Approve
-            </Button>
+          <h2 className={styles.title}>{activity.projectName}</h2>
+          <div className={styles.heroTop}>
+            <span className={`${styles.statusChip} ${styles[statusClass(activity.status) as keyof typeof styles] ?? ""}`}>
+              {activity.status}
+            </span>
+            <span className={styles.jobId}>#{activity.id.padStart(6, "0")}</span>
+          </div>
+          <div className={styles.metaRow}>
+            <span className={styles.metaChip}>
+              <Calendar size={14} />
+              {formatDate(activity.dateTime)}
+            </span>
+            <span className={styles.metaChip}>
+              <Users size={14} />
+              {activity.assignees.length} {activity.assignees.length === 1 ? "assignee" : "assignees"}
+            </span>
             <div className={styles.assignees}>
-              {activity.assignees.map((assignee, index) => (
-                <div key={index} className={styles.assigneeAvatar}>
+              {activity.assignees.map((assignee) => (
+                <span key={assignee} className={styles.avatar}>
                   {assignee}
-                </div>
+                </span>
               ))}
-              <div className={styles.addAssignee}>+</div>
             </div>
           </div>
-
-          <Button variant="primary" size="lg" className={styles.answerAllButton}>
-            <Check size={20} />
-            Answer All
-          </Button>
         </div>
 
-        {/* Navigation Tabs */}
-        <div className={styles.tabs}>
-          <div className={`${styles.tab} ${styles.tabActive}`}>Main Q&A</div>
-          <div className={styles.tab}>Project info</div>
-          <div className={styles.tab}>Full form</div>
-        </div>
-
-        {/* Content */}
-        <div className={styles.content}>
-          {sections.map((section, sectionIndex) => (
-            <div key={sectionIndex} className={styles.section}>
-              <div className={styles.sectionTitle}>{section.title}</div>
-              
-              {section.questions.map((question) => (
-                <div key={question.id} className={styles.question}>
-                  <div className={styles.questionHeader}>
-                    <div className={styles.questionTitle}>
-                      <div className={styles.questionTitleContent}>
-                        {question.isRequired && <div className={styles.requiredIndicator} />}
-                        <span>{question.title}</span>
-                      </div>
-                    </div>
-                    <div className={styles.questionActions}>
-                      {question.hasComment && (
-                        <button className={styles.actionButton}>
-                          <MessageCircle size={16} />
-                        </button>
-                      )}
-                      {question.hasAttachment && (
-                        <button className={styles.actionButton}>
-                          <Paperclip size={16} />
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                  
-                  <div className={styles.questionInput}>
-                    {question.type === "input" && (
-                      <input
-                        type="text"
-                        placeholder={question.placeholder}
-                        className={`${styles.inputField} ${question.hasYellowBg ? styles.inputFieldYellow : styles.inputFieldWhite}`}
-                      />
-                    )}
-                    {question.type === "select" && (
-                      <div className={styles.selectField}>
-                        {question.options?.map((option, index) => (
-                          <div key={index} className={styles.selectOption}>
-                            {option}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                    {question.type === "boolean" && (
-                      <div className={styles.booleanField}>
-                        {question.value}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
+        <div className={styles.tabs} role="tablist">
+          {(
+            [
+              ["qa", "Q&A"],
+              ["project", "Project details"],
+              ["files", "Files"],
+            ] as const
+          ).map(([id, label]) => (
+            <button
+              key={id}
+              type="button"
+              role="tab"
+              aria-selected={tab === id}
+              className={`${styles.tab} ${tab === id ? styles.tabActive : ""}`}
+              onClick={() => setTab(id)}
+            >
+              {label}
+            </button>
           ))}
         </div>
-      </div>
+
+        <div className={styles.body} ref={bodyRef}>
+          {tab === "qa" ? (
+            <ActivityQuestions
+              activity={activity}
+              project={project}
+              answers={answers}
+              editing={editing}
+              onAnswersChange={setAnswers}
+              onEditingChange={setEditing}
+            />
+          ) : null}
+
+          {tab === "project" ? (
+            <div className={styles.projectList}>
+              <div className={styles.projectHero}>
+                <span className={styles.jobId}>#{project.projectNumber}</span>
+                <strong>{project.name}</strong>
+              </div>
+
+              <div className={styles.projectFields}>
+                {[
+                  ["Address", project.address],
+                  ["City", project.city],
+                  ["Project status", project.projectStatus],
+                  ["Quote status", project.contractStatus],
+                  ["Buildings", project.buildingsCount || "—"],
+                  ["Start date", project.startDate],
+                  ["Operator", project.operator],
+                  ["Developer", project.developer],
+                ].map(([label, value]) => (
+                  <div key={String(label)} className={styles.projectField}>
+                    <small>{label}</small>
+                    <strong>{displayValue(value)}</strong>
+                  </div>
+                ))}
+              </div>
+
+              {project.elements.length ? (
+                <div className={styles.projectBlock}>
+                  <div className={styles.sectionHead}>
+                    <span>Elements</span>
+                  </div>
+                  <div className={styles.chipRow}>
+                    {project.elements.map((item) => (
+                      <span key={item} className={styles.chip}>
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+
+              {project.contacts.length ? (
+                <div className={styles.projectBlock}>
+                  <div className={styles.sectionHead}>
+                    <span>Contacts</span>
+                    <small>{project.contacts.length}</small>
+                  </div>
+                  {project.contacts.map((contact) => (
+                    <div key={`${contact.name}-${contact.role}`} className={styles.contactCard}>
+                      <strong>{contact.name}</strong>
+                      <span>{contact.role}</span>
+                      <span>
+                        <Phone size={12} /> {contact.phone}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              ) : null}
+
+              {project.files.length ? (
+                <div className={styles.projectBlock}>
+                  <div className={styles.sectionHead}>
+                    <span>Project files</span>
+                    <small>{project.files.length}</small>
+                  </div>
+                  {project.files.map((file) => (
+                    <div key={file.id} className={styles.fileRow}>
+                      <FileText size={16} />
+                      <span>{file.name}</span>
+                      <small>{file.size}</small>
+                    </div>
+                  ))}
+                </div>
+              ) : null}
+
+              {project.id ? (
+                <Link href={`/projects/${project.id}`} className={styles.projectLink}>
+                  Open project
+                </Link>
+              ) : null}
+            </div>
+          ) : null}
+
+          {tab === "files" ? (
+            <div className={styles.emptyFiles}>
+              <span className={styles.emptyIcon}>
+                <Paperclip size={20} />
+              </span>
+              <p>No files attached yet</p>
+              <span>Files added to this activity will show up here.</span>
+            </div>
+          ) : null}
+        </div>
+
+        <div className={styles.footer}>
+          <button type="button" className={styles.secondaryButton}>
+            Approve
+          </button>
+          <button type="button" className={styles.primaryButton} onClick={() => setAnswering(true)}>
+            <Check size={16} />
+            Answer all
+          </button>
+        </div>
+      </aside>
+
+      {answering ? (
+        <ActivityAnswerWizard
+          activity={activity}
+          project={project}
+          answers={answers}
+          onClose={() => setAnswering(false)}
+          onComplete={(next) => {
+            setAnswers(next);
+            setEditing(false);
+            setTab("qa");
+            setAnswering(false);
+          }}
+        />
+      ) : null}
     </div>
   );
 }

@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { Suspense, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import styles from "./styles.module.css";
-import { Activity } from "@/types";
+import { Activity, listPreviewQuestions, questionAnswerText } from "@/types";
+import { getActivityById, mockActivities } from "./data";
 import { Button, Checkbox } from "@/design-system";
 import {
   BarChart2,
@@ -32,88 +34,6 @@ import FilterActivitiesPopup, {
 } from "./FilterActivitiesPopup";
 import { NavLabel, navItems } from "../navItems";
 
-const mockActivities: Activity[] = [
-  {
-    id: "1",
-    icon: "link",
-    dateTime: "2026-10-08T09:00:00Z",
-    activityType: "Support Case",
-    projectName: "FoodChain Suppliers",
-    status: "In Progress",
-    assignees: ["AB", "CD", "EF"],
-    questions: [
-      {
-        id: "q1",
-        title: "Question title",
-        answer: "Answer - input content - Desktop",
-      },
-      {
-        id: "q2",
-        title: "Question title",
-        answer: "Answer - input content - Desktop",
-      },
-      {
-        id: "q3",
-        title: "Question title",
-        answer: "Answer - input content - Desktop",
-      },
-    ],
-  },
-  {
-    id: "2",
-    icon: "link",
-    dateTime: "2026-10-09T12:00:00Z",
-    activityType: "Support Case",
-    projectName: "Event Masters",
-    status: "Tested",
-    assignees: ["GH"],
-    questions: [
-      { id: "q4", title: "Question title", answer: "Answer - input content - Desktop" },
-      { id: "q5", title: "Question title", answer: "Answer - input content - Desktop" },
-      { id: "q6", title: "Question title", answer: "Answer - input content - Desktop" },
-    ],
-  },
-  {
-    id: "3",
-    icon: "link",
-    dateTime: "2026-10-07T10:00:00Z",
-    activityType: "Meeting Summary",
-    projectName: "FoodChain Suppliers",
-    status: "To Review",
-    assignees: ["IJ", "KL", "MN", "OP"],
-    questions: [
-      { id: "q7", title: "Meeting notes", answer: "Discussion about project timeline and deliverables" },
-      { id: "q8", title: "Action items", answer: "Follow up on budget approval and resource allocation" },
-    ],
-  },
-  {
-    id: "4",
-    icon: "truck",
-    dateTime: "2026-09-30T11:00:00Z",
-    activityType: "Phase Execution",
-    projectName: "Legal Pro Consulting",
-    status: "Confirmed",
-    assignees: ["QR"],
-    questions: [
-      { id: "q9", title: "Phase details", answer: "Phase 2 implementation plan and milestones" },
-      { id: "q10", title: "Dependencies", answer: "External vendor coordination and legal review" },
-    ],
-  },
-  {
-    id: "5",
-    icon: "tool",
-    dateTime: "2026-10-20T14:00:00Z",
-    activityType: "Fixes",
-    projectName: "Event Masters",
-    status: "Done",
-    assignees: ["ST"],
-    questions: [
-      { id: "q11", title: "Bug fixes", answer: "Resolved authentication issues and UI responsiveness" },
-      { id: "q12", title: "Testing", answer: "Unit tests passed and integration testing completed" },
-    ],
-  },
-];
-
 function ActivityGlyph({ icon, size = 18 }: { icon: string; size?: number }) {
   const props = { size, strokeWidth: 2 };
   if (icon === "truck") return <Truck {...props} />;
@@ -139,6 +59,16 @@ type SavedFilterTab = {
 };
 
 export default function ActivitiesPage() {
+  return (
+    <Suspense fallback={null}>
+      <ActivitiesPageContent />
+    </Suspense>
+  );
+}
+
+function ActivitiesPageContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [search, setSearch] = useState("");
   const [expandedRowIds, setExpandedRowIds] = useState<Record<string, boolean>>({});
   const [isCreatePopupOpen, setIsCreatePopupOpen] = useState(false);
@@ -149,6 +79,16 @@ export default function ActivitiesPage() {
   const [appliedFilters, setAppliedFilters] = useState<ActivityFilters>(EMPTY_FILTERS);
   const [savedTabs, setSavedTabs] = useState<SavedFilterTab[]>([]);
   const [activeTabId, setActiveTabId] = useState<string>("all");
+
+  const openId = searchParams.get("id");
+
+  useEffect(() => {
+    if (!openId) return;
+    const activity = getActivityById(openId);
+    if (!activity) return;
+    setSelectedActivity(activity);
+    setIsSidePanelOpen(true);
+  }, [openId]);
 
   const appliedCount = countFilters(appliedFilters);
   const appliedChips = filterChipLabels(appliedFilters);
@@ -170,11 +110,15 @@ export default function ActivitiesPage() {
   function handleActivityClick(activity: Activity) {
     setSelectedActivity(activity);
     setIsSidePanelOpen(true);
+    router.replace(`/activities?id=${activity.id}`, { scroll: false });
   }
 
   function handleCloseSidePanel() {
     setIsSidePanelOpen(false);
     setSelectedActivity(null);
+    if (openId) {
+      router.replace("/activities", { scroll: false });
+    }
   }
 
   function uniqueTabName(name: string) {
@@ -384,6 +328,7 @@ export default function ActivitiesPage() {
           ) : null}
           {filtered.map((a) => {
             const expanded = !!expandedRowIds[a.id];
+            const previewQuestions = listPreviewQuestions(a);
             return (
               <div key={a.id} className={styles.rowWrapper} data-status={a.status}>
                 <div className={styles.colCheckbox}>
@@ -416,7 +361,7 @@ export default function ActivitiesPage() {
                     </div>
                     <div className={styles.colActions}>
                       <div className={styles.actionButtons}>
-                        {a.questions.length > 0 && (
+                        {previewQuestions.length > 0 && (
                           <Button 
                             variant="tertiary" 
                             size="sm"
@@ -437,14 +382,14 @@ export default function ActivitiesPage() {
                       />
                     </div>
                   </div>
-                  {a.questions.length > 0 && (
+                  {previewQuestions.length > 0 && (
                     <>
                       <div className={`${styles.accordion} ${expanded ? styles.accordionOpen : ""}`}>
                         <div className={styles.questionsGrid}>
-                          {a.questions.map((q) => (
+                          {previewQuestions.map((q) => (
                             <div key={q.id} className={styles.questionItem}>
                               <div className={styles.questionTitle}>{q.title}</div>
-                              <div className={styles.questionAnswer}>{q.answer}</div>
+                              <div className={styles.questionAnswer}>{questionAnswerText(q)}</div>
                             </div>
                           ))}
                         </div>

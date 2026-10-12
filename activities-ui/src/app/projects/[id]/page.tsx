@@ -7,19 +7,23 @@ import { Button, Checkbox } from "@/design-system";
 import {
   Briefcase,
   Calendar,
+  ChevronDown,
+  ChevronUp,
   Download,
   FileText,
   Mail,
-  MoreVertical,
   Plus,
   Search,
   Shield,
   Tool,
   Truck,
 } from "react-feather";
+import ActivityActionsMenu from "../../activities/ActivityActionsMenu";
 import CreateNewPopup from "../../activities/CreateNewPopup";
+import list from "../../activities/styles.module.css";
 import { NavLabel, navItems } from "../../navItems";
 import {
+  activityPreviewQuestions,
   AUTHORIZATION_OPTIONS,
   CUSTOMER_OPTIONS,
   ELEMENT_OPTIONS,
@@ -144,6 +148,8 @@ export default function ProjectDetailPage() {
   const [typeFilters, setTypeFilters] = useState<string[]>([]);
   const [statusFilters, setStatusFilters] = useState<WorkflowStatus[]>([]);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [expandedRowIds, setExpandedRowIds] = useState<Record<string, boolean>>({});
+  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   const [isCreatePopupOpen, setIsCreatePopupOpen] = useState(false);
   const project = draft;
 
@@ -151,6 +157,8 @@ export default function ProjectDetailPage() {
     setDraft(source ? cloneProject(source) : null);
     setEditingKey(null);
     setSelectedIds([]);
+    setExpandedRowIds({});
+    setOpenMenuId(null);
     setTypeFilters([]);
     setStatusFilters([]);
     setSearch("");
@@ -622,61 +630,117 @@ export default function ProjectDetailPage() {
             {filteredActivities.length === 0 ? (
               <div className={styles.empty}>No activities match these filters.</div>
             ) : (
-              <div className={styles.activityTable}>
-                <div className={styles.activityHeader}>
-                  <div className={styles.activityCheckbox} />
-                  <div className={styles.activityGrid}>
-                    <div className={styles.activityIconCol} />
-                    <div className={styles.activityDate}>Date & Time</div>
-                    <div className={styles.activityDetails}>Project Name</div>
-                    <div className={styles.activityStatus}>Status</div>
-                    <div className={styles.activityPeople}>Assignee</div>
-                    <div className={styles.activityMenu} />
-                  </div>
+              <div className={list.table}>
+                <div className={list.tableHeader}>
+                  <div className={list.colCheckbox} />
+                  <div className={list.colIcon} />
+                  <div className={list.colDate}>Date & Time</div>
+                  <div className={list.colActivityType}>Project Name</div>
+                  <div className={list.colStatus}>Status</div>
+                  <div className={list.colAssignees}>Assignee</div>
+                  <div className={list.colActions} />
+                  <div className={list.colMenu} />
                 </div>
                 {filteredActivities.map((activity) => {
                   const selected = selectedIds.includes(activity.id);
+                  const expanded = !!expandedRowIds[activity.id];
+                  const previewQuestions = activityPreviewQuestions(activity);
                   return (
                     <div
                       key={activity.id}
-                      className={`${styles.activityWrapper} ${selected ? styles.activitySelected : ""}`}
+                      className={list.rowWrapper}
                       data-status={activity.status}
                     >
-                      <div className={styles.activityCheckbox}>
+                      <div className={list.colCheckbox}>
                         <Checkbox
                           size="md"
                           checked={selected}
                           onChange={() => setSelectedIds(toggleValue(selectedIds, activity.id))}
                         />
                       </div>
-                      <Link href="/activities" className={styles.activityCard}>
-                        <div className={styles.activityGrid}>
-                          <div className={styles.activityIconCol}>
-                            <div className={styles.iconWrap}>
-                              <span className={styles.activityIcon}>
+                      <div
+                        className={list.columnBlock}
+                        onClick={() => router.push("/activities")}
+                      >
+                        <div className={list.row}>
+                          <div className={list.colIcon}>
+                            <div className={list.iconWrapper}>
+                              <div className={list.icon}>
                                 <ActivityGlyph icon={activity.icon} size={18} />
-                              </span>
-                              <span className={styles.iconId}>#{activity.number}</span>
+                              </div>
+                              <div className={list.iconId}>#{activity.number}</div>
                             </div>
                           </div>
-                          <div className={styles.activityDate}>{activity.dateLabel}</div>
-                          <div className={styles.activityDetails}>
-                            <div className={styles.activityType}>{activity.type}</div>
-                            <div className={styles.activityProject}>{activity.title}</div>
+                          <div className={list.colDate}>{activity.dateLabel}</div>
+                          <div className={list.colActivityType}>
+                            <div className={list.activityType}>{activity.type}</div>
+                            <div className={list.projectName}>{activity.title}</div>
                           </div>
-                          <div className={styles.activityStatus} data-status={activity.status}>
+                          <div className={list.colStatus} data-status={activity.status}>
                             {activity.status}
                           </div>
-                          <div className={styles.activityPeople}>
+                          <div className={list.colAssignees}>
                             {activity.assignee ? (
-                              <span className={styles.assignee}>{activity.assignee}</span>
+                              <span className={list.badge}>{activity.assignee}</span>
                             ) : null}
                           </div>
-                          <div className={styles.activityMenu}>
-                            <MoreVertical size={20} />
+                          <div className={list.colActions}>
+                            <div className={list.actionButtons}>
+                              {previewQuestions.length > 0 ? (
+                                <Button
+                                  variant="tertiary"
+                                  size="sm"
+                                  icon={expanded ? ChevronUp : ChevronDown}
+                                  onClick={(event) => {
+                                    event.stopPropagation();
+                                    setExpandedRowIds((current) => ({
+                                      ...current,
+                                      [activity.id]: !current[activity.id],
+                                    }));
+                                  }}
+                                />
+                              ) : null}
+                            </div>
+                          </div>
+                          <div className={list.colMenu}>
+                            <ActivityActionsMenu
+                              open={openMenuId === activity.id}
+                              onOpenChange={(open) => setOpenMenuId(open ? activity.id : null)}
+                              iconSize={24}
+                            />
                           </div>
                         </div>
-                      </Link>
+                        {previewQuestions.length > 0 ? (
+                          <>
+                            <div className={`${list.accordion} ${expanded ? list.accordionOpen : ""}`}>
+                              <div className={list.questionsGrid}>
+                                {previewQuestions.map((question) => (
+                                  <div key={question.id} className={list.questionItem}>
+                                    <div className={list.questionTitle}>{question.title}</div>
+                                    <div className={list.questionAnswer}>{question.answer}</div>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                            <div className={list.mobileAccordionToggleWrap}>
+                              <button
+                                type="button"
+                                className={list.mobileAccordionToggle}
+                                onClick={(event) => {
+                                  event.stopPropagation();
+                                  setExpandedRowIds((current) => ({
+                                    ...current,
+                                    [activity.id]: !current[activity.id],
+                                  }));
+                                }}
+                              >
+                                {expanded ? "Show less" : "Show more"}
+                                {expanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                              </button>
+                            </div>
+                          </>
+                        ) : null}
+                      </div>
                     </div>
                   );
                 })}
