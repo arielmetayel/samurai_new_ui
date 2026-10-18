@@ -5,6 +5,7 @@ import styles from "./styles.module.css";
 import { Button } from "@/design-system";
 import { typography } from "@/design-system";
 import { ArrowLeft, Search } from "react-feather";
+import { useI18n } from "@/i18n";
 import ScheduleActivityPopup from "./ScheduleActivityPopup";
 import dbData from "@/data/db.json";
 
@@ -23,6 +24,7 @@ export default function ChooseProjectPopup({
   onNext,
   activityType
 }: ChooseProjectPopupProps) {
+  const { t } = useI18n();
   const [selectedProject, setSelectedProject] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [showSchedulePopup, setShowSchedulePopup] = useState(false);
@@ -80,7 +82,7 @@ export default function ChooseProjectPopup({
           <button className={styles.backButton} onClick={onBack}>
             <ArrowLeft size={20} />
           </button>
-          <h2 style={typography.combinations['header-m02']}>Choose Project</h2>
+          <h2 style={typography.combinations['header-m02']}>{t("create.chooseProject")}</h2>
         </div>
         
         {/* Search Bar */}
@@ -89,7 +91,7 @@ export default function ChooseProjectPopup({
             <Search size={20} className={styles.searchIcon} />
             <input
               type="text"
-              placeholder="search"
+              placeholder={t("common.search")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className={styles.searchInput}
@@ -119,7 +121,7 @@ export default function ChooseProjectPopup({
             onClick={onClose}
             className={styles.cancelButton}
           >
-            Cancel
+            {t("common.cancel")}
           </Button>
           <Button 
             type="button" 
@@ -128,7 +130,7 @@ export default function ChooseProjectPopup({
             disabled={!selectedProject}
             className={styles.nextButton}
           >
-            Next
+            {t("common.next")}
           </Button>
         </div>
       </div>

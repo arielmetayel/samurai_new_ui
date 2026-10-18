@@ -10,6 +10,7 @@ import {
   getSystemListValues,
 } from "../projects/data";
 import { Mail, PenTool } from "react-feather";
+import { localize, t } from "@/i18n";
 import styles from "./ActivityDetailSidePanel.module.css";
 
 export type AnswerValue = string | string[];
@@ -84,7 +85,7 @@ function ChoiceList({
               className={selected ? styles.chipActive : styles.chip}
               onClick={() => onChange(selected ? list.filter((item) => item !== option) : [...list, option])}
             >
-              {option}
+              {localize(option)}
             </button>
           );
         })}
@@ -94,10 +95,10 @@ function ChoiceList({
 
   return (
     <select className={styles.qaField} value={text} onChange={(event) => onChange(event.target.value)}>
-      <option value="">Select</option>
+      <option value="">{t("common.select")}</option>
       {options.map((option) => (
         <option key={option} value={option}>
-          {option}
+          {localize(option)}
         </option>
       ))}
     </select>
@@ -123,7 +124,7 @@ export function AnswerEditor({
       <textarea
         className={styles.qaInput}
         value={text}
-        placeholder={question.placeholder ?? "Write the answer"}
+        placeholder={question.placeholder ? localize(question.placeholder) : t("wizard.writeAnswer")}
         rows={3}
         onChange={(event) => onChange(event.target.value)}
       />
@@ -147,7 +148,7 @@ export function AnswerEditor({
             className={text === option ? styles.choiceActive : styles.choice}
             onClick={() => onChange(option)}
           >
-            {option}
+            {localize(option)}
           </button>
         ))}
       </div>
@@ -184,7 +185,7 @@ export function AnswerEditor({
           value={list[0] ?? ""}
           onChange={(event) => onChange([event.target.value, list[1] ?? ""])}
         />
-        <span>to</span>
+        <span>{t("common.to")}</span>
         <input
           className={styles.qaField}
           type="number"
@@ -201,7 +202,7 @@ export function AnswerEditor({
     <input
       className={styles.qaField}
       value={text}
-      placeholder={question.placeholder ?? "Write the answer"}
+      placeholder={question.placeholder ? localize(question.placeholder) : t("wizard.writeAnswer")}
       onChange={(event) => onChange(event.target.value)}
     />
   );
@@ -211,7 +212,7 @@ export function DisplayBlock({ question, project }: { question: Question; projec
   if (question.type === "message") {
     return (
       <div className={styles.infoCard}>
-        <small>Message</small>
+        <small>{localize("Message") || t("table.action")}</small>
         <strong>{question.title}</strong>
         <p>{question.message}</p>
       </div>
@@ -273,25 +274,25 @@ export function ReportCard({
   return (
     <div className={styles.reportCard}>
       <div className={styles.reportHead}>
-        <small>Report</small>
-        <strong>{question.title}</strong>
+        <small>{t("panel.report")}</small>
+        <strong>{localize(question.title)}</strong>
       </div>
       <div className={styles.reportBody}>
         {items.map((item) => (
           <div key={item.id} className={styles.reportRow}>
-            <span>{item.title}</span>
-            <strong>{formatAnswer(item, answers[item.id] ?? item.answer, project)}</strong>
+            <span>{localize(item.title)}</span>
+            <strong>{localize(formatAnswer(item, answers[item.id] ?? item.answer, project))}</strong>
           </div>
         ))}
       </div>
       <div className={styles.reportActions}>
         <button type="button" className={signed ? styles.signatureDone : styles.signature} onClick={onSign}>
           <PenTool size={16} />
-          {signed ? <em>Signed</em> : "Add signature"}
+          {signed ? <em>{t("wizard.signed")}</em> : t("wizard.addSignature")}
         </button>
         <button type="button" className={styles.reportSend} onClick={sendEmail}>
           <Mail size={16} />
-          Send by email
+          {t("panel.sendEmail")}
         </button>
       </div>
     </div>
@@ -325,20 +326,20 @@ export function ActivityQuestions({
 
   return (
     <div className={styles.qaList}>
-      <div className={styles.modeSwitch} role="tablist" aria-label="Answers mode">
+      <div className={styles.modeSwitch}       role="tablist" aria-label={t("wizard.answersMode")}>
         <button
           type="button"
           className={!editing ? styles.modeActive : styles.modeButton}
           onClick={() => onEditingChange(false)}
         >
-          View answers
+          {t("panel.viewAnswers")}
         </button>
         <button
           type="button"
           className={editing ? styles.modeActive : styles.modeButton}
           onClick={() => onEditingChange(true)}
         >
-          Edit answers
+          {t("panel.editAnswers")}
         </button>
       </div>
 
@@ -348,7 +349,7 @@ export function ActivityQuestions({
         return (
           <section key={section.id} className={styles.qaSection}>
             <div className={styles.sectionHead}>
-              <span>{section.title}</span>
+              <span>{localize(section.title)}</span>
             </div>
             {visible.map((question) => {
               if (!isAnswerableQuestion(question)) {
@@ -359,8 +360,8 @@ export function ActivityQuestions({
               if (!editing) {
                 return (
                   <div key={question.id} className={styles.answerCard}>
-                    <small>{question.title}</small>
-                    <strong>{formatAnswer(question, value, project)}</strong>
+                    <small>{localize(question.title)}</small>
+                    <strong>{localize(formatAnswer(question, value, project))}</strong>
                   </div>
                 );
               }
@@ -368,8 +369,8 @@ export function ActivityQuestions({
               return (
                 <div key={question.id} className={styles.qaCard}>
                   <span className={styles.qaLabel}>
-                    <span className={styles.qaTitle}>{question.title}</span>
-                    {question.required ? <span className={styles.required}>Required</span> : null}
+                    <span className={styles.qaTitle}>{localize(question.title)}</span>
+                    {question.required ? <span className={styles.required}>{t("wizard.required")}</span> : null}
                   </span>
                   <AnswerEditor
                     question={question}

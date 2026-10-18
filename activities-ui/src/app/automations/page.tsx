@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
-import Link from "next/link";
 import { Button } from "@/design-system";
 import { ChevronDown, ChevronUp, Edit2, Info, Plus, Search, Trash2, X } from "react-feather";
 import CreateNewPopup from "../activities/CreateNewPopup";
-import { NavLabel, navItems } from "../navItems";
+import { useI18n } from "@/i18n";
+import AppShell from "../AppShell";
 import AutomationSetupWizard, { AutomationDraftResult } from "./AutomationSetupWizard";
 import { Automation, mockAutomations } from "./data";
 import styles from "./styles.module.css";
@@ -13,15 +13,16 @@ import styles from "./styles.module.css";
 type SortKey = "name" | "topic" | "event" | "action" | "active";
 type SortDir = "asc" | "desc";
 
-const SORT_COLUMNS: { key: SortKey; label: string; className: string }[] = [
-  { key: "name", label: "Name", className: styles.colName },
-  { key: "topic", label: "Topic", className: styles.colTopic },
-  { key: "event", label: "Event", className: styles.colEvent },
-  { key: "action", label: "Action", className: styles.colAction },
-  { key: "active", label: "Active", className: styles.colActive },
+const SORT_COLUMNS: { key: SortKey; labelKey: "automations.name" | "table.topic" | "table.event" | "table.action" | "table.active"; className: string }[] = [
+  { key: "name", labelKey: "automations.name", className: styles.colName },
+  { key: "topic", labelKey: "table.topic", className: styles.colTopic },
+  { key: "event", labelKey: "table.event", className: styles.colEvent },
+  { key: "action", labelKey: "table.action", className: styles.colAction },
+  { key: "active", labelKey: "table.active", className: styles.colActive },
 ];
 
 export default function AutomationsPage() {
+  const { t } = useI18n();
   const [items, setItems] = useState<Automation[]>(mockAutomations);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState<{ key: SortKey; dir: SortDir } | null>(null);
@@ -99,55 +100,11 @@ export default function AutomationsPage() {
   }
 
   return (
-    <div className={styles.pageWrapper}>
-      <header className={styles.topHeader}>
-        <div className={styles.topHeaderContent}>
-          <Link href="/" className={styles.backLink}>
-            ← Back to Home
-          </Link>
-          <h1 className={styles.topHeaderTitle}>Automations</h1>
-        </div>
-      </header>
-
-      <aside className={styles.sidebar}>
-        <div className={styles.userBlock}>
-          <div className={styles.avatar}>UF</div>
-          <div className={styles.userName}>User Full Name</div>
-        </div>
-        <nav className={styles.menu}>
-          {navItems.map((item) =>
-            item.href ? (
-              <Link
-                key={item.label}
-                href={item.href}
-                className={item.label === "Automations" ? styles.menuItemActive : styles.menuItem}
-              >
-                <NavLabel item={item} />
-              </Link>
-            ) : (
-              <div key={item.label} className={styles.menuItem}>
-                <NavLabel item={item} />
-              </div>
-            )
-          )}
-        </nav>
-        <div className={styles.createWrap}>
-          <Button
-            variant="primary"
-            size="md"
-            className={styles.createBtn}
-            onClick={() => setIsCreatePopupOpen(true)}
-          >
-            + Create New
-          </Button>
-        </div>
-      </aside>
-
-      <main className={styles.main}>
+    <AppShell title={t("automations.title")} onCreateNew={() => setIsCreatePopupOpen(true)}>
         <div className={styles.headerRow}>
-          <h1 className={styles.pageTitle}>Automations</h1>
+          <h1 className={styles.pageTitle}>{t("automations.title")}</h1>
           <Button variant="primary" size="md" icon={Plus} onClick={() => setIsSetupOpen(true)}>
-            Add new
+            {t("automations.add")}
           </Button>
         </div>
 
@@ -155,7 +112,7 @@ export default function AutomationsPage() {
           <div className={styles.mainSearchWrapper}>
             <Search size={18} className={styles.mainSearchIcon} />
             <input
-              placeholder="search"
+              placeholder={t("common.search")}
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               className={styles.searchInput}
@@ -182,22 +139,22 @@ export default function AutomationsPage() {
                     aria-sort={ariaSort}
                     aria-label={
                       dir
-                        ? `Sort by ${column.label}, ${dir === "asc" ? "ascending" : "descending"}`
-                        : `Sort by ${column.label}`
+                        ? `Sort by ${t(column.labelKey)}, ${dir === "asc" ? "ascending" : "descending"}`
+                        : `Sort by ${t(column.labelKey)}`
                     }
                     onClick={() => toggleSort(column.key)}
                   >
-                    {column.label}
+                    {t(column.labelKey)}
                     <Icon size={14} className={styles.sortIcon} aria-hidden />
                   </button>
                 </div>
               );
             })}
-            <div className={styles.colActions}>Actions</div>
+            <div className={styles.colActions}>{t("common.actions")}</div>
           </div>
 
           {filtered.length === 0 ? (
-            <div className={styles.empty}>No automations match this search.</div>
+            <div className={styles.empty}>{t("automations.empty")}</div>
           ) : (
             filtered.map((item) => {
               const editing = editingId === item.id;
@@ -266,27 +223,26 @@ export default function AutomationsPage() {
             })
           )}
         </div>
-      </main>
 
       {deleteItem ? (
         <div className={styles.overlay} onClick={() => setDeleteId(null)}>
           <div className={styles.infoCard} role="dialog" aria-modal="true" aria-labelledby="delete-automation-title" onClick={(event) => event.stopPropagation()}>
             <div className={styles.infoHead}>
-              <h2 id="delete-automation-title">Delete automation</h2>
-              <button type="button" className={styles.iconBtn} aria-label="Close" onClick={() => setDeleteId(null)}>
+              <h2 id="delete-automation-title">{t("automations.deleteTitle")}</h2>
+              <button type="button" className={styles.iconBtn} aria-label={t("common.close")} onClick={() => setDeleteId(null)}>
                 <X size={18} />
               </button>
             </div>
-            <p className={styles.confirmText} dir="rtl">
-              האם אתה בטוח שאתה רוצה למחוק את האוטומציה הזאת?
+            <p className={styles.confirmText}>
+              {t("automations.deleteConfirm")}
             </p>
             <p className={styles.confirmName}>{deleteItem.name}</p>
             <div className={styles.confirmActions}>
               <button type="button" className={styles.confirmCancel} onClick={() => setDeleteId(null)}>
-                Cancel
+                {t("common.cancel")}
               </button>
               <button type="button" className={styles.confirmDelete} onClick={() => removeItem(deleteItem.id)}>
-                Delete
+                {t("common.delete")}
               </button>
             </div>
           </div>
@@ -297,49 +253,49 @@ export default function AutomationsPage() {
         <div className={styles.overlay} onClick={() => setInfoId(null)}>
           <div className={styles.infoCard} onClick={(event) => event.stopPropagation()}>
             <div className={styles.infoHead}>
-              <h2>Automation details</h2>
+              <h2>{t("automations.details")}</h2>
               <button type="button" className={styles.iconBtn} aria-label="Close" onClick={() => setInfoId(null)}>
                 <X size={18} />
               </button>
             </div>
             <dl className={styles.infoList}>
               <div>
-                <dt>Name</dt>
+                <dt>{t("automations.name")}</dt>
                 <dd>{infoItem.name}</dd>
               </div>
               <div>
-                <dt>Topic</dt>
+                <dt>{t("table.topic")}</dt>
                 <dd>{infoItem.topic}</dd>
               </div>
               <div>
-                <dt>Event</dt>
+                <dt>{t("table.event")}</dt>
                 <dd>{infoItem.event}</dd>
               </div>
               <div>
-                <dt>Action</dt>
+                <dt>{t("table.action")}</dt>
                 <dd>{infoItem.action}</dd>
               </div>
               {infoItem.condition ? (
                 <div>
-                  <dt>Conditions</dt>
+                  <dt>{t("automations.conditions")}</dt>
                   <dd>{infoItem.condition}</dd>
                 </div>
               ) : null}
               {infoItem.emailTo ? (
                 <div>
-                  <dt>Send to</dt>
+                  <dt>{t("automations.sendTo")}</dt>
                   <dd>{infoItem.emailTo}</dd>
                 </div>
               ) : null}
               {infoItem.emailSubject ? (
                 <div>
-                  <dt>Subject</dt>
+                  <dt>{t("automations.subject")}</dt>
                   <dd>{infoItem.emailSubject}</dd>
                 </div>
               ) : null}
               <div>
-                <dt>Active</dt>
-                <dd>{infoItem.active ? "Active" : "Inactive"}</dd>
+                <dt>{t("table.active")}</dt>
+                <dd>{infoItem.active ? t("automations.active") : t("automations.inactive")}</dd>
               </div>
             </dl>
           </div>
@@ -351,6 +307,6 @@ export default function AutomationsPage() {
       ) : null}
 
       <CreateNewPopup isOpen={isCreatePopupOpen} onClose={() => setIsCreatePopupOpen(false)} />
-    </div>
+    </AppShell>
   );
 }

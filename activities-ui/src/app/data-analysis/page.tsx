@@ -1,12 +1,11 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
-import Link from "next/link";
 import styles from "./styles.module.css";
-import { Button } from "@/design-system";
 import { MoreVertical, Search } from "react-feather";
 import CreateNewPopup from "../activities/CreateNewPopup";
-import { NavLabel, navItems } from "../navItems";
+import { useI18n } from "@/i18n";
+import AppShell from "../AppShell";
 
 type ReportVisibility = "Public" | "Shared" | "Private";
 
@@ -83,6 +82,7 @@ function formatDate(iso: string) {
 }
 
 export default function DataAnalysisPage() {
+  const { t, localize } = useI18n();
   const [search, setSearch] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>("5");
   const [isCreatePopupOpen, setIsCreatePopupOpen] = useState(false);
@@ -99,59 +99,15 @@ export default function DataAnalysisPage() {
   }
 
   return (
-    <div className={styles.pageWrapper}>
-      <header className={styles.topHeader}>
-        <div className={styles.topHeaderContent}>
-          <Link href="/" className={styles.backLink}>
-            ← Back to Home
-          </Link>
-          <h1 className={styles.topHeaderTitle}>Data Analysis</h1>
-        </div>
-      </header>
-
-      <aside className={styles.sidebar}>
-        <div className={styles.userBlock}>
-          <div className={styles.avatar}>UF</div>
-          <div className={styles.userName}>User Full Name</div>
-        </div>
-        <nav className={styles.menu}>
-          {navItems.map((item) =>
-            item.href ? (
-              <Link
-                key={item.label}
-                href={item.href}
-                className={item.label === "Data Analysis" ? styles.menuItemActive : styles.menuItem}
-              >
-                <NavLabel item={item} />
-              </Link>
-            ) : (
-              <div key={item.label} className={styles.menuItem}>
-                <NavLabel item={item} />
-              </div>
-            )
-          )}
-        </nav>
-        <div className={styles.createWrap}>
-          <Button
-            variant="primary"
-            size="md"
-            className={styles.createBtn}
-            onClick={() => setIsCreatePopupOpen(true)}
-          >
-            + Create New
-          </Button>
-        </div>
-      </aside>
-
-      <main className={styles.main}>
+    <AppShell title={t("reports.title")} onCreateNew={() => setIsCreatePopupOpen(true)}>
         <div className={styles.headerRow}>
-          <h1 className={styles.pageTitle}>Data Analysis</h1>
+          <h1 className={styles.pageTitle}>{t("reports.title")}</h1>
         </div>
         <div className={styles.searchRow}>
           <div className={styles.mainSearchWrapper}>
             <Search size={18} className={styles.mainSearchIcon} />
             <input
-              placeholder="search"
+              placeholder={t("common.search")}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className={styles.searchInput}
@@ -165,10 +121,10 @@ export default function DataAnalysisPage() {
 
         <div className={styles.table}>
           <div className={styles.tableHeader}>
-            <div className={styles.colTitle}>Report</div>
-            <div className={styles.colDate}>Date & Time</div>
-            <div className={styles.colOwner}>Owner</div>
-            <div className={styles.colVisibility}>Visibility</div>
+            <div className={styles.colTitle}>{t("table.report")}</div>
+            <div className={styles.colDate}>{t("table.dateTime")}</div>
+            <div className={styles.colOwner}>{t("table.owner")}</div>
+            <div className={styles.colVisibility}>{t("table.visibility")}</div>
             <div className={styles.colMenu}></div>
           </div>
 
@@ -183,7 +139,7 @@ export default function DataAnalysisPage() {
               >
                 <div className={styles.columnBlock}>
                   <div className={styles.row}>
-                    <div className={styles.colTitle}>{r.title}</div>
+                    <div className={styles.colTitle}>{localize(r.title)}</div>
                     <div className={styles.colDate}>{formatDate(r.dateTime)}</div>
                     <div className={styles.colOwner}>
                       <span className={styles.ownerBadge}>{r.ownerInitials}</span>
@@ -193,7 +149,7 @@ export default function DataAnalysisPage() {
                         className={styles.visibilityBadge}
                         data-visibility={r.visibility}
                       >
-                        {r.visibility}
+                        {localize(r.visibility)}
                       </span>
                     </div>
                     <div
@@ -210,12 +166,11 @@ export default function DataAnalysisPage() {
             );
           })}
         </div>
-      </main>
 
       <CreateNewPopup
         isOpen={isCreatePopupOpen}
         onClose={() => setIsCreatePopupOpen(false)}
       />
-    </div>
+    </AppShell>
   );
 }

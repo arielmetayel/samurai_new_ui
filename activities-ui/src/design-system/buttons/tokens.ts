@@ -1,68 +1,63 @@
 export const checkboxTokens = {
-  // Checkbox sizes
   sizes: {
     sm: {
-      width: '16px',
-      height: '16px',
-      borderRadius: '4px',
+      width: "16px",
+      height: "16px",
+      borderRadius: "4px",
     },
     md: {
-      width: '20px',
-      height: '20px',
-      borderRadius: '4px',
+      width: "20px",
+      height: "20px",
+      borderRadius: "4px",
     },
     lg: {
-      width: '24px',
-      height: '24px',
-      borderRadius: '6px',
+      width: "24px",
+      height: "24px",
+      borderRadius: "6px",
     },
   },
-  
-  // Checkbox colors
+
   colors: {
     unchecked: {
-      border: '#D1D5DB',
-      background: '#FFFFFF',
+      border: "#d5dbe3",
+      background: "#ffffff",
       hover: {
-        border: '#9CA3AF',
-        background: '#F9FAFB',
+        border: "#868fa0",
+        background: "#f6f8fa",
       },
     },
     checked: {
-      border: '#0082C8',
-      background: '#0082C8',
+      border: "#0082C8",
+      background: "#0082C8",
       hover: {
-        border: '#026093',
-        background: '#026093',
+        border: "#026093",
+        background: "#026093",
       },
     },
     disabled: {
-      border: '#E5E7EB',
-      background: '#F3F4F6',
-      text: '#9CA3AF',
+      border: "#e6e9ef",
+      background: "#f6f8fa",
+      text: "#868fa0",
     },
   },
-  
-  // Checkbox states
+
   states: {
     focus: {
-      outline: '2px solid #0082C8',
-      outlineOffset: '2px',
+      outline: "2px solid #0082C8",
+      outlineOffset: "2px",
     },
   },
 };
 
 export const iconTokens = {
-  // Icon sizes for checkboxes
   sizes: {
-    sm: '12px',
-    md: '14px',
-    lg: '16px',
+    sm: "12px",
+    md: "14px",
+    lg: "16px",
   },
-  
-  // Icon colors
+
   colors: {
-    checked: '#FFFFFF',
-    disabled: '#9CA3AF',
+    checked: "#FFFFFF",
+    disabled: "#868fa0",
   },
 };

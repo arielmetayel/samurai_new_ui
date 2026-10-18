@@ -1,26 +1,26 @@
 :global(html.placementPage),
 :global(body.placementPage) {
-  background: #f7f9fb !important;
+  background: var(--color-canvas) !important;
   overflow: hidden;
-  color: #2f3036;
+  color: var(--color-text);
 }
 
 .shell {
-  --placement-primary: #0082c8;
-  --placement-primary-hover: #026093;
-  --placement-primary-soft: #e6f4ff;
-  --placement-bg: #f7f9fb;
-  --placement-text: #2f3036;
-  --placement-border: #e6e9ef;
-  --placement-divider: #e3e8ee;
-  --placement-muted: #868fa0;
-  --placement-success: #10b981;
-  --placement-warning: #f59e0b;
-  --placement-error: #ef4444;
+  --placement-primary: var(--color-primary);
+  --placement-primary-hover: var(--color-primary-hover);
+  --placement-primary-soft: var(--color-primary-soft);
+  --placement-bg: var(--color-canvas);
+  --placement-text: var(--color-text);
+  --placement-border: var(--color-border);
+  --placement-divider: var(--color-border-strong);
+  --placement-muted: var(--color-text-muted);
+  --placement-success: var(--status-confirmed);
+  --placement-warning: var(--status-review);
+  --placement-error: var(--color-danger);
   --font-ui: var(--font-rubik), Rubik, sans-serif;
   height: 100vh;
-  background: #f7f9fb;
-  color: #2f3036;
+  background: var(--color-canvas);
+  color: var(--color-text);
 }
 
 .pageWrapper {
@@ -28,7 +28,7 @@
   grid-template-columns: 240px 1fr;
   height: 100vh;
   min-height: 100vh;
-  background: #f7f9fb;
+  background: var(--color-canvas);
 }
 
 .topHeader {
@@ -38,7 +38,7 @@
   right: 0;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid #e6e9ef;
+  border-bottom: 1px solid var(--color-border);
   z-index: 100;
   padding: 16px 32px;
 }
@@ -52,30 +52,30 @@
 
 .backLink {
   text-decoration: none;
-  color: #868fa0;
+  color: var(--color-text-muted);
   font-weight: 500;
   padding: 8px 16px;
   border-radius: 8px;
   transition: all 0.2s ease;
-  border: 1px solid #e3e8ee;
+  border: 1px solid var(--color-border-strong);
 }
 
 .backLink:hover {
-  background: #f6f8fa;
-  color: #2f3036;
-  border-color: #868fa0;
+  background: var(--color-surface-muted);
+  color: var(--color-text);
+  border-color: var(--color-text-muted);
 }
 
 .topHeaderTitle {
   margin: 0;
   font-size: 1.5rem;
   font-weight: 600;
-  color: #2f3036;
+  color: var(--color-text);
 }
 
 .appSidebar {
-  background: #ffffff;
-  border-right: 1px solid #e6e9ef;
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -93,8 +93,8 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: #e6f4ff;
-  color: #0082c8;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
   display: grid;
   place-items: center;
   font-weight: 700;
@@ -102,7 +102,7 @@
 
 .appUserName {
   font-weight: 600;
-  color: #2f3036;
+  color: var(--color-text);
 }
 
 .menu {
@@ -116,7 +116,7 @@
 .menuItemActive {
   padding: 10px 12px;
   border-radius: 8px;
-  color: #464f60;
+  color: var(--color-text-secondary);
   cursor: pointer;
   text-decoration: none;
   display: flex;
@@ -125,12 +125,12 @@
 }
 
 .menuItem:hover {
-  background: #f6f8fa;
+  background: var(--color-surface-muted);
 }
 
 .menuItemActive {
-  background: #e6f4ff;
-  color: #0082c8;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
   font-weight: 600;
 }
 
@@ -176,7 +176,7 @@
   display: flex;
   align-items: center;
   gap: 0;
-  background: #f6f8fa;
+  background: var(--color-surface-muted);
   padding: 4px;
   border-radius: 12px;
 }
@@ -184,7 +184,7 @@
 .segmented button {
   border: 0;
   background: transparent;
-  color: #868fa0;
+  color: var(--color-text-muted);
   min-width: 64px;
   height: 32px;
   border-radius: 10px;
@@ -195,8 +195,8 @@
 }
 
 .segmented button[data-active="true"] {
-  background: #fff;
-  color: #0082c8;
+  background: var(--color-surface);
+  color: var(--color-primary);
   font-weight: 600;
   box-shadow: 0 -1px 3px 0 rgba(60, 66, 87, 0.08), 0 0 0 1px rgba(60, 66, 87, 0.16),
     0 1px 1px 0 rgba(0, 0, 0, 0.12);
@@ -206,7 +206,7 @@
   width: 38px;
   height: 38px;
   border: 1px solid var(--placement-border);
-  background: #fff;
+  background: var(--color-surface);
   border-radius: 12px;
   display: grid;
   place-items: center;
@@ -215,13 +215,13 @@
 }
 
 .iconBtn:hover {
-  background: #f6f8fa;
+  background: var(--color-surface-muted);
 }
 
 .sidebar {
   width: 372px;
   flex-shrink: 0;
-  background: #fff;
+  background: var(--color-surface);
   border: 1px solid var(--placement-border);
   border-radius: 12px;
   display: flex;
@@ -244,23 +244,23 @@
   right: 12px;
   top: 50%;
   transform: translateY(-50%);
-  color: #868fa0;
+  color: var(--color-text-muted);
 }
 
 .searchInput {
   width: 100%;
   padding: 12px 40px 12px 12px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--color-border);
   border-radius: 12px;
-  background: #fff;
+  background: var(--color-surface);
   font-family: inherit;
   font-size: 14px;
-  color: #2f3036;
+  color: var(--color-text);
   outline: none;
 }
 
 .searchInput:focus {
-  border-color: #0082c8;
+  border-color: var(--color-primary);
 }
 
 .chips {
@@ -270,9 +270,9 @@
 }
 
 .chip {
-  border: 1px solid #e3e8ee;
-  background: #fff;
-  color: #464f60;
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
   border-radius: 12px;
   padding: 6px 12px;
   font-family: inherit;
@@ -282,21 +282,21 @@
 }
 
 .chipAll[data-active="true"] {
-  background: #0082c8;
-  border-color: #0082c8;
-  color: #fff;
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-surface);
 }
 
 .chipHourly[data-active="true"] {
-  background: #ffedd5;
-  border-color: #f59e0b;
-  color: #d97706;
+  background: var(--status-review-bg);
+  border-color: var(--status-review);
+  color: var(--status-review);
 }
 
 .chipGlobal[data-active="true"] {
-  background: #e6f4ff;
-  border-color: #0082c8;
-  color: #0082c8;
+  background: var(--color-primary-soft);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
 }
 
 .sortBtn {
@@ -331,7 +331,7 @@
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  border: 2px solid #10b981;
+  border: 2px solid var(--status-confirmed);
   box-sizing: border-box;
 }
 
@@ -361,14 +361,14 @@
 .employeeRow:focus-visible {
   outline: none;
   background: rgba(16, 185, 129, 0.08);
-  box-shadow: inset 0 0 0 1.5px #10b981;
+  box-shadow: inset 0 0 0 1.5px var(--status-confirmed);
 }
 
 .empAvatar {
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  color: #fff;
+  color: var(--color-surface);
   display: grid;
   place-items: center;
   font-size: 12px;
@@ -404,13 +404,13 @@
 }
 
 .typeHourly {
-  background: #ffedd5;
-  color: #d97706;
+  background: var(--status-review-bg);
+  color: var(--status-review);
 }
 
 .typeGlobal {
-  background: #e6f4ff;
-  color: #0082c8;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
 }
 
 .days {
@@ -430,22 +430,22 @@
 }
 
 .dayAvailableHourly {
-  background: #ffedd5;
-  color: #d97706;
+  background: var(--status-review-bg);
+  color: var(--status-review);
 }
 
 .dayAvailableGlobal {
-  background: #e6f4ff;
-  color: #0082c8;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
 }
 
 .dayUnavailable {
-  background: #f6f8fa;
-  color: #868fa0;
+  background: var(--color-surface-muted);
+  color: var(--color-text-muted);
 }
 
 .daySelected {
-  box-shadow: inset 0 0 0 2px #2f3036;
+  box-shadow: inset 0 0 0 2px var(--color-text);
 }
 
 .empLoad {
@@ -468,14 +468,14 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  background: #fff;
+  background: var(--color-surface);
   border: 1px solid var(--placement-border);
   border-radius: 12px;
   overflow: hidden;
 }
 
 .toolbar {
-  background: #fff;
+  background: var(--color-surface);
   border-bottom: 1px solid var(--placement-border);
   padding: 12px 20px;
   display: grid;
@@ -512,7 +512,7 @@
   padding: 20px;
   display: flex;
   gap: 20px;
-  background: #f6f8fa;
+  background: var(--color-surface-muted);
 }
 
 .toolbarEnd {
@@ -578,8 +578,8 @@
 
 .periodCount {
   margin-inline-start: auto;
-  background: #e3e8ee;
-  color: #464f60;
+  background: var(--color-border-strong);
+  color: var(--color-text-secondary);
   border-radius: 999px;
   padding: 2px 8px;
   font-size: 12px;
@@ -597,7 +597,7 @@
   border-radius: 12px;
   padding: 14px;
   border: 1px solid var(--placement-border);
-  background: #fff;
+  background: var(--color-surface);
   box-shadow: 1.2px 1.2px 1.2px 0 rgba(232, 232, 232, 0.8);
 }
 
@@ -606,8 +606,8 @@
 }
 
 .taskFullAssigned {
-  background: #ecfdf5;
-  border-color: #d1fae5;
+  background: var(--status-confirmed-bg);
+  border-color: var(--status-confirmed-bg);
 }
 
 .taskDimmed {
@@ -615,7 +615,7 @@
 }
 
 .taskHighlight {
-  border-color: #10b981;
+  border-color: var(--status-confirmed);
   box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
   opacity: 1;
 }
@@ -656,9 +656,9 @@
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  border: 2px solid #fff;
+  border: 2px solid var(--color-surface);
   margin-inline-start: -6px;
-  color: #fff;
+  color: var(--color-surface);
   font-size: 9px;
   font-weight: 600;
   cursor: pointer;
@@ -682,8 +682,8 @@
 }
 
 .taskHighlight .addBtn {
-  border-color: #10b981;
-  color: #10b981;
+  border-color: var(--status-confirmed);
+  color: var(--status-confirmed);
 }
 
 .popover {
@@ -691,7 +691,7 @@
   top: calc(100% + 8px);
   inset-inline-start: 0;
   width: 240px;
-  background: #fff;
+  background: var(--color-surface);
   border-radius: 12px;
   box-shadow: 0 -1px 3px 0 rgba(60, 66, 87, 0.08), 0 0 0 1px rgba(60, 66, 87, 0.16),
     0 12px 32px rgba(15, 23, 42, 0.12);
@@ -727,11 +727,11 @@
 }
 
 .popoverItem:hover {
-  background: #f6f8fa;
+  background: var(--color-surface-muted);
 }
 
 .footer {
-  background: #fff;
+  background: var(--color-surface);
   border-top: 1px solid var(--placement-border);
   padding: 12px 20px;
   display: flex;
@@ -741,11 +741,11 @@
 }
 
 .dangerBtn {
-  color: #ef4444 !important;
+  color: var(--color-danger) !important;
 }
 
 .dangerBtn:hover:not(:disabled) {
-  color: #dc2626 !important;
+  color: var(--color-danger) !important;
 }
 
 @media (max-width: 1340px) {

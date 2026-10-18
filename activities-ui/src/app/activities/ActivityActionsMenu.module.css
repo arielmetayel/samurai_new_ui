@@ -11,18 +11,18 @@
   border-radius: 8px;
   display: grid;
   place-items: center;
-  color: #464f60;
+  color: var(--color-text-secondary);
 }
 
 .menuButton:hover,
 .menuButton:focus-visible {
-  background: #f6f8fa;
-  color: #2f3036;
+  background: var(--color-surface-muted);
+  color: var(--color-text);
 }
 
 .contextMenu {
   position: fixed;
-  background: #fff;
+  background: var(--color-surface);
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(47, 48, 54, 0.16);
   padding: 8px 0;
@@ -40,24 +40,23 @@
   gap: 12px;
   padding: 10px 16px;
   cursor: pointer;
-  font-family: Rubik, sans-serif;
   font-size: 14px;
-  color: #464f60;
+  color: var(--color-text-secondary);
   text-align: left;
 }
 
 .menuItem:hover,
 .menuItem:focus-visible {
-  background: #f6f8fa;
-  color: #2f3036;
+  background: var(--color-surface-muted);
+  color: var(--color-text);
 }
 
 .menuItemDanger {
-  color: #dc2626;
+  color: var(--color-danger);
 }
 
 .menuItemDanger:hover,
 .menuItemDanger:focus-visible {
-  background: #fef2f2;
-  color: #dc2626;
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
 }

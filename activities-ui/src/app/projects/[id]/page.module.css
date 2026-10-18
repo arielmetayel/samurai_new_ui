@@ -5,8 +5,7 @@
 }
 
 .missing {
-  font-family: Rubik, sans-serif;
-  color: #464f60;
+  color: var(--color-text-secondary);
 }
 
 .tabs {
@@ -21,10 +20,9 @@
   background: transparent;
   padding: 8px 12px;
   border-radius: 8px;
-  font-family: Rubik, sans-serif;
   font-size: 14px;
   font-weight: 500;
-  color: #868fa0;
+  color: var(--color-text-muted);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -32,13 +30,13 @@
 }
 
 .tab:hover {
-  background: #f6f8fa;
-  color: #464f60;
+  background: var(--color-surface-muted);
+  color: var(--color-text-secondary);
 }
 
 .tabActive {
-  background: #e6f4ff;
-  color: #0082c8;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
   font-weight: 600;
 }
 
@@ -47,8 +45,8 @@
   height: 20px;
   padding: 0 6px;
   border-radius: 999px;
-  background: #fff;
-  color: #464f60;
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
   font-size: 12px;
   font-weight: 700;
   display: inline-flex;
@@ -57,8 +55,8 @@
 }
 
 .tabActive .tabCount {
-  background: #fff;
-  color: #0082c8;
+  background: var(--color-surface);
+  color: var(--color-primary);
 }
 
 .hero {
@@ -74,7 +72,7 @@
 
 .hero[data-tone="rose"] {
   background:
-    radial-gradient(circle at 18% 28%, #f7d5e6 0, transparent 42%),
+    radial-gradient(circle at 18% 28%, var(--status-progress-bg) 0, transparent 42%),
     linear-gradient(135deg, #fde7ef 0%, #e8b4c8 100%);
 }
 
@@ -86,19 +84,19 @@
 
 .hero[data-tone="sage"] {
   background:
-    radial-gradient(circle at 30% 70%, #d1fae5 0, transparent 46%),
+    radial-gradient(circle at 30% 70%, var(--status-confirmed-bg) 0, transparent 46%),
     linear-gradient(135deg, #dbead2 0%, #8fbc8f 100%);
 }
 
 .hero[data-tone="sky"] {
   background:
-    radial-gradient(circle at 80% 20%, #e6f4ff 0, transparent 46%),
+    radial-gradient(circle at 80% 20%, var(--color-primary-soft) 0, transparent 46%),
     linear-gradient(135deg, #cfe8f7 0%, #7eb6d6 100%);
 }
 
 .hero[data-tone="lilac"] {
   background:
-    radial-gradient(circle at 40% 40%, #ede9fe 0, transparent 46%),
+    radial-gradient(circle at 40% 40%, var(--status-tested-bg) 0, transparent 46%),
     linear-gradient(135deg, #e4d7f5 0%, #9b87c4 100%);
 }
 
@@ -116,8 +114,8 @@
   height: 36px;
   border: 0;
   border-radius: 999px;
-  background: #fff;
-  color: #464f60;
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
   display: grid;
   place-items: center;
   cursor: pointer;
@@ -131,19 +129,17 @@
 
 .heroId {
   display: inline-block;
-  font-family: Rubik, sans-serif;
   font-size: 13px;
   font-weight: 600;
-  color: #fff;
+  color: var(--color-surface);
   text-shadow: 0 1px 2px rgba(47, 48, 54, 0.35);
 }
 
 .heroTitle {
   margin: 6px 0 0;
-  font-family: Rubik, sans-serif;
   font-size: 28px;
   font-weight: 600;
-  color: #fff;
+  color: var(--color-surface);
   text-shadow: 0 1px 8px rgba(47, 48, 54, 0.35);
 }
 
@@ -160,18 +156,17 @@
   width: 32px;
   height: 32px;
   border-radius: 999px;
-  border: 2px solid #fff;
+  border: 2px solid var(--color-surface);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-family: Rubik, sans-serif;
   font-size: 11px;
   font-weight: 700;
 }
 
 .teamBadge {
-  background: #e6f4ff;
-  color: #0082c8;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
   margin-left: -8px;
 }
 
@@ -182,8 +177,8 @@
 .teamAdd {
   appearance: none;
   margin-left: 8px;
-  background: #fff;
-  color: #464f60;
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
   cursor: pointer;
 }
 
@@ -191,7 +186,7 @@
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
-  background: #fff;
+  background: var(--color-surface);
   border-radius: 16px;
   padding: 20px;
   box-shadow: 0 4px 12px rgba(47, 48, 54, 0.06);
@@ -205,10 +200,9 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-family: Rubik, sans-serif;
   font-size: 13px;
   font-weight: 500;
-  color: #868fa0;
+  color: var(--color-text-muted);
 }
 
 .fieldHead {
@@ -222,8 +216,8 @@
 .fieldEditBtn {
   appearance: none;
   border: 0;
-  background: #f6f8fa;
-  color: #868fa0;
+  background: var(--color-surface-muted);
+  color: var(--color-text-muted);
   width: 32px;
   height: 32px;
   border-radius: 8px;
@@ -235,8 +229,8 @@
 
 .fieldEditBtn:hover,
 .fieldEditBtn:focus-visible {
-  background: #e6f4ff;
-  color: #0082c8;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
 }
 
 .overviewEditing .hero:not(.fieldEditing),
@@ -273,18 +267,17 @@
 .editSelect {
   width: 100%;
   min-height: 44px;
-  border: 1px solid #e6e9ef;
+  border: 1px solid var(--color-border);
   border-radius: 10px;
   padding: 0 12px;
-  font-family: Rubik, sans-serif;
   font-size: 16px;
-  color: #2f3036;
-  background: #fff;
+  color: var(--color-text);
+  background: var(--color-surface);
 }
 
 .editInput:focus,
 .editSelect:focus {
-  outline: 2px solid #0082c8;
+  outline: 2px solid var(--color-primary);
   outline-offset: 1px;
 }
 
@@ -308,7 +301,6 @@
   min-height: 40px;
   padding: 8px 16px;
   border-radius: 12px;
-  font-family: Rubik, sans-serif;
   font-size: 14px;
   font-weight: 500;
   line-height: 1;
@@ -316,25 +308,25 @@
 }
 
 .editCancel {
-  background: #fff;
-  color: #0082c8;
-  border: 1px solid #e3e8ee;
+  background: var(--color-surface);
+  color: var(--color-primary);
+  border: 1px solid var(--color-border-strong);
 }
 
 .editCancel:hover {
-  background: #f6f8fa;
-  color: #026093;
+  background: var(--color-surface-muted);
+  color: var(--color-primary-hover);
 }
 
 .editSave {
-  background: #0082c8;
-  color: #fff;
-  border: 1px solid #0082c8;
+  background: var(--color-primary);
+  color: var(--color-surface);
+  border: 1px solid var(--color-primary);
 }
 
 .editSave:hover:not(:disabled) {
-  background: #026093;
-  border-color: #026093;
+  background: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
 }
 
 .editSave:disabled {
@@ -357,10 +349,9 @@
 }
 
 .selectedCount {
-  font-family: Rubik, sans-serif;
   font-size: 12px;
   font-weight: 600;
-  color: #868fa0;
+  color: var(--color-text-muted);
 }
 
 .pickerSearch {
@@ -372,7 +363,7 @@
   left: 12px;
   top: 50%;
   transform: translateY(-50%);
-  color: #868fa0;
+  color: var(--color-text-muted);
   pointer-events: none;
 }
 
@@ -383,9 +374,9 @@
 .optionList {
   max-height: 240px;
   overflow: auto;
-  border: 1px solid #e6e9ef;
+  border: 1px solid var(--color-border);
   border-radius: 10px;
-  background: #fff;
+  background: var(--color-surface);
   -webkit-overflow-scrolling: touch;
 }
 
@@ -398,12 +389,11 @@
   min-height: 44px;
   padding: 8px 12px;
   border: 0;
-  border-bottom: 1px solid #eef1f5;
+  border-bottom: 1px solid var(--color-border-subtle);
   background: transparent;
   text-align: left;
-  font-family: Rubik, sans-serif;
   font-size: 14px;
-  color: #2f3036;
+  color: var(--color-text);
   cursor: pointer;
 }
 
@@ -412,8 +402,8 @@
 }
 
 .optionRow[data-checked="true"] {
-  background: #e6f4ff;
-  color: #0082c8;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
   font-weight: 600;
 }
 
@@ -425,20 +415,19 @@
   display: grid;
   place-items: center;
   flex-shrink: 0;
-  background: #fff;
+  background: var(--color-surface);
 }
 
 .optionCheck[data-checked="true"] {
-  border-color: #0082c8;
-  background: #0082c8;
-  color: #fff;
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: var(--color-surface);
 }
 
 .optionEmpty {
   padding: 16px 12px;
-  font-family: Rubik, sans-serif;
   font-size: 13px;
-  color: #868fa0;
+  color: var(--color-text-muted);
   text-align: center;
 }
 
@@ -486,8 +475,7 @@
   border: 0;
   border-radius: 10px;
   padding: 0 12px;
-  font-family: Rubik, sans-serif;
-  color: #2f3036;
+  color: var(--color-text);
 }
 
 .heroInputTitle {
@@ -526,7 +514,7 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
   padding: 12px;
-  border: 1px solid #eef1f5;
+  border: 1px solid var(--color-border-subtle);
   border-radius: 12px;
 }
 
@@ -534,10 +522,9 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  font-family: Rubik, sans-serif;
   font-size: 12px;
   font-weight: 600;
-  color: #868fa0;
+  color: var(--color-text-muted);
 }
 
 .contactForm .removeRowBtn {
@@ -547,8 +534,8 @@
 .removeRowBtn {
   appearance: none;
   border: 0;
-  background: #f6f8fa;
-  color: #464f60;
+  background: var(--color-surface-muted);
+  color: var(--color-text-secondary);
   border-radius: 10px;
   min-height: 40px;
   padding: 8px 12px;
@@ -557,17 +544,15 @@
   justify-content: center;
   gap: 6px;
   cursor: pointer;
-  font-family: Rubik, sans-serif;
   font-size: 13px;
 }
 
 .fieldValue {
   margin-top: 6px;
   padding-left: 20px;
-  font-family: Rubik, sans-serif;
   font-size: 15px;
   font-weight: 500;
-  color: #2f3036;
+  color: var(--color-text);
 }
 
 .valueList {
@@ -587,20 +572,19 @@
   height: 28px;
   padding: 0 10px;
   border-radius: 999px;
-  background: #f6f8fa;
-  color: #0082c8;
-  font-family: Rubik, sans-serif;
+  background: var(--color-surface-muted);
+  color: var(--color-primary);
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
 }
 
 .fieldValue[data-status="Signed Contract"] {
-  color: #10b981;
+  color: var(--status-confirmed);
 }
 
 .fieldValue[data-status="No Contract"] {
-  color: #f59e0b;
+  color: var(--status-review);
 }
 
 .dot {
@@ -610,9 +594,9 @@
   flex-shrink: 0;
 }
 
-.dot[data-tone="ok"] { background: #0082c8; }
-.dot[data-tone="pending"] { background: #f59e0b; }
-.dot[data-tone="missing"] { background: #ef4444; }
+.dot[data-tone="ok"] { background: var(--color-primary); }
+.dot[data-tone="pending"] { background: var(--status-review); }
+.dot[data-tone="missing"] { background: var(--color-danger); }
 .dot[data-tone="neutral"] { background: #c5ccd6; }
 
 .tags {
@@ -628,9 +612,8 @@
   height: 28px;
   padding: 0 10px;
   border-radius: 999px;
-  background: #e6f4ff;
-  color: #0082c8;
-  font-family: Rubik, sans-serif;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
   font-size: 12px;
   font-weight: 600;
 }
@@ -642,7 +625,7 @@
 }
 
 .card {
-  background: #fff;
+  background: var(--color-surface);
   border-radius: 16px;
   padding: 18px;
   box-shadow: 0 4px 12px rgba(47, 48, 54, 0.06);
@@ -663,23 +646,20 @@
 
 .cardHead h3 {
   margin: 0;
-  font-family: Rubik, sans-serif;
   font-size: 15px;
   font-weight: 600;
-  color: #2f3036;
+  color: var(--color-text);
 }
 
 .cardMeta {
-  font-family: Rubik, sans-serif;
   font-size: 12px;
   font-weight: 700;
-  color: #0082c8;
+  color: var(--color-primary);
 }
 
 .cardEmpty {
-  font-family: Rubik, sans-serif;
   font-size: 13px;
-  color: #868fa0;
+  color: var(--color-text-muted);
 }
 
 .tableWrap {
@@ -695,35 +675,33 @@
 .table td {
   text-align: left;
   padding: 10px 8px;
-  font-family: Rubik, sans-serif;
   font-size: 13px;
-  border-bottom: 1px solid #eef1f5;
+  border-bottom: 1px solid var(--color-border-subtle);
 }
 
 .table th {
-  color: #868fa0;
+  color: var(--color-text-muted);
   font-weight: 600;
 }
 
 .table td {
-  color: #2f3036;
+  color: var(--color-text);
 }
 
 .tableEditing .tableInput {
   width: 100%;
   min-width: 0;
   min-height: 36px;
-  border: 1px solid #e6e9ef;
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   padding: 0 8px;
-  font-family: Rubik, sans-serif;
   font-size: 13px;
-  color: #2f3036;
-  background: #fff;
+  color: var(--color-text);
+  background: var(--color-surface);
 }
 
 .tableEditing .tableInput:focus {
-  outline: 2px solid #0082c8;
+  outline: 2px solid var(--color-primary);
   outline-offset: 1px;
 }
 
@@ -737,7 +715,7 @@
   appearance: none;
   border: 0;
   background: transparent;
-  color: #868fa0;
+  color: var(--color-text-muted);
   width: 36px;
   height: 36px;
   border-radius: 8px;
@@ -749,15 +727,15 @@
 
 .rowDeleteBtn:hover,
 .rowDeleteBtn:focus-visible {
-  background: #f6f8fa;
-  color: #ef4444;
+  background: var(--color-surface-muted);
+  color: var(--color-danger);
 }
 
 .addTableRow {
   appearance: none;
   border: 1px dashed #c5ccd6;
-  background: #f6f8fa;
-  color: #0082c8;
+  background: var(--color-surface-muted);
+  color: var(--color-primary);
   border-radius: 10px;
   min-height: 40px;
   width: 100%;
@@ -766,15 +744,14 @@
   justify-content: center;
   gap: 8px;
   cursor: pointer;
-  font-family: Rubik, sans-serif;
   font-size: 14px;
   font-weight: 500;
 }
 
 .addTableRow:hover,
 .addTableRow:focus-visible {
-  background: #e6f4ff;
-  border-color: #0082c8;
+  background: var(--color-primary-soft);
+  border-color: var(--color-primary);
 }
 
 .srOnly {
@@ -807,15 +784,15 @@
 }
 
 .fileRow:hover {
-  background: #f6f8fa;
+  background: var(--color-surface-muted);
 }
 
 .fileIcon {
   width: 32px;
   height: 32px;
   border-radius: 8px;
-  background: #e6f4ff;
-  color: #0082c8;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
   display: grid;
   place-items: center;
   flex-shrink: 0;
@@ -827,16 +804,14 @@
 }
 
 .fileName {
-  font-family: Rubik, sans-serif;
   font-size: 14px;
   font-weight: 600;
-  color: #2f3036;
+  color: var(--color-text);
 }
 
 .fileMeta {
-  font-family: Rubik, sans-serif;
   font-size: 12px;
-  color: #868fa0;
+  color: var(--color-text-muted);
 }
 
 .actionStack {
@@ -848,21 +823,20 @@
 .actionBtn {
   appearance: none;
   border: 0;
-  background: #f6f8fa;
+  background: var(--color-surface-muted);
   border-radius: 10px;
   padding: 10px 12px;
   display: flex;
   align-items: center;
   gap: 8px;
-  font-family: Rubik, sans-serif;
   font-size: 13px;
   font-weight: 500;
-  color: #2f3036;
+  color: var(--color-text);
   cursor: pointer;
 }
 
 .actionBtn svg {
-  color: #0082c8;
+  color: var(--color-primary);
 }
 
 .statusSummary {
@@ -873,10 +847,9 @@
 }
 
 .summaryLabel {
-  font-family: Rubik, sans-serif;
   font-size: 13px;
   font-weight: 600;
-  color: #464f60;
+  color: var(--color-text-secondary);
 }
 
 .statusPills {
@@ -893,7 +866,6 @@
   gap: 4px;
   padding: 14px 10px;
   border-radius: 12px;
-  font-family: Rubik, sans-serif;
 }
 
 .statusPill strong {
@@ -908,10 +880,10 @@
   text-align: center;
 }
 
-.statusPill[data-status="In Progress"] { color: #e477af; background: #f7d5e6; }
-.statusPill[data-status="To Review"] { color: #d97706; background: #ffedd5; }
-.statusPill[data-status="Confirmed"] { color: #059669; background: #d1fae5; }
-.statusPill[data-status="Done"] { color: #0082c8; background: #e6f4ff; }
+.statusPill[data-status="In Progress"] { color: var(--status-progress); background: var(--status-progress-bg); }
+.statusPill[data-status="To Review"] { color: var(--status-review); background: var(--status-review-bg); }
+.statusPill[data-status="Confirmed"] { color: var(--status-confirmed); background: var(--status-confirmed-bg); }
+.statusPill[data-status="Done"] { color: var(--color-primary); background: var(--color-primary-soft); }
 
 .filterBlock {
   display: flex;
@@ -920,10 +892,9 @@
 }
 
 .filterLabel {
-  font-family: Rubik, sans-serif;
   font-size: 12px;
   font-weight: 600;
-  color: #868fa0;
+  color: var(--color-text-muted);
 }
 
 .filterRow {
@@ -939,21 +910,20 @@
   height: 30px;
   padding: 0 12px;
   border-radius: 999px;
-  font-family: Rubik, sans-serif;
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
 }
 
 .filterChip {
-  background: #fff;
-  color: #464f60;
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
   box-shadow: 0 1px 4px rgba(47, 48, 54, 0.06);
 }
 
 .filterChipActive {
-  background: #e6f4ff;
-  color: #0082c8;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
   font-weight: 600;
 }
 
@@ -961,16 +931,15 @@
 .shortcut {
   appearance: none;
   border: 0;
-  background: #fff;
+  background: var(--color-surface);
   border-radius: 14px;
   padding: 16px;
   display: flex;
   align-items: center;
   gap: 10px;
-  font-family: Rubik, sans-serif;
   font-size: 14px;
   font-weight: 500;
-  color: #2f3036;
+  color: var(--color-text);
   text-align: left;
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(47, 48, 54, 0.06);
@@ -978,12 +947,12 @@
 
 .linkCard:hover,
 .shortcut:hover {
-  background: #f6f8fa;
+  background: var(--color-surface-muted);
 }
 
 .linkCard svg,
 .shortcutIcon {
-  color: #0082c8;
+  color: var(--color-primary);
   flex-shrink: 0;
 }
 
@@ -997,8 +966,8 @@
   width: 36px;
   height: 36px;
   border-radius: 10px;
-  background: #e6f4ff;
-  color: #0082c8;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
   display: grid;
   place-items: center;
 }
@@ -1024,13 +993,13 @@
   justify-content: center;
   font-size: 10px;
   font-weight: 700;
-  color: #fff;
+  color: var(--color-surface);
 }
 
-.miniDot[data-tone="ok"] { background: #10b981; }
-.miniDot[data-tone="pending"] { background: #f59e0b; }
-.miniDot[data-tone="missing"] { background: #ef4444; }
-.miniDot[data-tone="done"] { background: #0082c8; }
+.miniDot[data-tone="ok"] { background: var(--status-confirmed); }
+.miniDot[data-tone="pending"] { background: var(--status-review); }
+.miniDot[data-tone="missing"] { background: var(--color-danger); }
+.miniDot[data-tone="done"] { background: var(--color-primary); }
 
 .toolbar {
   display: flex;
@@ -1049,17 +1018,16 @@
   left: 12px;
   top: 50%;
   transform: translateY(-50%);
-  color: #868fa0;
+  color: var(--color-text-muted);
   pointer-events: none;
 }
 
 .searchInput {
   width: 100%;
   padding: 12px 12px 12px 40px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--color-border);
   border-radius: 12px;
   outline: none;
-  font-family: Rubik, sans-serif;
   font-size: 14px;
 }
 
@@ -1071,24 +1039,22 @@
 .counter {
   display: flex;
   justify-content: flex-end;
-  color: #0082c8;
-  font-family: Rubik, sans-serif;
+  color: var(--color-primary);
   font-size: 14px;
   font-weight: 600;
 }
 
 .empty {
-  background: #fff;
+  background: var(--color-surface);
   border-radius: 14px;
   padding: 24px;
   text-align: center;
-  color: #868fa0;
-  font-family: Rubik, sans-serif;
+  color: var(--color-text-muted);
 }
 
 .activityTable {
-  background: #fff;
-  border: 1px solid #e6e9ef;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: 12px;
   overflow: hidden;
 }
@@ -1096,14 +1062,13 @@
 .activityHeader {
   display: flex;
   align-items: center;
-  background: #f6f8fa;
-  border-bottom: 1px solid #e3e8ee;
+  background: var(--color-surface-muted);
+  border-bottom: 1px solid var(--color-border-strong);
   min-height: 60px;
   padding: 0 8px 0 0;
-  font-family: Rubik, sans-serif;
   font-size: 14px;
   font-weight: 600;
-  color: #464f60;
+  color: var(--color-text-secondary);
 }
 
 .activityGrid {
@@ -1120,12 +1085,12 @@
   position: relative;
   margin-bottom: 16px;
   border-radius: 10px;
-  background: #fff;
+  background: var(--color-surface);
   box-shadow: 1.2px 1.2px 1.2px 0 rgba(232, 232, 232, 0.8);
 }
 
 .activitySelected {
-  box-shadow: 0 0 0 2px #0082c8;
+  box-shadow: 0 0 0 2px var(--color-primary);
 }
 
 .activityCheckbox {
@@ -1140,9 +1105,9 @@
   min-width: 0;
   text-decoration: none;
   color: inherit;
-  border-left: 5px solid var(--status-color, #e3e8ee);
+  border-left: 5px solid var(--status-color, var(--color-border-strong));
   border-radius: 10px;
-  background: #fff;
+  background: var(--color-surface);
   overflow: hidden;
   transition: all 0.2s ease;
 }
@@ -1152,10 +1117,10 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.activityWrapper[data-status="In Progress"] .activityCard { --status-color: #f7d5e6; }
-.activityWrapper[data-status="To Review"] .activityCard { --status-color: #ffedd5; }
-.activityWrapper[data-status="Confirmed"] .activityCard { --status-color: #d1fae5; }
-.activityWrapper[data-status="Done"] .activityCard { --status-color: #e6f4ff; }
+.activityWrapper[data-status="In Progress"] .activityCard { --status-color: var(--status-progress-bg); }
+.activityWrapper[data-status="To Review"] .activityCard { --status-color: var(--status-review-bg); }
+.activityWrapper[data-status="Confirmed"] .activityCard { --status-color: var(--status-confirmed-bg); }
+.activityWrapper[data-status="Done"] .activityCard { --status-color: var(--color-primary-soft); }
 
 .activityGrid {
   min-height: 72px;
@@ -1178,22 +1143,20 @@
   width: 36px;
   height: 36px;
   border-radius: 10px;
-  background: #f6f8fa;
-  color: #464f60;
+  background: var(--color-surface-muted);
+  color: var(--color-text-secondary);
   display: grid;
   place-items: center;
 }
 
 .iconId {
-  font-family: Rubik, sans-serif;
   font-size: 11px;
-  color: #868fa0;
+  color: var(--color-text-muted);
 }
 
 .activityDate {
-  font-family: Rubik, sans-serif;
   font-size: 14px;
-  color: #2f3036;
+  color: var(--color-text);
   padding: 0 6px;
 }
 
@@ -1206,37 +1169,34 @@
 }
 
 .activityType {
-  font-family: Rubik, sans-serif;
   font-size: 12px;
-  color: #868fa0;
+  color: var(--color-text-muted);
 }
 
 .activityProject {
-  font-family: Rubik, sans-serif;
   font-size: 14px;
   font-weight: 600;
-  color: #2f3036;
+  color: var(--color-text);
 }
 
 .activityStatus {
   width: max-content;
   padding: 6px;
   border-radius: 6px;
-  font-family: Rubik, sans-serif;
   font-size: 14px;
 }
 
 .activityHeader .activityStatus {
   background: transparent;
-  color: #464f60;
+  color: var(--color-text-secondary);
   font-weight: 600;
   padding: 0 6px;
 }
 
-.activityStatus[data-status="In Progress"] { color: #e477af; background: #f7d5e6; }
-.activityStatus[data-status="To Review"] { color: #d97706; background: #ffedd5; }
-.activityStatus[data-status="Confirmed"] { color: #059669; background: #d1fae5; }
-.activityStatus[data-status="Done"] { color: #0082c8; background: #e6f4ff; }
+.activityStatus[data-status="In Progress"] { color: var(--status-progress); background: var(--status-progress-bg); }
+.activityStatus[data-status="To Review"] { color: var(--status-review); background: var(--status-review-bg); }
+.activityStatus[data-status="Confirmed"] { color: var(--status-confirmed); background: var(--status-confirmed-bg); }
+.activityStatus[data-status="Done"] { color: var(--color-primary); background: var(--color-primary-soft); }
 
 .activityPeople {
   display: flex;
@@ -1248,17 +1208,16 @@
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: #e6f4ff;
-  color: #0082c8;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
   display: grid;
   place-items: center;
-  font-family: Rubik, sans-serif;
   font-size: 11px;
   font-weight: 700;
 }
 
 .activityMenu {
-  color: #464f60;
+  color: var(--color-text-secondary);
   display: grid;
   place-items: center;
 }
@@ -1337,11 +1296,11 @@
     border-radius: 10px;
     overflow: hidden;
     box-shadow: none;
-    border: 1px solid #e3e8ee;
+    border: 1px solid var(--color-border-strong);
   }
 
   .activityCard {
-    border-left: 4px solid var(--status-color, #e3e8ee);
+    border-left: 4px solid var(--status-color, var(--color-border-strong));
     border-radius: 0;
     box-shadow: none;
   }
@@ -1393,7 +1352,7 @@
   }
 
   .table:not(.tableEditing) tr {
-    border: 1px solid #eef1f5;
+    border: 1px solid var(--color-border-subtle);
     border-radius: 12px;
     padding: 8px 4px 12px;
     margin-bottom: 10px;
@@ -1409,7 +1368,7 @@
 
   .table:not(.tableEditing) td::before {
     content: attr(data-label);
-    color: #868fa0;
+    color: var(--color-text-muted);
     font-weight: 600;
     flex-shrink: 0;
   }

@@ -10,9 +10,11 @@ import TopBar from "./TopBar";
 import EmployeeSidebar from "./EmployeeSidebar";
 import AssignmentBoard from "./AssignmentBoard";
 import styles from "./placement.module.css";
+import { useI18n } from "@/i18n";
 import { NavLabel, navItems } from "../navItems";
 
 export default function PlacementPage() {
+  const { t } = useI18n();
   const [selectedDay, setSelectedDay] = useState<BoardDayKey>("today");
   const [hoveredEmployeeId, setHoveredEmployeeId] = useState<string | null>(null);
   const [openTaskId, setOpenTaskId] = useState<string | null>(null);
@@ -101,20 +103,20 @@ export default function PlacementPage() {
       <aside className={styles.appSidebar}>
         <div className={styles.userBlock}>
           <div className={styles.avatar}>UF</div>
-          <div className={styles.appUserName}>User Full Name</div>
+          <div className={styles.appUserName}>{t("chrome.userName")}</div>
         </div>
         <nav className={styles.menu}>
           {navItems.map((item) =>
             item.href ? (
               <Link
-                key={item.label}
+                key={item.id}
                 href={item.href}
-                className={item.label === "Placement" ? styles.menuItemActive : styles.menuItem}
+                className={item.id === "placement" ? styles.menuItemActive : styles.menuItem}
               >
                 <NavLabel item={item} />
               </Link>
             ) : (
-              <div key={item.label} className={styles.menuItem}>
+              <div key={item.id} className={styles.menuItem}>
                 <NavLabel item={item} />
               </div>
             )
@@ -127,7 +129,7 @@ export default function PlacementPage() {
             className={styles.createBtn}
             onClick={() => setIsCreatePopupOpen(true)}
           >
-            + Create New
+            + {t("chrome.createNew")}
           </Button>
         </div>
       </aside>

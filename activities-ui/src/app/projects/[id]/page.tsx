@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
-import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { Button, Checkbox } from "@/design-system";
 import {
@@ -21,7 +20,8 @@ import {
 import ActivityActionsMenu from "../../activities/ActivityActionsMenu";
 import CreateNewPopup from "../../activities/CreateNewPopup";
 import list from "../../activities/styles.module.css";
-import { NavLabel, navItems } from "../../navItems";
+import { useI18n } from "@/i18n";
+import AppShell from "../../AppShell";
 import {
   activityPreviewQuestions,
   AUTHORIZATION_OPTIONS,
@@ -37,7 +37,6 @@ import {
   QUOTE_FIX_OPTIONS,
   WorkflowStatus,
 } from "../data";
-import chrome from "../styles.module.css";
 import styles from "./page.module.css";
 import {
   cloneProject,
@@ -138,6 +137,7 @@ function goToPreviousPage(router: ReturnType<typeof useRouter>, fallback = "/pro
 }
 
 export default function ProjectDetailPage() {
+  const { t, localize } = useI18n();
   const params = useParams<{ id: string }>();
   const router = useRouter();
   const source = getProject(params.id);
@@ -219,91 +219,39 @@ export default function ProjectDetailPage() {
 
   if (!project) {
     return (
-      <div className={chrome.pageWrapper}>
-        <header className={chrome.topHeader}>
-          <div className={chrome.topHeaderContent}>
-            <button type="button" className={chrome.backLink} onClick={() => goToPreviousPage(router)}>
-              ← Back
-            </button>
-            <h1 className={chrome.topHeaderTitle}>Project</h1>
-          </div>
-        </header>
-        <aside className={chrome.sidebar}>
-          <div className={chrome.userBlock}>
-            <div className={chrome.avatar}>UF</div>
-            <div className={chrome.userName}>User Full Name</div>
-          </div>
-        </aside>
-        <main className={chrome.main}>
-          <p className={styles.missing}>This project was not found.</p>
-          <button type="button" className={chrome.backLink} onClick={() => goToPreviousPage(router)}>
-            ← Back
-          </button>
-        </main>
-      </div>
+      <AppShell
+        title={t("create.project")}
+        backLabel={t("common.back")}
+        onBack={() => goToPreviousPage(router)}
+        onCreateNew={() => setIsCreatePopupOpen(true)}
+      >
+        <p className={styles.missing}>{t("projects.missing")}</p>
+      </AppShell>
     );
   }
 
   return (
-    <div className={chrome.pageWrapper}>
-      <header className={chrome.topHeader}>
-        <div className={chrome.topHeaderContent}>
-          <button type="button" className={chrome.backLink} onClick={() => goToPreviousPage(router)}>
-            ← Back
-          </button>
-          <h1 className={chrome.topHeaderTitle}>Project</h1>
-        </div>
-      </header>
-
-      <aside className={chrome.sidebar}>
-        <div className={chrome.userBlock}>
-          <div className={chrome.avatar}>UF</div>
-          <div className={chrome.userName}>User Full Name</div>
-        </div>
-        <nav className={chrome.menu}>
-          {navItems.map((item) =>
-            item.href ? (
-              <Link
-                key={item.label}
-                href={item.href}
-                className={item.label === "Projects" ? chrome.menuItemActive : chrome.menuItem}
-              >
-                <NavLabel item={item} />
-              </Link>
-            ) : (
-              <div key={item.label} className={chrome.menuItem}>
-                <NavLabel item={item} />
-              </div>
-            )
-          )}
-        </nav>
-        <div className={chrome.createWrap}>
-          <Button
-            variant="primary"
-            size="md"
-            className={chrome.createBtn}
-            onClick={() => setIsCreatePopupOpen(true)}
-          >
-            + Create New
-          </Button>
-        </div>
-      </aside>
-
-      <main className={`${chrome.main} ${styles.main}`}>
+    <AppShell
+      title={t("create.project")}
+      backLabel={t("common.back")}
+      onBack={() => goToPreviousPage(router)}
+      onCreateNew={() => setIsCreatePopupOpen(true)}
+      contentClassName={styles.main}
+    >
         <div className={styles.tabs}>
           <button
             type="button"
             className={tab === "overview" ? styles.tabActive : styles.tab}
             onClick={() => setTab("overview")}
           >
-            Overview
+            {t("projects.overview")}
           </button>
           <button
             type="button"
             className={tab === "activities" ? styles.tabActive : styles.tab}
             onClick={() => setTab("activities")}
           >
-            Activities
+            {t("projects.activities")}
             <span className={styles.tabCount}>{project.activities.length}</span>
           </button>
         </div>
@@ -578,14 +526,14 @@ export default function ProjectDetailPage() {
             </div>
 
             <div className={styles.filterBlock}>
-              <span className={styles.filterLabel}>Type</span>
+              <span className={styles.filterLabel}>{t("table.type")}</span>
               <div className={styles.filterRow}>
                 <button
                   type="button"
                   className={typeFilters.length === 0 ? styles.filterChipActive : styles.filterChip}
                   onClick={() => setTypeFilters([])}
                 >
-                  All
+                  {t("common.all")}
                 </button>
                 {activityTypes.map((type) => (
                   <button
@@ -594,21 +542,21 @@ export default function ProjectDetailPage() {
                     className={typeFilters.includes(type) ? styles.filterChipActive : styles.filterChip}
                     onClick={() => setTypeFilters(toggleValue(typeFilters, type))}
                   >
-                    {type}
+                    {localize(type)}
                   </button>
                 ))}
               </div>
             </div>
 
             <div className={styles.filterBlock}>
-              <span className={styles.filterLabel}>Status</span>
+              <span className={styles.filterLabel}>{t("table.status")}</span>
               <div className={styles.filterRow}>
                 <button
                   type="button"
                   className={statusFilters.length === 0 ? styles.filterChipActive : styles.filterChip}
                   onClick={() => setStatusFilters([])}
                 >
-                  All
+                  {t("common.all")}
                 </button>
                 {activityStatuses.map((status) => (
                   <button
@@ -617,7 +565,7 @@ export default function ProjectDetailPage() {
                     className={statusFilters.includes(status) ? styles.filterChipActive : styles.filterChip}
                     onClick={() => setStatusFilters(toggleValue(statusFilters, status))}
                   >
-                    {status}
+                    {localize(status)}
                   </button>
                 ))}
               </div>
@@ -628,16 +576,16 @@ export default function ProjectDetailPage() {
             </div>
 
             {filteredActivities.length === 0 ? (
-              <div className={styles.empty}>No activities match these filters.</div>
+              <div className={styles.empty}>{t("projects.empty")}</div>
             ) : (
               <div className={list.table}>
                 <div className={list.tableHeader}>
                   <div className={list.colCheckbox} />
                   <div className={list.colIcon} />
-                  <div className={list.colDate}>Date & Time</div>
-                  <div className={list.colActivityType}>Project Name</div>
-                  <div className={list.colStatus}>Status</div>
-                  <div className={list.colAssignees}>Assignee</div>
+                  <div className={list.colDate}>{t("table.dateTime")}</div>
+                  <div className={list.colActivityType}>{t("table.projectName")}</div>
+                  <div className={list.colStatus}>{t("table.status")}</div>
+                  <div className={list.colAssignees}>{t("table.assignee")}</div>
                   <div className={list.colActions} />
                   <div className={list.colMenu} />
                 </div>
@@ -645,6 +593,7 @@ export default function ProjectDetailPage() {
                   const selected = selectedIds.includes(activity.id);
                   const expanded = !!expandedRowIds[activity.id];
                   const previewQuestions = activityPreviewQuestions(activity);
+                  const [dateDay, dateTime] = activity.dateLabel.trim().split(/\s+/);
                   return (
                     <div
                       key={activity.id}
@@ -671,13 +620,16 @@ export default function ProjectDetailPage() {
                               <div className={list.iconId}>#{activity.number}</div>
                             </div>
                           </div>
-                          <div className={list.colDate}>{activity.dateLabel}</div>
+                          <div className={list.colDate}>
+                            <span className={list.dateDay}>{dateDay}</span>
+                            {dateTime ? <span className={list.dateTime}>{dateTime}</span> : null}
+                          </div>
                           <div className={list.colActivityType}>
-                            <div className={list.activityType}>{activity.type}</div>
+                            <div className={list.activityType}>{localize(activity.type)}</div>
                             <div className={list.projectName}>{activity.title}</div>
                           </div>
                           <div className={list.colStatus} data-status={activity.status}>
-                            {activity.status}
+                            {localize(activity.status)}
                           </div>
                           <div className={list.colAssignees}>
                             {activity.assignee ? (
@@ -716,8 +668,8 @@ export default function ProjectDetailPage() {
                               <div className={list.questionsGrid}>
                                 {previewQuestions.map((question) => (
                                   <div key={question.id} className={list.questionItem}>
-                                    <div className={list.questionTitle}>{question.title}</div>
-                                    <div className={list.questionAnswer}>{question.answer}</div>
+                                    <div className={list.questionTitle}>{localize(question.title)}</div>
+                                    <div className={list.questionAnswer}>{localize(question.answer)}</div>
                                   </div>
                                 ))}
                               </div>
@@ -734,7 +686,7 @@ export default function ProjectDetailPage() {
                                   }));
                                 }}
                               >
-                                {expanded ? "Show less" : "Show more"}
+                                {expanded ? t("common.showLess") : t("common.showMore")}
                                 {expanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                               </button>
                             </div>
@@ -748,12 +700,11 @@ export default function ProjectDetailPage() {
             )}
           </>
         )}
-      </main>
 
       <CreateNewPopup
         isOpen={isCreatePopupOpen}
         onClose={() => setIsCreatePopupOpen(false)}
       />
-    </div>
+    </AppShell>
   );
 }

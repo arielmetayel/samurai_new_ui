@@ -5,6 +5,7 @@ import styles from "./styles.module.css";
 import { Button } from "@/design-system";
 import { typography } from "@/design-system";
 import { ArrowLeft, Calendar, Clock, Briefcase } from "react-feather";
+import { useI18n } from "@/i18n";
 
 
 interface ScheduleActivityPopupProps {
@@ -25,6 +26,7 @@ export default function ScheduleActivityPopup({
   onNext,
   activityData
 }: ScheduleActivityPopupProps) {
+  const { t, localize } = useI18n();
   const [selectedDate, setSelectedDate] = useState<string>("");
   const [selectedTime, setSelectedTime] = useState<string>("");
 
@@ -53,7 +55,7 @@ export default function ScheduleActivityPopup({
           <button className={styles.backButton} onClick={onBack}>
             <ArrowLeft size={20} />
           </button>
-          <h2 style={typography.combinations['header-m02']}>Schedule Activity Date & Time</h2>
+          <h2 style={typography.combinations['header-m02']}>{t("create.schedule")}</h2>
         </div>
         
         {/* Date and Time Inputs */}
@@ -62,14 +64,14 @@ export default function ScheduleActivityPopup({
           <div className={styles.overviewContent}>
             <div className={styles.overviewItemVertical}>
               <div className={styles.overviewItemHorizontalRow}>
-                <span className={styles.overviewLabel}>Activity Type:</span>
+                <span className={styles.overviewLabel}>{t("create.activityType")}</span>
                 <div className={styles.overviewValueWithIcon}>
                   <Briefcase size={16} className={styles.activityIcon} />
-                  <span className={styles.overviewValue}>{activityData.activityType}</span>
+                  <span className={styles.overviewValue}>{localize(activityData.activityType)}</span>
                 </div>
               </div>
               <div className={styles.overviewItemHorizontalRow}>
-                <span className={styles.overviewLabel}>Project:</span>
+                <span className={styles.overviewLabel}>{t("create.projectLabel")}</span>
                 <span className={styles.overviewValue}>{activityData.project}</span>
               </div>
             </div>
@@ -105,7 +107,7 @@ export default function ScheduleActivityPopup({
             onClick={onBack}
             className={styles.cancelButton}
           >
-            Back
+            {t("common.back")}
           </Button>
           <Button 
             type="button" 
@@ -114,7 +116,7 @@ export default function ScheduleActivityPopup({
             disabled={!selectedDate || !selectedTime}
             className={styles.nextButton}
           >
-            Create New
+            {t("chrome.createNew")}
           </Button>
         </div>
       </div>

@@ -3,14 +3,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Copy, Eye, FileText, MoreVertical, Share, Trash2 } from "react-feather";
+import { useI18n } from "@/i18n";
+import type { MessageKey } from "@/i18n/messages";
 import styles from "./ActivityActionsMenu.module.css";
 
 const ACTIONS = [
-  { id: "pdf", label: "Create PDF", icon: FileText },
-  { id: "duplicate", label: "Duplicate", icon: Copy },
-  { id: "share", label: "Share", icon: Share },
-  { id: "history", label: "Show History", icon: Eye },
-  { id: "delete", label: "Delete", icon: Trash2, danger: true },
+  { id: "pdf", labelKey: "actions.pdf" as MessageKey, icon: FileText },
+  { id: "duplicate", labelKey: "actions.duplicate" as MessageKey, icon: Copy },
+  { id: "share", labelKey: "actions.share" as MessageKey, icon: Share },
+  { id: "history", labelKey: "actions.history" as MessageKey, icon: Eye },
+  { id: "delete", labelKey: "actions.delete" as MessageKey, icon: Trash2, danger: true },
 ] as const;
 
 type ActivityActionsMenuProps = {
@@ -26,6 +28,7 @@ export default function ActivityActionsMenu({
   iconSize = 20,
   buttonClassName,
 }: ActivityActionsMenuProps) {
+  const { t } = useI18n();
   const containerRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [coords, setCoords] = useState<{ top: number; right: number } | null>(null);
@@ -93,7 +96,7 @@ export default function ActivityActionsMenu({
         className={`${styles.menuButton} ${buttonClassName ?? ""}`}
         aria-haspopup="menu"
         aria-expanded={open}
-        aria-label="Activity actions"
+        aria-label={t("actions.menu")}
         onClick={toggle}
       >
         <MoreVertical size={iconSize} />
@@ -119,7 +122,7 @@ export default function ActivityActionsMenu({
                     onClick={() => onOpenChange(false)}
                   >
                     <Icon size={16} />
-                    <span>{action.label}</span>
+                    <span>{t(action.labelKey)}</span>
                   </button>
                 );
               })}

@@ -5,6 +5,7 @@ import styles from "./styles.module.css";
 import { Button } from "@/design-system";
 import { typography } from "@/design-system";
 import { ArrowLeft, Search } from "react-feather";
+import { useI18n } from "@/i18n";
 import ChooseProjectPopup from "./ChooseProjectPopup";
 import dbData from "@/data/db.json";
 
@@ -21,6 +22,7 @@ export default function ChooseActivityTypePopup({
   onBack, 
   onNext 
 }: ChooseActivityTypePopupProps) {
+  const { t, localize } = useI18n();
   const [selectedType, setSelectedType] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [showProjectPopup, setShowProjectPopup] = useState(false);
@@ -28,7 +30,8 @@ export default function ChooseActivityTypePopup({
   const activityTypes = dbData.activityTypes;
 
   const filteredTypes = activityTypes.filter(type =>
-    type.toLowerCase().includes(searchQuery.toLowerCase())
+    type.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      localize(type).toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const handleTypeSelect = (type: string) => {
@@ -75,7 +78,7 @@ export default function ChooseActivityTypePopup({
           <button className={styles.backButton} onClick={onBack}>
             <ArrowLeft size={20} />
           </button>
-          <h2 style={typography.combinations['header-m02']}>Choose Activity Type</h2>
+          <h2 style={typography.combinations['header-m02']}>{t("create.chooseType")}</h2>
         </div>
         
         {/* Search Bar */}
@@ -84,7 +87,7 @@ export default function ChooseActivityTypePopup({
             <Search size={20} className={styles.searchIcon} />
             <input
               type="text"
-              placeholder="search"
+              placeholder={t("common.search")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className={styles.searchInput}
@@ -101,7 +104,7 @@ export default function ChooseActivityTypePopup({
               onClick={() => handleTypeSelect(type)}
             >
               <div className={styles.typeIcon}></div>
-              <span className={styles.typeText}>{type}</span>
+              <span className={styles.typeText}>{localize(type)}</span>
             </div>
           ))}
         </div>
@@ -114,7 +117,7 @@ export default function ChooseActivityTypePopup({
             onClick={onClose}
             className={styles.cancelButton}
           >
-            Cancel
+            {t("common.cancel")}
           </Button>
           <Button 
             type="button" 
@@ -123,7 +126,7 @@ export default function ChooseActivityTypePopup({
             disabled={!selectedType}
             className={styles.nextButton}
           >
-            Next
+            {t("common.next")}
           </Button>
         </div>
       </div>

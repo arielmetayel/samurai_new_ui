@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { Button } from "@/design-system";
 import {
   AlertCircle,
   Bookmark,
   Briefcase,
   Calendar,
+  ChevronLeft,
   ChevronRight,
   Clock,
   Folder,
@@ -19,7 +19,8 @@ import ActivityDetailSidePanel from "./activities/ActivityDetailSidePanel";
 import CreateNewPopup from "./activities/CreateNewPopup";
 import { getActivityById } from "./activities/data";
 import { Activity } from "@/types";
-import { NavLabel, navItems } from "./navItems";
+import { useI18n } from "@/i18n";
+import AppShell from "./AppShell";
 import styles from "./page.module.css";
 
 type CardTone = "green" | "orange" | "red";
@@ -263,15 +264,14 @@ const tomorrowActivities: DashboardRow[] = [
   },
 ];
 
-function greetingFor(date: Date) {
-  const hour = date.getHours();
-  if (hour < 12) return "Good morning";
-  if (hour < 18) return "Good afternoon";
-  return "Good evening";
+function greetingFor(hour: number, t: ReturnType<typeof useI18n>["t"]) {
+  if (hour < 12) return t("home.morning");
+  if (hour < 18) return t("home.afternoon");
+  return t("home.evening");
 }
 
-function formatHeaderDate(date: Date) {
-  return date.toLocaleDateString("en-GB", {
+function formatHeaderDate(date: Date, locale: string) {
+  return date.toLocaleDateString(locale === "he" ? "he-IL" : "en-GB", {
     weekday: "long",
     day: "numeric",
     month: "long",
@@ -295,11 +295,12 @@ function statusClass(status: string) {
 }
 
 function CarouselCard({ card, onOpen }: { card: DashboardCard; onOpen: (id: string) => void }) {
+  const { localize } = useI18n();
   return (
     <button
       type="button"
       onClick={() => onOpen(card.activityId)}
-      className={`${styles.card} ${styles[`tone_${card.tone}`]}`}
+      className={`${styles.card} ${styles[`tone_${card.tone}`] ?? ""}`.trim()}
     >
       <div className={styles.cardTop}>
         <span className={styles.cardIcon}>
@@ -307,10 +308,10 @@ function CarouselCard({ card, onOpen }: { card: DashboardCard; onOpen: (id: stri
         </span>
         <span className={styles.cardDate}>{card.dateLabel}</span>
       </div>
-      <div className={styles.cardType}>{card.type}</div>
+      <div className={styles.cardType}>{localize(card.type)}</div>
       <div className={styles.cardTitle}>{card.project}</div>
       <div className={styles.cardBottom}>
-        <span className={`${styles.statusChip} ${statusClass(card.status)}`}>{card.status}</span>
+        <span className={`${styles.statusChip} ${statusClass(card.status)}`}>{localize(card.status)}</span>
         <div className={styles.cardPeople}>
           {card.assignees.map((initials) => (
             <span key={initials} className={styles.personBadge}>
@@ -324,6 +325,7 @@ function CarouselCard({ card, onOpen }: { card: DashboardCard; onOpen: (id: stri
 }
 
 function ActivityRow({ row, onOpen }: { row: DashboardRow; onOpen: (id: string) => void }) {
+  const { localize } = useI18n();
   return (
     <button
       type="button"
@@ -340,9 +342,9 @@ function ActivityRow({ row, onOpen }: { row: DashboardRow; onOpen: (id: string) 
       </div>
       <div className={styles.rowBody}>
         <div className={styles.rowTitle}>{row.project}</div>
-        <div className={styles.rowSub}>{row.type}</div>
+        <div className={styles.rowSub}>{localize(row.type)}</div>
       </div>
-      <span className={`${styles.statusChip} ${statusClass(row.status)}`}>{row.status}</span>
+      <span className={`${styles.statusChip} ${statusClass(row.status)}`}>{localize(row.status)}</span>
       <span className={styles.rowAssignee}>{row.assignee}</span>
     </button>
   );
@@ -359,6 +361,8 @@ function SectionHead({
   count: number;
   href: string;
 }) {
+  const { t, dir } = useI18n();
+  const Chevron = dir === "rtl" ? ChevronLeft : ChevronRight;
   return (
     <div className={styles.sectionHead}>
       <span className={styles.sectionIcon}>{icon}</span>
@@ -367,17 +371,22 @@ function SectionHead({
         <span className={styles.countPill}>{count}</span>
       </h2>
       <Link href={href} className={styles.sectionMore}>
-        View all
-        <ChevronRight size={16} />
+        {t("home.viewAll")}
+        <Chevron size={16} />
       </Link>
     </div>
   );
 }
 
 export default function Home() {
+  const { t, locale } = useI18n();
   const [isCreatePopupOpen, setIsCreatePopupOpen] = useState(false);
   const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
-  const now = useMemo(() => new Date(), []);
+  const [now, setNow] = useState<Date | null>(null);
+
+  useEffect(() => {
+    setNow(new Date());
+  }, []);
 
   function openActivity(id: string) {
     const activity = getActivityById(id);
@@ -388,72 +397,36 @@ export default function Home() {
     pinnedActivities.filter((a) => a.status === "Overdue").length;
 
   return (
-    <div className={styles.pageWrapper}>
-      <header className={styles.topHeader}>
-        <div className={styles.topHeaderContent}>
-          <h1 className={styles.topHeaderTitle}>Home</h1>
-          <span className={styles.headerDate}>{formatHeaderDate(now)}</span>
-        </div>
-      </header>
-
-      <aside className={styles.sidebar}>
-        <div className={styles.userBlock}>
-          <div className={styles.avatar}>UF</div>
-          <div className={styles.userName}>User Full Name</div>
-        </div>
-        <nav className={styles.menu}>
-          {navItems.map((item) =>
-            item.href ? (
-              <Link
-                key={item.label}
-                href={item.href}
-                className={item.label === "Home" ? styles.menuItemActive : styles.menuItem}
-              >
-                <NavLabel item={item} />
-              </Link>
-            ) : (
-              <div key={item.label} className={styles.menuItem}>
-                <NavLabel item={item} />
-              </div>
-            )
-          )}
-        </nav>
-        <div className={styles.createWrap}>
-          <Button
-            variant="primary"
-            size="md"
-            className={styles.createBtn}
-            onClick={() => setIsCreatePopupOpen(true)}
-          >
-            + Create New
-          </Button>
-        </div>
-      </aside>
-
-      <main className={styles.main}>
+    <AppShell
+      title={t("nav.home")}
+      showBack={false}
+      headerExtra={now ? formatHeaderDate(now, locale) : ""}
+      onCreateNew={() => setIsCreatePopupOpen(true)}
+      contentClassName={styles.main}
+    >
         <div className={styles.hero}>
           <div>
-            <p className={styles.kicker}>{greetingFor(now)}</p>
-            <h2 className={styles.pageTitle}>Your dashboard</h2>
+            <p className={styles.kicker}>{now ? greetingFor(now.getHours(), t) : t("home.hello")}</p>
+            <h2 className={styles.pageTitle}>{t("home.dashboard")}</h2>
           </div>
         </div>
 
         <div className={styles.stats}>
           <div className={styles.stat}>
             <span className={styles.statValue}>{myOpenActivities.length}</span>
-            <span className={styles.statLabel}>Open activities</span>
+            <span className={styles.statLabel}>{t("home.openActivities")}</span>
           </div>
           <div className={styles.stat}>
             <span className={styles.statValue}>{toReviewCount}</span>
-            <span className={styles.statLabel}>Need review</span>
+            <span className={styles.statLabel}>{t("home.needReview")}</span>
           </div>
           <div className={styles.stat}>
             <span className={styles.statValue}>{pinnedActivities.length}</span>
-            <span className={styles.statLabel}>Pinned / overdue</span>
+            <span className={styles.statLabel}>{t("home.pinnedOverdue")}</span>
           </div>
           <div className={styles.stat}>
             <span className={styles.statValue}>{todayActivities.length}</span>
-            <span className={styles.statLabel}>Scheduled today</span>
+            <span className={styles.statLabel}>{t("home.scheduledToday")}</span>
           </div>
         </div>
 
@@ -461,7 +434,7 @@ export default function Home() {
           <section className={styles.listSection}>
             <SectionHead
               icon={<Calendar size={16} />}
-              title="Today's Activities"
+              title={t("home.today")}
               count={todayActivities.length}
               href="/activities"
             />
@@ -475,7 +448,7 @@ export default function Home() {
           <section className={styles.listSection}>
             <SectionHead
               icon={<AlertCircle size={16} />}
-              title="Tomorrow's Activities"
+              title={t("home.tomorrow")}
               count={tomorrowActivities.length}
               href="/activities"
             />
@@ -490,7 +463,7 @@ export default function Home() {
         <section className={styles.carouselSection}>
           <SectionHead
             icon={<Clock size={16} />}
-            title="My Open Activities"
+            title={t("home.myOpen")}
             count={myOpenActivities.length}
             href="/activities"
           />
@@ -504,7 +477,7 @@ export default function Home() {
         <section className={styles.carouselSection}>
           <SectionHead
             icon={<Folder size={16} />}
-            title="Open activities in my projects"
+            title={t("home.projectOpen")}
             count={projectActivities.length}
             href="/activities"
           />
@@ -518,7 +491,7 @@ export default function Home() {
         <section className={styles.carouselSection}>
           <SectionHead
             icon={<Bookmark size={16} />}
-            title="My Pinned activities"
+            title={t("home.pinned")}
             count={pinnedActivities.length}
             href="/activities"
           />
@@ -528,7 +501,6 @@ export default function Home() {
             ))}
           </div>
         </section>
-      </main>
 
       <CreateNewPopup
         isOpen={isCreatePopupOpen}
@@ -540,6 +512,6 @@ export default function Home() {
         isOpen={Boolean(selectedActivity)}
         onClose={() => setSelectedActivity(null)}
       />
-    </div>
+    </AppShell>
   );
 }

@@ -1,4 +1,7 @@
+"use client";
+
 import type { Icon } from "react-feather";
+import { useI18n } from "@/i18n";
 import {
   Award,
   BarChart2,
@@ -12,33 +15,36 @@ import {
   Users,
   Zap,
 } from "react-feather";
+import type { MessageKey } from "@/i18n/messages";
 
 export type NavItem = {
-  label: string;
+  id: string;
+  labelKey: MessageKey;
   href?: string;
   icon: Icon;
 };
 
 export const navItems: NavItem[] = [
-  { label: "Home", href: "/", icon: Home },
-  { label: "Activities", href: "/activities", icon: Calendar },
-  { label: "Projects", href: "/projects", icon: Folder },
-  { label: "Users", href: "/users", icon: Users },
-  { label: "Data Analysis", href: "/data-analysis", icon: BarChart2 },
-  { label: "Files", icon: File },
-  { label: "Apps", icon: Grid },
-  { label: "Placement", href: "/placement", icon: UserCheck },
-  { label: "Blueprint", icon: Layers },
-  { label: "Skills", icon: Award },
-  { label: "Automations", href: "/automations", icon: Zap },
+  { id: "home", labelKey: "nav.home", href: "/", icon: Home },
+  { id: "activities", labelKey: "nav.activities", href: "/activities", icon: Calendar },
+  { id: "projects", labelKey: "nav.projects", href: "/projects", icon: Folder },
+  { id: "users", labelKey: "nav.users", href: "/users", icon: Users },
+  { id: "dataAnalysis", labelKey: "nav.dataAnalysis", href: "/data-analysis", icon: BarChart2 },
+  { id: "files", labelKey: "nav.files", icon: File },
+  { id: "apps", labelKey: "nav.apps", icon: Grid },
+  { id: "placement", labelKey: "nav.placement", href: "/placement", icon: UserCheck },
+  { id: "blueprint", labelKey: "nav.blueprint", icon: Layers },
+  { id: "skills", labelKey: "nav.skills", icon: Award },
+  { id: "automations", labelKey: "nav.automations", href: "/automations", icon: Zap },
 ];
 
 export function NavLabel({ item }: { item: NavItem }) {
+  const { t } = useI18n();
   const Icon = item.icon;
   return (
     <>
       <Icon size={18} strokeWidth={2} />
-      {item.label}
+      {t(item.labelKey)}
     </>
   );
 }

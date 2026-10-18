@@ -1,7 +1,7 @@
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(47, 48, 54, 0.4);
+  background: var(--color-overlay);
   z-index: 1200;
   display: flex;
   justify-content: flex-end;
@@ -10,13 +10,12 @@
 .panel {
   width: min(460px, 100vw);
   height: 100%;
-  background: #fff;
-  border-left: 1px solid #e3e8ee;
+  background: var(--color-surface);
+  border-inline-start: 1px solid var(--color-border-strong);
   box-shadow: -18px 0 48px rgba(47, 48, 54, 0.16);
   display: flex;
   flex-direction: column;
-  font-family: Rubik, sans-serif;
-  color: #2f3036;
+  color: var(--color-text);
   animation: slideIn 180ms ease;
 }
 
@@ -44,8 +43,8 @@
   height: 36px;
   border: 0;
   border-radius: 10px;
-  background: #f7f9fb;
-  color: #464f60;
+  background: var(--color-canvas);
+  color: var(--color-text-secondary);
   display: grid;
   place-items: center;
   cursor: pointer;
@@ -54,8 +53,8 @@
 
 .iconButton:hover,
 .iconButton:focus-visible {
-  background: #e6f4ff;
-  color: #0082c8;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
 }
 
 .hero {
@@ -69,8 +68,8 @@
   height: 28px;
   padding: 0 10px 0 4px;
   border-radius: 999px;
-  background: #e6f4ff;
-  color: #0082c8;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
   font-size: 12px;
   font-weight: 500;
 }
@@ -79,8 +78,8 @@
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: #fff;
-  color: #0082c8;
+  background: var(--color-surface);
+  color: var(--color-primary);
   display: grid;
   place-items: center;
 }
@@ -90,7 +89,7 @@
   font-size: 24px;
   font-weight: 600;
   line-height: 1.2;
-  color: #2f3036;
+  color: var(--color-text);
 }
 
 .heroTop {
@@ -109,16 +108,16 @@
   font-weight: 600;
 }
 
-.statusInProgress { color: #e477af; background: #f7d5e6; }
-.statusTested { color: #7c3aed; background: #efe7ff; }
-.statusToReview { color: #d97706; background: #ffedd5; }
-.statusConfirmed { color: #059669; background: #d1fae5; }
-.statusDone { color: #0082c8; background: #e6f4ff; }
+.statusInProgress { color: var(--status-progress); background: var(--status-progress-bg); }
+.statusTested { color: var(--status-tested); background: var(--status-tested-bg); }
+.statusToReview { color: var(--status-review); background: var(--status-review-bg); }
+.statusConfirmed { color: var(--status-confirmed); background: var(--status-confirmed-bg); }
+.statusDone { color: var(--color-primary); background: var(--color-primary-soft); }
 
 .jobId {
   font-size: 12px;
   font-weight: 500;
-  color: #868fa0;
+  color: var(--color-text-muted);
 }
 
 .metaRow {
@@ -140,8 +139,8 @@
   height: 28px;
   padding: 0 10px;
   border-radius: 999px;
-  background: #f7f9fb;
-  color: #464f60;
+  background: var(--color-canvas);
+  color: var(--color-text-secondary);
   font-size: 12px;
   font-weight: 500;
 }
@@ -154,14 +153,14 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: #e6f4ff;
-  color: #0082c8;
-  border: 2px solid #fff;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  border: 2px solid var(--color-surface);
   display: grid;
   place-items: center;
   font-size: 11px;
   font-weight: 600;
-  box-shadow: 0 0 0 1px #e6e9ef;
+  box-shadow: 0 0 0 1px var(--color-border);
 }
 
 .avatar + .avatar {
@@ -174,7 +173,7 @@
   margin: 0 16px 4px;
   padding: 4px;
   border-radius: 12px;
-  background: #f7f9fb;
+  background: var(--color-canvas);
 }
 
 .tab {
@@ -184,7 +183,7 @@
   border: 0;
   border-radius: 10px;
   background: transparent;
-  color: #868fa0;
+  color: var(--color-text-muted);
   font-family: inherit;
   font-size: 12px;
   font-weight: 500;
@@ -193,12 +192,12 @@
 }
 
 .tab:hover {
-  color: #464f60;
+  color: var(--color-text-secondary);
 }
 
 .tabActive {
-  background: #fff;
-  color: #0082c8;
+  background: var(--color-surface);
+  color: var(--color-primary);
   box-shadow: 0 1px 2px rgba(47, 48, 54, 0.08);
 }
 
@@ -206,7 +205,7 @@
   flex: 1;
   overflow: auto;
   padding: 16px;
-  background: linear-gradient(#f7f9fb, #f7f9fb);
+  background: linear-gradient(var(--color-canvas), var(--color-canvas));
 }
 
 .qaList,
@@ -221,8 +220,8 @@
   gap: 4px;
   padding: 4px;
   border-radius: 12px;
-  background: #fff;
-  border: 1px solid #e6e9ef;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
 }
 
 .modeButton,
@@ -233,7 +232,7 @@
   border: 0;
   border-radius: 10px;
   background: transparent;
-  color: #868fa0;
+  color: var(--color-text-muted);
   font-family: inherit;
   font-size: 13px;
   font-weight: 500;
@@ -241,16 +240,16 @@
 }
 
 .modeActive {
-  background: #e6f4ff;
-  color: #0082c8;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
 }
 
 .answerCard,
 .infoCard,
 .imageCard,
 .reportCard {
-  background: #fff;
-  border: 1px solid #e6e9ef;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: 14px;
   padding: 14px;
 }
@@ -267,7 +266,7 @@
 .reportHead small,
 .imageCard small {
   font-size: 12px;
-  color: #868fa0;
+  color: var(--color-text-muted);
 }
 
 .answerCard strong,
@@ -276,7 +275,7 @@
 .reportHead strong {
   font-size: 15px;
   font-weight: 600;
-  color: #2f3036;
+  color: var(--color-text);
 }
 
 .infoCard p,
@@ -284,7 +283,7 @@
   margin: 0;
   font-size: 13px;
   line-height: 1.45;
-  color: #464f60;
+  color: var(--color-text-secondary);
 }
 
 .imageFrame {
@@ -304,7 +303,7 @@
 }
 
 .rangeRow span {
-  color: #868fa0;
+  color: var(--color-text-muted);
   font-size: 13px;
 }
 
@@ -320,8 +319,8 @@
   flex-direction: column;
   gap: 10px;
   padding: 12px 0;
-  border-top: 1px solid #eef1f5;
-  border-bottom: 1px solid #eef1f5;
+  border-top: 1px solid var(--color-border-subtle);
+  border-bottom: 1px solid var(--color-border-subtle);
 }
 
 .reportRow {
@@ -332,13 +331,13 @@
 
 .reportRow span {
   font-size: 12px;
-  color: #868fa0;
+  color: var(--color-text-muted);
 }
 
 .reportRow strong {
   font-size: 14px;
   font-weight: 500;
-  color: #2f3036;
+  color: var(--color-text);
 }
 
 .reportActions {
@@ -351,10 +350,10 @@
 .reportSend {
   appearance: none;
   height: 40px;
-  border: 1px solid #0082c8;
+  border: 1px solid var(--color-primary);
   border-radius: 12px;
-  background: #0082c8;
-  color: #fff;
+  background: var(--color-primary);
+  color: var(--color-surface);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -378,7 +377,7 @@
   padding: 0 2px 2px;
   font-size: 12px;
   font-weight: 600;
-  color: #868fa0;
+  color: var(--color-text-muted);
   letter-spacing: 0.02em;
   text-transform: uppercase;
 }
@@ -388,8 +387,8 @@
   height: 20px;
   padding: 0 6px;
   border-radius: 999px;
-  background: #fff;
-  color: #0082c8;
+  background: var(--color-surface);
+  color: var(--color-primary);
   display: grid;
   place-items: center;
   font-size: 11px;
@@ -398,8 +397,8 @@
 
 .qaCard,
 .contactCard {
-  background: #fff;
-  border: 1px solid #e6e9ef;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: 14px;
   padding: 14px;
 }
@@ -415,8 +414,8 @@
   width: 24px;
   height: 24px;
   border-radius: 8px;
-  background: #e6f4ff;
-  color: #0082c8;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
   display: grid;
   place-items: center;
   flex-shrink: 0;
@@ -428,7 +427,7 @@
   min-width: 0;
   font-size: 13px;
   font-weight: 500;
-  color: #464f60;
+  color: var(--color-text-secondary);
 }
 
 .qaTrail {
@@ -443,24 +442,24 @@
   margin-left: auto;
   font-size: 11px;
   font-weight: 600;
-  color: #e477af;
+  color: var(--status-progress);
 }
 
 .qaIcons {
   display: inline-flex;
   gap: 8px;
-  color: #868fa0;
+  color: var(--color-text-muted);
 }
 
 .qaInput,
 .qaField,
 .qaFieldBare {
   width: 100%;
-  border: 1px solid #e3e8ee;
+  border: 1px solid var(--color-border-strong);
   border-radius: 10px;
   padding: 10px 12px;
-  background: #f7f9fb;
-  color: #2f3036;
+  background: var(--color-canvas);
+  color: var(--color-text);
   font-family: inherit;
   font-size: 14px;
   line-height: 1.45;
@@ -478,8 +477,8 @@
 
 select.qaField {
   appearance: none;
-  background-image: linear-gradient(45deg, transparent 50%, #868fa0 50%),
-    linear-gradient(135deg, #868fa0 50%, transparent 50%);
+  background-image: linear-gradient(45deg, transparent 50%, var(--color-text-muted) 50%),
+    linear-gradient(135deg, var(--color-text-muted) 50%, transparent 50%);
   background-position: calc(100% - 16px) 18px, calc(100% - 11px) 18px;
   background-size: 5px 5px, 5px 5px;
   background-repeat: no-repeat;
@@ -496,8 +495,8 @@ select.qaField {
 .qaInput:focus,
 .qaField:focus,
 .iconField:focus-within {
-  border-color: #0082c8;
-  background: #fff;
+  border-color: var(--color-primary);
+  background: var(--color-surface);
   box-shadow: 0 0 0 3px rgba(0, 130, 200, 0.12);
 }
 
@@ -507,10 +506,10 @@ select.qaField {
   gap: 8px;
   height: 42px;
   padding: 0 12px;
-  border: 1px solid #e3e8ee;
+  border: 1px solid var(--color-border-strong);
   border-radius: 10px;
-  background: #f7f9fb;
-  color: #0082c8;
+  background: var(--color-canvas);
+  color: var(--color-primary);
 }
 
 .choiceRow,
@@ -529,9 +528,9 @@ select.qaField {
 .addFile,
 .addTile {
   appearance: none;
-  border: 1px solid #e3e8ee;
-  background: #fff;
-  color: #464f60;
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
   border-radius: 999px;
   min-height: 32px;
   padding: 0 12px;
@@ -545,9 +544,9 @@ select.qaField {
 .chipActive,
 .radioActive {
   appearance: none;
-  border: 1px solid #0082c8;
-  background: #e6f4ff;
-  color: #0082c8;
+  border: 1px solid var(--color-primary);
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
   border-radius: 999px;
   min-height: 32px;
   padding: 0 12px;
@@ -602,7 +601,7 @@ select.qaField {
   height: 32px;
   border: 0;
   background: transparent;
-  color: #d5dbe3;
+  color: var(--color-border-muted);
   display: grid;
   place-items: center;
   cursor: pointer;
@@ -610,7 +609,7 @@ select.qaField {
 }
 
 .starOn {
-  color: #0082c8;
+  color: var(--color-primary);
 }
 
 .addChip,
@@ -627,7 +626,7 @@ select.qaField {
   height: 32px;
   padding: 0;
   border-radius: 50%;
-  background: #f7f9fb;
+  background: var(--color-canvas);
 }
 
 .photoTile,
@@ -635,14 +634,14 @@ select.qaField {
   width: 92px;
   min-height: 72px;
   border-radius: 12px;
-  border: 1px dashed #d5dbe3;
-  background: #fff;
+  border: 1px dashed var(--color-border-muted);
+  background: var(--color-surface);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  color: #868fa0;
+  color: var(--color-text-muted);
   font-size: 11px;
   text-align: center;
   padding: 8px;
@@ -650,8 +649,8 @@ select.qaField {
 
 .photoTile {
   border-style: solid;
-  background: #e6f4ff;
-  color: #0082c8;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
 }
 
 .photoTile small,
@@ -675,13 +674,13 @@ select.qaField {
   min-height: 40px;
   padding: 0 10px;
   border-radius: 10px;
-  background: #f7f9fb;
-  color: #0082c8;
+  background: var(--color-canvas);
+  color: var(--color-primary);
   font-size: 13px;
 }
 
 .fileRow span {
-  color: #2f3036;
+  color: var(--color-text);
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -690,7 +689,7 @@ select.qaField {
 
 .fileRow small {
   margin-left: auto;
-  color: #868fa0;
+  color: var(--color-text-muted);
 }
 
 .signature,
@@ -699,15 +698,15 @@ select.qaField {
   width: 100%;
   min-height: 72px;
   border-radius: 12px;
-  border: 1px dashed #d5dbe3;
+  border: 1px dashed var(--color-border-muted);
   background: repeating-linear-gradient(
     180deg,
-    #fff,
-    #fff 22px,
-    #f7f9fb 22px,
-    #f7f9fb 23px
+    var(--color-surface),
+    var(--color-surface) 22px,
+    var(--color-canvas) 22px,
+    var(--color-canvas) 23px
   );
-  color: #868fa0;
+  color: var(--color-text-muted);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -718,7 +717,7 @@ select.qaField {
 
 .signatureDone {
   border-style: solid;
-  color: #0082c8;
+  color: var(--color-primary);
 }
 
 .signatureDone em {
@@ -728,8 +727,8 @@ select.qaField {
 }
 
 .projectHero {
-  background: #fff;
-  border: 1px solid #e6e9ef;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: 14px;
   padding: 14px;
   display: flex;
@@ -751,8 +750,8 @@ select.qaField {
 }
 
 .projectField {
-  background: #fff;
-  border: 1px solid #e6e9ef;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: 12px;
   padding: 10px 12px;
   display: flex;
@@ -763,14 +762,14 @@ select.qaField {
 .projectField small,
 .contactCard span {
   font-size: 12px;
-  color: #868fa0;
+  color: var(--color-text-muted);
 }
 
 .projectField strong,
 .contactCard strong {
   font-size: 14px;
   font-weight: 600;
-  color: #2f3036;
+  color: var(--color-text);
 }
 
 .contactCard {
@@ -790,28 +789,28 @@ select.qaField {
   place-items: center;
   height: 40px;
   border-radius: 12px;
-  background: #e6f4ff;
-  color: #0082c8;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
   font-size: 14px;
   font-weight: 500;
   text-decoration: none;
 }
 
 .projectLink:hover {
-  background: #d6eefe;
+  background: var(--color-primary-soft);
 }
 
 .emptyFiles {
   min-height: 240px;
-  border: 1px dashed #d5dbe3;
+  border: 1px dashed var(--color-border-muted);
   border-radius: 14px;
-  background: #fff;
+  background: var(--color-surface);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  color: #868fa0;
+  color: var(--color-text-muted);
   text-align: center;
   padding: 24px;
 }
@@ -820,8 +819,8 @@ select.qaField {
   width: 44px;
   height: 44px;
   border-radius: 12px;
-  background: #f7f9fb;
-  color: #0082c8;
+  background: var(--color-canvas);
+  color: var(--color-primary);
   display: grid;
   place-items: center;
   margin-bottom: 4px;
@@ -831,7 +830,7 @@ select.qaField {
   margin: 0;
   font-size: 14px;
   font-weight: 600;
-  color: #464f60;
+  color: var(--color-text-secondary);
 }
 
 .emptyFiles span {
@@ -842,8 +841,8 @@ select.qaField {
   display: flex;
   gap: 8px;
   padding: 12px 16px 16px;
-  border-top: 1px solid #e6e9ef;
-  background: #fff;
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface);
 }
 
 .secondaryButton,
@@ -860,20 +859,20 @@ select.qaField {
 }
 
 .secondaryButton {
-  border: 1px solid #e3e8ee;
-  background: #fff;
-  color: #0082c8;
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-surface);
+  color: var(--color-primary);
 }
 
 .secondaryButton:hover,
 .secondaryButton:focus-visible {
-  background: #f6f8fa;
+  background: var(--color-surface-muted);
 }
 
 .primaryButton {
-  border: 1px solid #0082c8;
-  background: #0082c8;
-  color: #fff;
+  border: 1px solid var(--color-primary);
+  background: var(--color-primary);
+  color: var(--color-surface);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -893,12 +892,12 @@ select.qaField {
 
 .primaryButton:hover,
 .primaryButton:focus-visible {
-  background: #026093;
-  border-color: #026093;
+  background: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
 }
 
 .qaCardError {
-  border-color: #e477af;
+  border-color: var(--status-progress);
   box-shadow: 0 0 0 3px rgba(228, 119, 175, 0.12);
 }
 
@@ -907,27 +906,31 @@ select.qaField {
   margin-top: 8px;
   font-size: 12px;
   font-weight: 500;
-  color: #e477af;
+  color: var(--status-progress);
 }
 
 .wizardOverlay {
   position: fixed;
   inset: 0;
   z-index: 1300;
-  background: rgba(47, 48, 54, 0.45);
+  background: var(--color-overlay);
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
 }
 
 .wizard {
-  width: min(480px, 100vw);
-  height: 100%;
-  background: #fff;
-  border-left: 1px solid #e3e8ee;
-  box-shadow: -18px 0 48px rgba(47, 48, 54, 0.16);
+  width: min(640px, 100%);
+  height: min(820px, calc(100vh - 48px));
+  max-height: calc(100vh - 48px);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-radius: 16px;
+  box-shadow: 0 16px 48px rgba(47, 48, 54, 0.2);
   display: flex;
   flex-direction: column;
-  font-family: Rubik, sans-serif;
+  overflow: hidden;
 }
 
 .wizardToolbar {
@@ -950,7 +953,7 @@ select.qaField {
 
 .wizardHeading span {
   font-size: 12px;
-  color: #868fa0;
+  color: var(--color-text-muted);
 }
 
 .wizardProgress {
@@ -964,18 +967,18 @@ select.qaField {
   flex: 1;
   height: 4px;
   border-radius: 999px;
-  background: #e6e9ef;
+  background: var(--color-border);
 }
 
 .wizardDotActive {
-  background: #0082c8;
+  background: var(--color-primary);
 }
 
 .wizardBody {
   flex: 1;
   overflow: auto;
   padding: 8px 16px 16px;
-  background: #f7f9fb;
+  background: var(--color-canvas);
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -991,7 +994,7 @@ select.qaField {
 .wizardSectionHead small {
   font-size: 12px;
   font-weight: 600;
-  color: #0082c8;
+  color: var(--color-primary);
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
@@ -1000,15 +1003,15 @@ select.qaField {
   margin: 0;
   font-size: 22px;
   font-weight: 600;
-  color: #2f3036;
+  color: var(--color-text);
 }
 
 .wizardFooter {
   display: flex;
   gap: 8px;
   padding: 12px 16px 10px;
-  border-top: 1px solid #e6e9ef;
-  background: #fff;
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface);
 }
 
 .wizardFooter .secondaryButton,
@@ -1022,16 +1025,30 @@ select.qaField {
 .wizardHint {
   margin: 0;
   padding: 0 16px 14px;
-  background: #fff;
-  color: #e477af;
+  background: var(--color-surface);
+  color: var(--status-progress);
   font-size: 12px;
   font-weight: 500;
 }
 
 @media (max-width: 900px) {
-  .panel,
+  .panel {
+    width: 100%;
+  }
+
+  .wizardOverlay {
+    padding: 0;
+    align-items: stretch;
+    justify-content: stretch;
+  }
+
   .wizard {
     width: 100%;
+    height: 100%;
+    max-height: 100%;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
   }
 
   .title {

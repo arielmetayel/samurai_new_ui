@@ -1,12 +1,13 @@
 "use client";
 
 import React, { Suspense, useEffect, useMemo, useState } from "react";
-import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import styles from "./styles.module.css";
 import { Activity, listPreviewQuestions, questionAnswerText } from "@/types";
 import { getActivityById, mockActivities } from "./data";
 import { Button, Checkbox } from "@/design-system";
+import { useI18n } from "@/i18n";
+import AppShell from "../AppShell";
 import {
   BarChart2,
   Briefcase,
@@ -32,7 +33,6 @@ import FilterActivitiesPopup, {
   filtersEqual,
   removeFilterChip,
 } from "./FilterActivitiesPopup";
-import { NavLabel, navItems } from "../navItems";
 
 function ActivityGlyph({ icon, size = 18 }: { icon: string; size?: number }) {
   const props = { size, strokeWidth: 2 };
@@ -42,14 +42,14 @@ function ActivityGlyph({ icon, size = 18 }: { icon: string; size?: number }) {
   return <Briefcase {...props} />;
 }
 
-function formatDate(iso: string) {
+function formatDateParts(iso: string) {
   const date = new Date(iso);
   const dd = String(date.getUTCDate()).padStart(2, "0");
   const mm = String(date.getUTCMonth() + 1).padStart(2, "0");
   const yy = String(date.getUTCFullYear()).slice(2);
   const hh = String(date.getUTCHours()).padStart(2, "0");
   const min = String(date.getUTCMinutes()).padStart(2, "0");
-  return `${dd}/${mm}/${yy}, ${hh}:${min}`;
+  return { day: `${dd}/${mm}/${yy}`, time: `${hh}:${min}` };
 }
 
 type SavedFilterTab = {
@@ -67,6 +67,7 @@ export default function ActivitiesPage() {
 }
 
 function ActivitiesPageContent() {
+  const { t, localize } = useI18n();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [search, setSearch] = useState("");
@@ -97,7 +98,9 @@ function ActivitiesPageContent() {
     const lower = search.toLowerCase();
     return mockActivities
       .filter((a) =>
-        [a.projectName, a.activityType, a.status].some((v) => v.toLowerCase().includes(lower))
+        [a.projectName, a.activityType, localize(a.activityType), a.status, localize(a.status)].some((v) =>
+          v.toLowerCase().includes(lower)
+        )
       )
       .filter((a) => activityMatchesFilters(a, appliedFilters))
       .sort((a, b) => a.dateTime.localeCompare(b.dateTime));
@@ -169,58 +172,15 @@ function ActivitiesPageContent() {
   }
 
   return (
-    <div className={styles.pageWrapper}>
-      <header className={styles.topHeader}>
-        <div className={styles.topHeaderContent}>
-          <Link href="/" className={styles.backLink}>
-            ← Back to Home
-          </Link>
-          <h1 className={styles.topHeaderTitle}>Activities</h1>
-        </div>
-      </header>
-      
-      <aside className={styles.sidebar}>
-        <div className={styles.userBlock}>
-          <div className={styles.avatar}>UF</div>
-          <div className={styles.userName}>User Full Name</div>
-        </div>
-        <nav className={styles.menu}>
-          {navItems.map((item) =>
-            item.href ? (
-              <Link
-                key={item.label}
-                href={item.href}
-                className={item.label === "Activities" ? styles.menuItemActive : styles.menuItem}
-              >
-                <NavLabel item={item} />
-              </Link>
-            ) : (
-              <div key={item.label} className={styles.menuItem}>
-                <NavLabel item={item} />
-              </div>
-            )
-          )}
-        </nav>
-        <div className={styles.createWrap}>
-          <Button 
-            variant="primary" 
-            size="md" 
-            className={styles.createBtn}
-            onClick={() => setIsCreatePopupOpen(true)}
-          >
-            + Create New
-          </Button>
-        </div>
-      </aside>
-      <main className={styles.main}>
+    <AppShell title={t("activities.title")} onCreateNew={() => setIsCreatePopupOpen(true)}>
         <div className={styles.headerRow}>
-          <h1 className={styles.pageTitle}>Activities</h1>
+          <h1 className={styles.pageTitle}>{t("activities.title")}</h1>
         </div>
         <div className={styles.searchRow}>
           <div className={styles.mainSearchWrapper}>
             <Search size={18} className={styles.mainSearchIcon} />
             <input
-              placeholder="search"
+              placeholder={t("common.search")}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className={styles.searchInput}
@@ -234,18 +194,18 @@ function ActivitiesPageContent() {
                 iconSize={22}
                 onClick={() => setIsFilterPopupOpen(true)}
               >
-                Filter
+                {t("common.filter")}
               </Button>
               {appliedCount > 0 ? <span className={styles.filterCount}>{appliedCount}</span> : null}
             </div>
             <Button variant="tertiary" icon={BarChart2} iconSize={22}>
-              Create Report
+              {t("common.createReport")}
             </Button>
           </div>
         </div>
 
         {savedTabs.length > 0 ? (
-          <div className={styles.filterTabs} role="tablist" aria-label="Saved filters">
+          <div className={styles.filterTabs} role="tablist" aria-label={t("activities.savedFilters")}>
             <button
               type="button"
               role="tab"
@@ -253,7 +213,7 @@ function ActivitiesPageContent() {
               className={`${styles.filterTab} ${activeTabId === "all" ? styles.filterTabActive : ""}`}
               onClick={() => selectSavedTab("all")}
             >
-              All
+              {t("common.all")}
             </button>
             {savedTabs.map((tab) => (
               <button
@@ -298,7 +258,7 @@ function ActivitiesPageContent() {
               className={styles.clearFilters}
               onClick={() => applyFilters(EMPTY_FILTERS, "all")}
             >
-              Clear all
+              {t("common.clearAll")}
             </button>
             <span className={styles.filterResultCount}>
               {filtered.length} | {mockActivities.length}
@@ -310,25 +270,26 @@ function ActivitiesPageContent() {
           <div className={styles.tableHeader}>
             <div className={styles.colCheckbox}></div>
             <div className={styles.colIcon}></div>
-            <div className={styles.colDate}>Date & Time</div>
-            <div className={styles.colActivityType}>Project Name</div>
-            <div className={styles.colStatus}>Status</div>
-            <div className={styles.colAssignees}>Assignee</div>
+            <div className={styles.colDate}>{t("table.dateTime")}</div>
+            <div className={styles.colActivityType}>{t("table.projectName")}</div>
+            <div className={styles.colStatus}>{t("table.status")}</div>
+            <div className={styles.colAssignees}>{t("table.assignee")}</div>
             <div className={styles.colActions}></div>
             <div className={styles.colMenu}></div>
           </div>
 
           {filtered.length === 0 ? (
             <div className={styles.emptyFilters}>
-              <p>No activities match these filters.</p>
+              <p>{t("activities.empty")}</p>
               <Button variant="secondary" size="md" onClick={() => applyFilters(EMPTY_FILTERS, "all")}>
-                Clear filters
+                {t("common.clearFilters")}
               </Button>
             </div>
           ) : null}
           {filtered.map((a) => {
             const expanded = !!expandedRowIds[a.id];
             const previewQuestions = listPreviewQuestions(a);
+            const dateParts = formatDateParts(a.dateTime);
             return (
               <div key={a.id} className={styles.rowWrapper} data-status={a.status}>
                 <div className={styles.colCheckbox}>
@@ -344,13 +305,16 @@ function ActivitiesPageContent() {
                         <div className={styles.iconId}>12345678</div>
                       </div>
                     </div>
-                    <div className={styles.colDate}>{formatDate(a.dateTime)}</div>
+                    <div className={styles.colDate}>
+                      <span className={styles.dateDay}>{dateParts.day}</span>
+                      <span className={styles.dateTime}>{dateParts.time}</span>
+                    </div>
                     <div className={styles.colActivityType}>
-                      <div className={styles.activityType}>{a.activityType}</div>
+                      <div className={styles.activityType}>{localize(a.activityType)}</div>
                       <div className={styles.projectName}>{a.projectName}</div>
                     </div>
                     <div className={styles.colStatus} data-status={a.status}>
-                      {a.status}
+                      {localize(a.status)}
                     </div>
                     <div className={styles.colAssignees}>
                       {a.assignees.map((s) => (
@@ -388,8 +352,8 @@ function ActivitiesPageContent() {
                         <div className={styles.questionsGrid}>
                           {previewQuestions.map((q) => (
                             <div key={q.id} className={styles.questionItem}>
-                              <div className={styles.questionTitle}>{q.title}</div>
-                              <div className={styles.questionAnswer}>{questionAnswerText(q)}</div>
+                              <div className={styles.questionTitle}>{localize(q.title)}</div>
+                              <div className={styles.questionAnswer}>{localize(questionAnswerText(q))}</div>
                             </div>
                           ))}
                         </div>
@@ -403,7 +367,7 @@ function ActivitiesPageContent() {
                             toggleExpand(a.id);
                           }}
                         >
-                          {expanded ? "Show less" : "Show more"}
+                          {expanded ? t("common.showLess") : t("common.showMore")}
                           {expanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                         </button>
                       </div>
@@ -414,8 +378,7 @@ function ActivitiesPageContent() {
             );
           })}
         </div>
-      </main>
-      
+
       <CreateNewPopup 
         isOpen={isCreatePopupOpen}
         onClose={() => setIsCreatePopupOpen(false)}
@@ -443,7 +406,7 @@ function ActivitiesPageContent() {
         isOpen={isSidePanelOpen}
         onClose={handleCloseSidePanel}
       />
-    </div>
+    </AppShell>
   );
 }
 

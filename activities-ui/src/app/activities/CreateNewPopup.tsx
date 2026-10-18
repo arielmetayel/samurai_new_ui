@@ -5,6 +5,7 @@ import styles from "./styles.module.css";
 import { Button } from "@/design-system";
 import { typography } from "@/design-system";
 import { ArrowLeft, Briefcase, FileText, Users } from "react-feather";
+import { useI18n } from "@/i18n";
 import ChooseActivityTypePopup from "./ChooseActivityTypePopup";
 
 interface CreateNewPopupProps {
@@ -13,6 +14,7 @@ interface CreateNewPopupProps {
 }
 
 export default function CreateNewPopup({ isOpen, onClose }: CreateNewPopupProps) {
+  const { t } = useI18n();
   const [selectedOption, setSelectedOption] = useState<string>("");
   const [showActivityTypePopup, setShowActivityTypePopup] = useState(false);
 
@@ -63,7 +65,7 @@ export default function CreateNewPopup({ isOpen, onClose }: CreateNewPopupProps)
           <button className={styles.backButton} onClick={onClose}>
             <ArrowLeft size={20} />
           </button>
-          <h2 style={typography.combinations['header-m02']}>Create New</h2>
+          <h2 style={typography.combinations['header-m02']}>{t("create.title")}</h2>
         </div>
         
         {/* Body - 3 Cube Containers */}
@@ -76,7 +78,7 @@ export default function CreateNewPopup({ isOpen, onClose }: CreateNewPopupProps)
               <Briefcase size={36} />
             </div>
             <div className={styles.cubeContent}>
-              <div style={typography.combinations['text-base-list']}>Activity</div>
+              <div style={typography.combinations['text-base-list']}>{t("create.activity")}</div>
             </div>
           </div>
           
@@ -88,7 +90,7 @@ export default function CreateNewPopup({ isOpen, onClose }: CreateNewPopupProps)
               <FileText size={36} />
             </div>
             <div className={styles.cubeContent}>
-              <div style={typography.combinations['text-base-list']}>Project</div>
+              <div style={typography.combinations['text-base-list']}>{t("create.project")}</div>
             </div>
           </div>
           
@@ -100,7 +102,7 @@ export default function CreateNewPopup({ isOpen, onClose }: CreateNewPopupProps)
               <Users size={36} />
             </div>
             <div className={styles.cubeContent}>
-              <div style={typography.combinations['text-base-list']}>User</div>
+              <div style={typography.combinations['text-base-list']}>{t("create.user")}</div>
             </div>
           </div>
         </div>
@@ -113,7 +115,7 @@ export default function CreateNewPopup({ isOpen, onClose }: CreateNewPopupProps)
             onClick={onClose}
             className={styles.cancelButton}
           >
-            Cancel
+            {t("common.cancel")}
           </Button>
           <Button 
             type="button" 
@@ -122,7 +124,7 @@ export default function CreateNewPopup({ isOpen, onClose }: CreateNewPopupProps)
             disabled={!selectedOption}
             className={styles.nextButton}
           >
-            Next
+            {t("common.next")}
           </Button>
         </div>
       </div>

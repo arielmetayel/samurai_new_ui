@@ -71,7 +71,7 @@ export const typography = {
       fontWeight: '400', // normal
       fontSize: '1rem', // 16px
       lineHeight: '1.4', // 140%
-      color: 'var(--Gray-04, #464F60)',
+      color: 'var(--color-text-secondary)',
     },
     
     // Heading combinations
@@ -92,7 +92,7 @@ export const typography = {
       fontWeight: '500', // medium
       fontSize: '1.375rem', // 22px
       lineHeight: '1.25', // 125%
-      color: 'var(--Gray-04, #464F60)',
+      color: 'var(--color-text-secondary)',
     },
     'heading-large': {
       fontFamily: 'Rubik',

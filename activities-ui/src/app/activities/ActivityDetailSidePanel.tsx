@@ -17,6 +17,7 @@ import {
   X,
   Link as LinkIcon,
 } from "react-feather";
+import { useI18n } from "@/i18n";
 import ActivityActionsMenu from "./ActivityActionsMenu";
 import ActivityAnswerWizard from "./ActivityAnswerWizard";
 import { ActivityQuestions, type AnswerValue } from "./ActivityQuestions";
@@ -58,6 +59,7 @@ export default function ActivityDetailSidePanel({
   isOpen,
   onClose,
 }: ActivityDetailSidePanelProps) {
+  const { t, localize } = useI18n();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [tab, setTab] = useState<TabId>("qa");
   const [editing, setEditing] = useState(false);
@@ -93,7 +95,7 @@ export default function ActivityDetailSidePanel({
     <div className={styles.overlay} onClick={onClose}>
       <aside className={styles.panel} role="dialog" aria-modal="true" onClick={(event) => event.stopPropagation()}>
         <div className={styles.toolbar}>
-          <button type="button" className={styles.iconButton} aria-label="Close activity" onClick={onClose}>
+          <button type="button" className={styles.iconButton} aria-label={t("panel.close")} onClick={onClose}>
             <X size={18} />
           </button>
           <ActivityActionsMenu
@@ -109,12 +111,12 @@ export default function ActivityDetailSidePanel({
             <span className={styles.typeIcon}>
               <ActivityGlyph icon={activity.icon} size={14} />
             </span>
-            {activity.activityType}
+            {localize(activity.activityType)}
           </div>
           <h2 className={styles.title}>{activity.projectName}</h2>
           <div className={styles.heroTop}>
             <span className={`${styles.statusChip} ${styles[statusClass(activity.status) as keyof typeof styles] ?? ""}`}>
-              {activity.status}
+              {localize(activity.status)}
             </span>
             <span className={styles.jobId}>#{activity.id.padStart(6, "0")}</span>
           </div>
@@ -125,7 +127,9 @@ export default function ActivityDetailSidePanel({
             </span>
             <span className={styles.metaChip}>
               <Users size={14} />
-              {activity.assignees.length} {activity.assignees.length === 1 ? "assignee" : "assignees"}
+              {activity.assignees.length === 1
+                ? t("panel.assigneeOne")
+                : t("panel.assigneeMany", { count: activity.assignees.length })}
             </span>
             <div className={styles.assignees}>
               {activity.assignees.map((assignee) => (
@@ -140,9 +144,9 @@ export default function ActivityDetailSidePanel({
         <div className={styles.tabs} role="tablist">
           {(
             [
-              ["qa", "Q&A"],
-              ["project", "Project details"],
-              ["files", "Files"],
+              ["qa", t("panel.qa")],
+              ["project", t("panel.project")],
+              ["files", t("panel.files")],
             ] as const
           ).map(([id, label]) => (
             <button
@@ -179,14 +183,14 @@ export default function ActivityDetailSidePanel({
 
               <div className={styles.projectFields}>
                 {[
-                  ["Address", project.address],
-                  ["City", project.city],
-                  ["Project status", project.projectStatus],
-                  ["Quote status", project.contractStatus],
-                  ["Buildings", project.buildingsCount || "—"],
-                  ["Start date", project.startDate],
-                  ["Operator", project.operator],
-                  ["Developer", project.developer],
+                  [t("table.address"), project.address],
+                  [t("panel.city"), project.city],
+                  [t("panel.projectStatus"), localize(project.projectStatus ?? "")],
+                  [t("panel.quoteStatus"), localize(project.contractStatus ?? "")],
+                  [t("panel.buildings"), project.buildingsCount || "—"],
+                  [t("panel.startDate"), project.startDate],
+                  [t("panel.operator"), project.operator],
+                  [t("panel.developer"), project.developer],
                 ].map(([label, value]) => (
                   <div key={String(label)} className={styles.projectField}>
                     <small>{label}</small>
@@ -246,7 +250,7 @@ export default function ActivityDetailSidePanel({
 
               {project.id ? (
                 <Link href={`/projects/${project.id}`} className={styles.projectLink}>
-                  Open project
+                  {t("panel.openProject")}
                 </Link>
               ) : null}
             </div>
@@ -257,19 +261,19 @@ export default function ActivityDetailSidePanel({
               <span className={styles.emptyIcon}>
                 <Paperclip size={20} />
               </span>
-              <p>No files attached yet</p>
-              <span>Files added to this activity will show up here.</span>
+              <p>{t("panel.emptyFilesTitle")}</p>
+              <span>{t("panel.emptyFilesHint")}</span>
             </div>
           ) : null}
         </div>
 
         <div className={styles.footer}>
           <button type="button" className={styles.secondaryButton}>
-            Approve
+            {t("panel.approve")}
           </button>
           <button type="button" className={styles.primaryButton} onClick={() => setAnswering(true)}>
             <Check size={16} />
-            Answer all
+            {t("panel.answerAll")}
           </button>
         </div>
       </aside>

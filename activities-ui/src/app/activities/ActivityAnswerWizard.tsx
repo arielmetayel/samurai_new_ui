@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Activity, QuestionSection, isAnswerableQuestion } from "@/types";
 import { Project } from "../projects/data";
 import { ArrowLeft, ArrowRight, Check, X } from "react-feather";
+import { useI18n, localize } from "@/i18n";
 import {
   AnswerEditor,
   AnswerValue,
@@ -25,7 +26,7 @@ type ActivityAnswerWizardProps = {
 function sectionPages(activity: Activity): QuestionSection[] {
   const sections = activity.sections.length
     ? activity.sections
-    : [{ id: "default", title: "Questions", questions: activity.questions }];
+    : [{ id: "default", title: localize("Questions"), questions: activity.questions }];
   return sections.filter((section) => section.questions.length);
 }
 
@@ -45,6 +46,7 @@ export default function ActivityAnswerWizard({
   onClose,
   onComplete,
 }: ActivityAnswerWizardProps) {
+  const { t, localize } = useI18n();
   const pages = useMemo(() => sectionPages(activity), [activity]);
   const [page, setPage] = useState(0);
   const [attempted, setAttempted] = useState(false);
@@ -79,16 +81,22 @@ export default function ActivityAnswerWizard({
   }
 
   return (
-    <div className={styles.wizardOverlay} onClick={(event) => event.stopPropagation()}>
-      <div className={styles.wizard} role="dialog" aria-modal="true" aria-labelledby="answer-all-title">
+    <div className={styles.wizardOverlay} onClick={onClose}>
+      <div
+        className={styles.wizard}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="answer-all-title"
+        onClick={(event) => event.stopPropagation()}
+      >
         <div className={styles.wizardToolbar}>
-          <button type="button" className={styles.iconButton} aria-label="Close answer all" onClick={onClose}>
+          <button type="button" className={styles.iconButton} aria-label={t("wizard.close")} onClick={onClose}>
             <X size={18} />
           </button>
           <div className={styles.wizardHeading}>
-            <strong id="answer-all-title">Answer all</strong>
+            <strong id="answer-all-title">{t("panel.answerAll")}</strong>
             <span>
-              Section {page + 1} of {total}
+              {t("wizard.sectionOf", { n: page + 1, total })}
             </span>
           </div>
         </div>
@@ -104,8 +112,8 @@ export default function ActivityAnswerWizard({
 
         <div className={styles.wizardBody}>
           <div className={styles.wizardSectionHead}>
-            <small>Section {page + 1}</small>
-            <h3>{section.title}</h3>
+            <small>{t("wizard.sectionN", { n: page + 1 })}</small>
+            <h3>{localize(section.title)}</h3>
           </div>
 
           {section.questions.map((question) => {
@@ -136,8 +144,8 @@ export default function ActivityAnswerWizard({
             return (
               <div key={question.id} className={invalid ? `${styles.qaCard} ${styles.qaCardError}` : styles.qaCard}>
                 <span className={styles.qaLabel}>
-                  <span className={styles.qaTitle}>{question.title}</span>
-                  {question.required ? <span className={styles.required}>Required</span> : null}
+                  <span className={styles.qaTitle}>{localize(question.title)}</span>
+                  {question.required ? <span className={styles.required}>{t("wizard.required")}</span> : null}
                 </span>
                 <AnswerEditor
                   question={question}
@@ -145,7 +153,7 @@ export default function ActivityAnswerWizard({
                   project={project}
                   onChange={(value) => setAnswer(question.id, value)}
                 />
-                {invalid ? <span className={styles.fieldError}>This question is required</span> : null}
+                {invalid ? <span className={styles.fieldError}>{t("wizard.requiredError")}</span> : null}
               </div>
             );
           })}
@@ -158,7 +166,7 @@ export default function ActivityAnswerWizard({
             onClick={() => (page === 0 ? onClose() : setPage((current) => current - 1))}
           >
             <ArrowLeft size={16} />
-            {page === 0 ? "Cancel" : "Back"}
+            {page === 0 ? t("common.cancel") : t("common.back")}
           </button>
           <button
             type="button"
@@ -167,7 +175,7 @@ export default function ActivityAnswerWizard({
             onClick={goNext}
           >
             {isLast ? <Check size={16} /> : null}
-            {isLast ? "Submit" : "Next"}
+            {isLast ? t("common.submit") : t("common.next")}
             {!isLast ? <ArrowRight size={16} /> : null}
           </button>
         </div>

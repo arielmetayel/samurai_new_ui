@@ -6,7 +6,8 @@ import styles from "./styles.module.css";
 import { Button, Checkbox } from "@/design-system";
 import { MoreVertical, Filter, FileText, Search } from "react-feather";
 import CreateNewPopup from "../activities/CreateNewPopup";
-import { NavLabel, navItems } from "../navItems";
+import { useI18n } from "@/i18n";
+import AppShell from "../AppShell";
 import { mockProjects, TOTAL_PROJECTS } from "./data";
 
 function displayValue(value: string | number | null | undefined) {
@@ -15,6 +16,7 @@ function displayValue(value: string | number | null | undefined) {
 }
 
 export default function ProjectsPage() {
+  const { t, localize } = useI18n();
   const [search, setSearch] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>("2");
   const [isCreatePopupOpen, setIsCreatePopupOpen] = useState(false);
@@ -33,59 +35,15 @@ export default function ProjectsPage() {
   }
 
   return (
-    <div className={styles.pageWrapper}>
-      <header className={styles.topHeader}>
-        <div className={styles.topHeaderContent}>
-          <Link href="/" className={styles.backLink}>
-            ← Back to Home
-          </Link>
-          <h1 className={styles.topHeaderTitle}>Projects</h1>
-        </div>
-      </header>
-
-      <aside className={styles.sidebar}>
-        <div className={styles.userBlock}>
-          <div className={styles.avatar}>UF</div>
-          <div className={styles.userName}>User Full Name</div>
-        </div>
-        <nav className={styles.menu}>
-          {navItems.map((item) =>
-            item.href ? (
-              <Link
-                key={item.label}
-                href={item.href}
-                className={item.label === "Projects" ? styles.menuItemActive : styles.menuItem}
-              >
-                <NavLabel item={item} />
-              </Link>
-            ) : (
-              <div key={item.label} className={styles.menuItem}>
-                <NavLabel item={item} />
-              </div>
-            )
-          )}
-        </nav>
-        <div className={styles.createWrap}>
-          <Button
-            variant="primary"
-            size="md"
-            className={styles.createBtn}
-            onClick={() => setIsCreatePopupOpen(true)}
-          >
-            + Create New
-          </Button>
-        </div>
-      </aside>
-
-      <main className={styles.main}>
+    <AppShell title={t("projects.title")} onCreateNew={() => setIsCreatePopupOpen(true)}>
         <div className={styles.headerRow}>
-          <h1 className={styles.pageTitle}>Projects</h1>
+          <h1 className={styles.pageTitle}>{t("projects.title")}</h1>
         </div>
         <div className={styles.searchRow}>
           <div className={styles.mainSearchWrapper}>
             <Search size={18} className={styles.mainSearchIcon} />
             <input
-              placeholder="search"
+              placeholder={t("common.search")}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className={styles.searchInput}
@@ -93,10 +51,10 @@ export default function ProjectsPage() {
           </div>
           <div className={styles.headerActions}>
             <Button variant="tertiary" icon={Filter} iconSize={22}>
-              Filter
+              {t("common.filter")}
             </Button>
             <Button variant="tertiary" icon={FileText} iconSize={22}>
-              Create Report
+              {t("common.createReport")}
             </Button>
           </div>
         </div>
@@ -109,13 +67,13 @@ export default function ProjectsPage() {
           <div className={styles.tableHeader}>
             <div className={styles.colCheckbox}></div>
             <div className={styles.colThumb}></div>
-            <div className={styles.colName}>Project Name</div>
+            <div className={styles.colName}>{t("table.projectName")}</div>
             <div className={styles.fieldsGroup}>
-              <div className={styles.colField}>Address</div>
-              <div className={styles.colField}>Contract / Quote Status</div>
-              <div className={styles.colField}>Buildings in Project</div>
+              <div className={styles.colField}>{t("table.address")}</div>
+              <div className={styles.colField}>{t("table.contractStatus")}</div>
+              <div className={styles.colField}>{t("table.buildings")}</div>
             </div>
-            <div className={styles.colAssignees}>Assignee</div>
+            <div className={styles.colAssignees}>{t("table.assignee")}</div>
             <div className={styles.colMenu}></div>
           </div>
 
@@ -153,20 +111,20 @@ export default function ProjectsPage() {
                     </div>
                     <div className={styles.fieldsGroup}>
                       <div className={styles.colField}>
-                        <div className={styles.fieldLabel}>Address</div>
+                        <div className={styles.fieldLabel}>{t("table.address")}</div>
                         <div className={styles.fieldValue}>{displayValue(p.address)}</div>
                       </div>
                       <div className={styles.colField}>
-                        <div className={styles.fieldLabel}>Contract / Quote Status</div>
+                        <div className={styles.fieldLabel}>{t("table.contractStatus")}</div>
                         <div
                           className={styles.fieldValue}
                           data-status={p.contractStatus ?? "None"}
                         >
-                          {displayValue(p.contractStatus)}
+                          {localize(displayValue(p.contractStatus))}
                         </div>
                       </div>
                       <div className={styles.colField}>
-                        <div className={styles.fieldLabel}>Buildings in Project</div>
+                        <div className={styles.fieldLabel}>{t("table.buildings")}</div>
                         <div className={styles.fieldValue}>{p.buildingsCount}</div>
                       </div>
                     </div>
@@ -191,12 +149,11 @@ export default function ProjectsPage() {
             );
           })}
         </div>
-      </main>
 
       <CreateNewPopup
         isOpen={isCreatePopupOpen}
         onClose={() => setIsCreatePopupOpen(false)}
       />
-    </div>
+    </AppShell>
   );
 }

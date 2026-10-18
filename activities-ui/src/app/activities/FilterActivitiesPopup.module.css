@@ -10,10 +10,10 @@
 .panel {
   width: min(420px, 100vw);
   height: 100%;
-  background: #ffffff;
+  background: var(--color-surface);
   display: flex;
   flex-direction: column;
-  border-left: 1px solid #e3e8ee;
+  border-inline-start: 1px solid var(--color-border-strong);
   box-shadow: -16px 0 40px rgba(47, 48, 54, 0.12);
   animation: slideIn 180ms ease;
 }
@@ -39,24 +39,22 @@
 
 .title {
   margin: 0;
-  font-family: Rubik, sans-serif;
   font-size: 22px;
   font-weight: 600;
-  color: #2f3036;
+  color: var(--color-text);
 }
 
 .subtitle {
   margin: 6px 0 0;
-  font-family: Rubik, sans-serif;
   font-size: 13px;
-  color: #868fa0;
+  color: var(--color-text-muted);
 }
 
 .closeButton {
   appearance: none;
   border: 0;
-  background: #f7f9fb;
-  color: #464f60;
+  background: var(--color-canvas);
+  color: var(--color-text-secondary);
   width: 36px;
   height: 36px;
   border-radius: 10px;
@@ -68,8 +66,8 @@
 
 .closeButton:hover,
 .closeButton:focus-visible {
-  background: #e6f4ff;
-  color: #0082c8;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
 }
 
 .summary {
@@ -82,11 +80,10 @@
 .summaryChip {
   appearance: none;
   border: 0;
-  background: #e6f4ff;
-  color: #0082c8;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
   border-radius: 999px;
   padding: 6px 10px;
-  font-family: Rubik, sans-serif;
   font-size: 12px;
   font-weight: 500;
   display: inline-flex;
@@ -101,14 +98,14 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  background: #f7f9fb;
-  border-top: 1px solid #eef1f5;
-  border-bottom: 1px solid #eef1f5;
+  background: var(--color-canvas);
+  border-top: 1px solid var(--color-border-subtle);
+  border-bottom: 1px solid var(--color-border-subtle);
 }
 
 .group {
-  background: #ffffff;
-  border: 1px solid #e6e9ef;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: 14px;
   padding: 14px 14px 16px;
 }
@@ -120,7 +117,7 @@
   gap: 8px;
   margin-bottom: 10px;
   padding-bottom: 10px;
-  border-bottom: 1px solid #eef1f5;
+  border-bottom: 1px solid var(--color-border-subtle);
 }
 
 .groupToggle {
@@ -146,7 +143,7 @@
 
 .groupChevron {
   margin-left: auto;
-  color: #868fa0;
+  color: var(--color-text-muted);
   flex-shrink: 0;
   transition: transform 160ms ease;
 }
@@ -157,19 +154,17 @@
 
 .groupTitle {
   margin: 0;
-  font-family: Rubik, sans-serif;
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: #868fa0;
+  color: var(--color-text-muted);
 }
 
 .groupHint {
   margin: -4px 0 12px;
-  font-family: Rubik, sans-serif;
   font-size: 12px;
-  color: #868fa0;
+  color: var(--color-text-muted);
 }
 
 .sectionCount {
@@ -177,8 +172,8 @@
   height: 18px;
   padding: 0 5px;
   border-radius: 999px;
-  background: #e6f4ff;
-  color: #0082c8;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
   font-size: 11px;
   font-weight: 700;
   display: inline-flex;
@@ -194,8 +189,8 @@
 
 .quickCard {
   appearance: none;
-  border: 1px solid #e3e8ee;
-  background: #fff;
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-surface);
   border-radius: 12px;
   padding: 10px;
   display: flex;
@@ -213,21 +208,19 @@
 }
 
 .quickCard strong {
-  font-family: Rubik, sans-serif;
   font-size: 13px;
   font-weight: 600;
-  color: #2f3036;
+  color: var(--color-text);
 }
 
 .quickCard small {
-  font-family: Rubik, sans-serif;
   font-size: 11px;
-  color: #868fa0;
+  color: var(--color-text-muted);
 }
 
 .quickCard[data-on="true"] {
-  border-color: #0082c8;
-  background: #f3f9fd;
+  border-color: var(--color-primary);
+  background: var(--color-primary-soft);
 }
 
 .chipRow {
@@ -241,27 +234,26 @@
 .statusChip {
   appearance: none;
   border-radius: 999px;
-  border: 1px solid #e3e8ee;
+  border: 1px solid var(--color-border-strong);
   padding: 7px 12px;
-  font-family: Rubik, sans-serif;
   font-size: 12px;
   font-weight: 500;
   line-height: 1.2;
-  background: #fff;
-  color: #464f60;
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
   cursor: pointer;
 }
 
 .dateChip:hover,
 .optionChip:hover {
-  border-color: #c5cad3;
+  border-color: var(--color-border-hover);
 }
 
 .dateChip[data-on="true"],
 .optionChip[data-on="true"] {
-  background: #0082c8;
-  border-color: #0082c8;
-  color: #fff;
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-surface);
 }
 
 .statusChip.statusChipInProgress,
@@ -276,15 +268,15 @@
 .statusChip.statusChipInstructraCare,
 .statusChip.statusChipRejected {
   font-weight: 600;
-  background: color-mix(in srgb, currentColor 16%, #ffffff);
-  border-color: color-mix(in srgb, currentColor 28%, #ffffff);
+  background: color-mix(in srgb, currentColor 16%, var(--color-surface));
+  border-color: color-mix(in srgb, currentColor 28%, var(--color-surface));
 }
 
-.statusChip.statusChipInProgress { color: #e477af; }
-.statusChip.statusChipTested { color: #9b7cf6; }
-.statusChip.statusChipToReview { color: #f0a01a; }
-.statusChip.statusChipConfirmed { color: #34c48a; }
-.statusChip.statusChipDone { color: #3aa4dc; }
+.statusChip.statusChipInProgress { color: var(--status-progress); }
+.statusChip.statusChipTested { color: var(--status-tested); }
+.statusChip.statusChipToReview { color: var(--status-review); }
+.statusChip.statusChipConfirmed { color: var(--status-confirmed); }
+.statusChip.statusChipDone { color: var(--status-done); }
 .statusChip.statusChipOpen { color: #8bc34a; }
 .statusChip.statusChipReported { color: #7b8cff; }
 .statusChip.statusChipAssigned { color: #fb8f4a; }
@@ -307,20 +299,18 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  font-family: Rubik, sans-serif;
   font-size: 12px;
   font-weight: 600;
-  color: #868fa0;
+  color: var(--color-text-muted);
 }
 
 .customDates input {
   height: 40px;
-  border: 1px solid #e3e8ee;
+  border: 1px solid var(--color-border-strong);
   border-radius: 10px;
   padding: 0 10px;
-  font-family: Rubik, sans-serif;
   font-size: 13px;
-  color: #2f3036;
+  color: var(--color-text);
 }
 
 .picker {
@@ -338,31 +328,30 @@
   left: 10px;
   top: 50%;
   transform: translateY(-50%);
-  color: #868fa0;
+  color: var(--color-text-muted);
   pointer-events: none;
 }
 
 .pickerInput {
   width: 100%;
   height: 40px;
-  border: 1px solid #e3e8ee;
+  border: 1px solid var(--color-border-strong);
   border-radius: 10px;
   padding: 0 12px 0 34px;
-  font-family: Rubik, sans-serif;
   font-size: 13px;
   outline: none;
-  background: #f7f9fb;
+  background: var(--color-canvas);
 }
 
 .pickerInput:focus {
-  border-color: #0082c8;
-  background: #fff;
+  border-color: var(--color-primary);
+  background: var(--color-surface);
 }
 
 .optionList {
   max-height: 168px;
   overflow: auto;
-  border: 1px solid #eef1f5;
+  border: 1px solid var(--color-border-subtle);
   border-radius: 10px;
 }
 
@@ -375,20 +364,19 @@
   align-items: center;
   gap: 10px;
   padding: 10px 12px;
-  font-family: Rubik, sans-serif;
   font-size: 13px;
-  color: #2f3036;
+  color: var(--color-text);
   cursor: pointer;
   text-align: left;
 }
 
 .optionRow + .optionRow {
-  border-top: 1px solid #f3f4f6;
+  border-top: 1px solid var(--color-chip);
 }
 
 .optionRow:hover,
 .optionRow[data-checked="true"] {
-  background: #f7f9fb;
+  background: var(--color-canvas);
 }
 
 .optionCheck {
@@ -398,32 +386,31 @@
   border: 1.5px solid #cfd6e0;
   display: grid;
   place-items: center;
-  color: #fff;
+  color: var(--color-surface);
   flex-shrink: 0;
-  background: #fff;
+  background: var(--color-surface);
 }
 
 .optionCheck[data-checked="true"] {
-  background: #0082c8;
-  border-color: #0082c8;
+  background: var(--color-primary);
+  border-color: var(--color-primary);
 }
 
 .optionEmpty {
   padding: 16px 12px;
   text-align: center;
-  color: #868fa0;
-  font-family: Rubik, sans-serif;
+  color: var(--color-text-muted);
   font-size: 13px;
 }
 
 .footer {
   margin-top: auto;
-  border-top: 1px solid #e6e9ef;
+  border-top: 1px solid var(--color-border);
   padding: 12px 16px 16px;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  background: #fff;
+  background: var(--color-surface);
 }
 
 .saveTabRow {
@@ -436,8 +423,7 @@
   appearance: none;
   border: 0;
   background: transparent;
-  color: #0082c8;
-  font-family: Rubik, sans-serif;
+  color: var(--color-primary);
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
@@ -445,34 +431,32 @@
 }
 
 .saveTabButton:hover {
-  color: #026093;
+  color: var(--color-primary-hover);
 }
 
 .tabNameInput {
   flex: 1;
   min-width: 0;
   height: 36px;
-  border: 1px solid #e3e8ee;
+  border: 1px solid var(--color-border-strong);
   border-radius: 10px;
   padding: 0 12px;
-  font-family: Rubik, sans-serif;
   font-size: 13px;
-  color: #2f3036;
+  color: var(--color-text);
   outline: none;
 }
 
 .tabNameInput:focus {
-  border-color: #0082c8;
+  border-color: var(--color-primary);
 }
 
 .saveTabConfirm {
   appearance: none;
   height: 36px;
   border-radius: 10px;
-  border: 1px solid #0082c8;
-  background: #e6f4ff;
-  color: #0082c8;
-  font-family: Rubik, sans-serif;
+  border: 1px solid var(--color-primary);
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
   font-size: 13px;
   font-weight: 500;
   padding: 0 12px;
@@ -481,7 +465,7 @@
 }
 
 .saveTabConfirm:hover {
-  background: #d7eefc;
+  background: var(--color-primary-soft);
 }
 
 .footerActions {
@@ -495,7 +479,6 @@
   appearance: none;
   height: 40px;
   border-radius: 12px;
-  font-family: Rubik, sans-serif;
   font-size: 14px;
   font-weight: 500;
   line-height: 1;
@@ -504,33 +487,33 @@
 }
 
 .clearButton {
-  border: 1px solid #e3e8ee;
-  background: #fff;
-  color: #0082c8;
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-surface);
+  color: var(--color-primary);
   flex-shrink: 0;
 }
 
 .clearButton:hover:not(:disabled) {
-  background: #f6f8fa;
-  color: #026093;
+  background: var(--color-surface-muted);
+  color: var(--color-primary-hover);
 }
 
 .clearButton:disabled {
-  color: #c5cad3;
+  color: var(--color-border-hover);
   cursor: default;
 }
 
 .applyButton {
   flex: 1;
   min-width: 0;
-  border: 1px solid #0082c8;
-  background: #0082c8;
-  color: #fff;
+  border: 1px solid var(--color-primary);
+  background: var(--color-primary);
+  color: var(--color-surface);
 }
 
 .applyButton:hover {
-  background: #026093;
-  border-color: #026093;
+  background: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
 }
 
 @media (max-width: 900px) {
