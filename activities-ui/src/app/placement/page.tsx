@@ -1,27 +1,29 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import Link from "next/link";
-import { Button } from "@/design-system";
 import CreateNewPopup from "../activities/CreateNewPopup";
 import { createInitialDays, employees } from "./data";
-import { BoardDayKey, DayBoard, FilterType, ViewMode } from "./types";
+import { BoardDayKey, DayBoard, FilterType } from "./types";
 import TopBar from "./TopBar";
 import EmployeeSidebar from "./EmployeeSidebar";
 import AssignmentBoard from "./AssignmentBoard";
+import FilterPlacementPopup, {
+  EMPTY_PLACEMENT_FILTERS,
+  PlacementFilters,
+  taskMatchesPlacementFilters,
+} from "./FilterPlacementPopup";
 import styles from "./placement.module.css";
-import { useI18n } from "@/i18n";
-import { NavLabel, navItems } from "../navItems";
+import AppSidebar from "../AppSidebar";
 
 export default function PlacementPage() {
-  const { t } = useI18n();
   const [selectedDay, setSelectedDay] = useState<BoardDayKey>("today");
   const [hoveredEmployeeId, setHoveredEmployeeId] = useState<string | null>(null);
   const [openTaskId, setOpenTaskId] = useState<string | null>(null);
   const [filterType, setFilterType] = useState<FilterType>("all");
   const [sortByLoad, setSortByLoad] = useState(false);
   const [hideAssigned, setHideAssigned] = useState(false);
-  const [viewMode, setViewMode] = useState<ViewMode>("mini");
+  const [filters, setFilters] = useState<PlacementFilters>(EMPTY_PLACEMENT_FILTERS);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [days, setDays] = useState<DayBoard[]>(() => createInitialDays());
   const [isCreatePopupOpen, setIsCreatePopupOpen] = useState(false);
@@ -31,15 +33,13 @@ export default function PlacementPage() {
   const taskCounts = useMemo(() => {
     const counts: Record<string, number> = {};
     for (const emp of employees) counts[emp.id] = 0;
-    for (const day of days) {
-      for (const task of day.tasks) {
-        for (const id of task.assignedIds) {
-          counts[id] = (counts[id] ?? 0) + 1;
-        }
+    for (const task of currentDay.tasks) {
+      for (const id of task.assignedIds) {
+        counts[id] = (counts[id] ?? 0) + 1;
       }
     }
     return counts;
-  }, [days]);
+  }, [currentDay]);
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -100,39 +100,7 @@ export default function PlacementPage() {
     <div className={styles.pageWrapper}>
       <TopBar />
 
-      <aside className={styles.appSidebar}>
-        <div className={styles.userBlock}>
-          <div className={styles.avatar}>UF</div>
-          <div className={styles.appUserName}>{t("chrome.userName")}</div>
-        </div>
-        <nav className={styles.menu}>
-          {navItems.map((item) =>
-            item.href ? (
-              <Link
-                key={item.id}
-                href={item.href}
-                className={item.id === "placement" ? styles.menuItemActive : styles.menuItem}
-              >
-                <NavLabel item={item} />
-              </Link>
-            ) : (
-              <div key={item.id} className={styles.menuItem}>
-                <NavLabel item={item} />
-              </div>
-            )
-          )}
-        </nav>
-        <div className={styles.createWrap}>
-          <Button
-            variant="primary"
-            size="md"
-            className={styles.createBtn}
-            onClick={() => setIsCreatePopupOpen(true)}
-          >
-            + {t("chrome.createNew")}
-          </Button>
-        </div>
-      </aside>
+      <AppSidebar onCreateNew={() => setIsCreatePopupOpen(true)} />
 
       <main className={styles.main}>
         <div className={styles.boardShell} dir="rtl" lang="he">
@@ -152,22 +120,40 @@ export default function PlacementPage() {
               day={currentDay}
               selectedDay={selectedDay}
               hideAssigned={hideAssigned}
-              viewMode={viewMode}
               hoveredEmployeeId={hoveredEmployeeId}
               openTaskId={openTaskId}
               onSelectDay={selectDay}
               onHideAssignedChange={setHideAssigned}
-              onViewModeChange={setViewMode}
               onTogglePopover={(taskId) =>
                 setOpenTaskId((prev) => (prev === taskId ? null : taskId))
               }
               onAssign={handleAssign}
               onUnassign={handleUnassign}
+              filters={filters}
+              onOpenFilters={() => {
+                setOpenTaskId(null);
+                setIsFilterOpen(true);
+              }}
             />
           </div>
         </div>
       </main>
 
+      <FilterPlacementPopup
+        isOpen={isFilterOpen}
+        value={filters}
+        matchCount={(draft) =>
+          currentDay.tasks.filter((task) => {
+            if (hideAssigned && task.assignedIds.length >= task.required) return false;
+            return taskMatchesPlacementFilters(task, draft);
+          }).length
+        }
+        onClose={() => setIsFilterOpen(false)}
+        onApply={(next) => {
+          setFilters(next);
+          setIsFilterOpen(false);
+        }}
+      />
       <CreateNewPopup
         isOpen={isCreatePopupOpen}
         onClose={() => setIsCreatePopupOpen(false)}

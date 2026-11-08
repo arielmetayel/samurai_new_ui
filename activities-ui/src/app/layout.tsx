@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Rubik } from "next/font/google";
 import Providers from "./Providers";
 import "./globals.css";
@@ -22,6 +23,9 @@ export default function RootLayout({
   return (
     <html lang="he" dir="rtl" className={rubik.variable}>
       <body className={rubik.className}>
+        <Script id="sidebar-collapsed" strategy="beforeInteractive">
+          {`try{if(localStorage.getItem("samurai-sidebar-collapsed")==="1")document.documentElement.dataset.sidebar="collapsed"}catch(e){}`}
+        </Script>
         <Providers>{children}</Providers>
       </body>
     </html>

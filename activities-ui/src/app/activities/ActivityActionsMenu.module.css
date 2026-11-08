@@ -42,7 +42,7 @@
   cursor: pointer;
   font-size: 14px;
   color: var(--color-text-secondary);
-  text-align: left;
+  text-align: start;
 }
 
 .menuItem:hover,

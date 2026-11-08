@@ -52,6 +52,7 @@
   --shadow-modal: 0 16px 48px rgba(47, 48, 54, 0.2);
 
   --sidebar-width: 240px;
+  --sidebar-width-collapsed: 72px;
   --header-height: 72px;
   --z-header: 100;
   --z-panel: 1200;
@@ -64,6 +65,10 @@
 html {
   background: var(--color-canvas);
   min-height: 100vh;
+}
+
+html[data-sidebar="collapsed"] {
+  --sidebar-width: var(--sidebar-width-collapsed);
 }
 
 html,

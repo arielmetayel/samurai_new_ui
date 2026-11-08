@@ -300,7 +300,7 @@ function CarouselCard({ card, onOpen }: { card: DashboardCard; onOpen: (id: stri
     <button
       type="button"
       onClick={() => onOpen(card.activityId)}
-      className={`${styles.card} ${styles[`tone_${card.tone}`] ?? ""}`.trim()}
+      className={styles.card}
     >
       <div className={styles.cardTop}>
         <span className={styles.cardIcon}>

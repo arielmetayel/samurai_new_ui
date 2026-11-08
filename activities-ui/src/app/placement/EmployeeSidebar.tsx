@@ -8,7 +8,7 @@ import EmployeeRow from "./EmployeeRow";
 import styles from "./placement.module.css";
 
 type EmployeeSidebarProps = {
-  weekday: DayKey;
+  weekday: DayKey | null;
   search: string;
   filterType: FilterType;
   sortByLoad: boolean;
@@ -88,10 +88,6 @@ export default function EmployeeSidebar({
           <span className={styles.legendItem}>
             <span className={styles.swatch} style={{ background: "#f59e0b" }} />
             שעתי
-          </span>
-          <span className={styles.legendItem}>
-            <span className={styles.swatch} style={{ background: "#0082C8" }} />
-            גלובלי
           </span>
           <span className={styles.legendItem}>
             <span className={styles.swatchRing} />

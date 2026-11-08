@@ -31,16 +31,23 @@ export default function ActivityActionsMenu({
   const { t } = useI18n();
   const containerRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const [coords, setCoords] = useState<{ top: number; right: number } | null>(null);
+  const [coords, setCoords] = useState<{ top: number; left: number } | null>(null);
 
   function placeMenu() {
     const button = buttonRef.current;
     if (!button) return;
     const rect = button.getBoundingClientRect();
-    setCoords({
-      top: rect.bottom + 4,
-      right: window.innerWidth - rect.right,
-    });
+    const menuWidth = 220;
+    const menuHeight = 220;
+    const pad = 8;
+    const rtl = document.documentElement.dir === "rtl";
+    let left = rtl ? rect.right - menuWidth : rect.left;
+    left = Math.min(Math.max(pad, left), window.innerWidth - menuWidth - pad);
+    let top = rect.bottom + 4;
+    if (top + menuHeight > window.innerHeight - pad) {
+      top = Math.max(pad, rect.top - menuHeight - 4);
+    }
+    setCoords({ top, left });
   }
 
   function toggle() {
@@ -107,7 +114,7 @@ export default function ActivityActionsMenu({
               id="activity-actions-menu"
               className={styles.contextMenu}
               role="menu"
-              style={{ top: coords.top, right: coords.right }}
+              style={{ top: coords.top, left: coords.left }}
             >
               {ACTIONS.map((action) => {
                 const Icon = action.icon;

@@ -159,7 +159,7 @@ export default function ActivityAnswerWizard({
           })}
         </div>
 
-        <div className={styles.wizardFooter}>
+        <div className={styles.wizardFooter} dir="ltr">
           <button
             type="button"
             className={styles.secondaryButton}

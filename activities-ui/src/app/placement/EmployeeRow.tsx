@@ -1,12 +1,12 @@
 "use client";
 
 import { WEEKDAYS, isEmployeeAvailable } from "./data";
-import { DayKey, Employee, EmployeeType } from "./types";
+import { DayKey, Employee } from "./types";
 import styles from "./placement.module.css";
 
 type EmployeeRowProps = {
   employee: Employee;
-  weekday: DayKey;
+  weekday: DayKey | null;
   taskCount: number;
   onHover: (id: string | null) => void;
 };
@@ -40,23 +40,25 @@ export default function EmployeeRow({
             {employee.type === "hourly" ? "שעתי" : "גלובלי"}
           </span>
         </div>
-        <div className={styles.days}>
-          {WEEKDAYS.map((day) => {
-            const available = isEmployeeAvailable(employee, day.key);
-            const selected = day.key === weekday;
-            return (
-              <span
-                key={day.key}
-                title={available ? "זמין" : "לא זמין"}
-                className={`${styles.dayBox} ${dayClass(employee.type, available)} ${
-                  selected ? styles.daySelected : ""
-                }`}
-              >
-                {day.letter}
-              </span>
-            );
-          })}
-        </div>
+        {employee.type === "hourly" ? (
+          <div className={styles.days}>
+            {WEEKDAYS.map((day) => {
+              const available = isEmployeeAvailable(employee, day.key);
+              const selected = day.key === weekday;
+              return (
+                <span
+                  key={day.key}
+                  title={available ? "זמין" : "לא זמין"}
+                  className={`${styles.dayBox} ${dayClass(available)} ${
+                    selected ? styles.daySelected : ""
+                  }`}
+                >
+                  {day.letter}
+                </span>
+              );
+            })}
+          </div>
+        ) : null}
       </div>
       <div className={styles.empLoad}>
         <div className={styles.empLoadNumber}>{taskCount}</div>
@@ -66,7 +68,7 @@ export default function EmployeeRow({
   );
 }
 
-function dayClass(type: EmployeeType, available: boolean) {
+function dayClass(available: boolean) {
   if (!available) return styles.dayUnavailable;
-  return type === "hourly" ? styles.dayAvailableHourly : styles.dayAvailableGlobal;
+  return styles.dayAvailableHourly;
 }
