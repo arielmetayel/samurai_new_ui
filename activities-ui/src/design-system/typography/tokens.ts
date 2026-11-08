@@ -1,139 +1,138 @@
 // Samurai Design System - Typography Tokens
+// Scale matches globals.css: 9 (avatar) / 12 / 14 / 16 / 18 / 22 / 24.
+
+export const typeScale = {
+  avatar: '9px',
+  caption: '12px',
+  sm: '14px',
+  md: '16px',
+  lg: '18px',
+  xl: '22px',
+  '2xl': '24px',
+} as const;
+
 export const typography = {
-  // Font Combinations
   combinations: {
-    // Small text combinations
     'caption-regular': {
-      fontFamily: 'Rubik',
-      fontWeight: '400', // normal
-      fontSize: '0.6875rem', // 11px
+      fontFamily: 'var(--font-ui)',
+      fontWeight: '400',
+      fontSize: '0.75rem', // 12px
       lineHeight: '1.25',
     },
     'caption-medium': {
-      fontFamily: 'Rubik',
-      fontWeight: '500', // medium
-      fontSize: '0.6875rem', // 11px
+      fontFamily: 'var(--font-ui)',
+      fontWeight: '500',
+      fontSize: '0.75rem', // 12px
       lineHeight: '1.25',
     },
-    
-    // 12px combinations
+
     'text-xs-regular': {
-      fontFamily: 'Rubik',
-      fontWeight: '400', // normal
+      fontFamily: 'var(--font-ui)',
+      fontWeight: '400',
       fontSize: '0.75rem', // 12px
       lineHeight: '1.25',
     },
     'text-xs-medium': {
-      fontFamily: 'Rubik',
-      fontWeight: '500', // medium
+      fontFamily: 'var(--font-ui)',
+      fontWeight: '500',
       fontSize: '0.75rem', // 12px
       lineHeight: '1.25',
     },
-    
-    // 14px combinations
+
     'text-sm-regular': {
-      fontFamily: 'Rubik',
-      fontWeight: '400', // normal
+      fontFamily: 'var(--font-ui)',
+      fontWeight: '400',
       fontSize: '0.875rem', // 14px
       lineHeight: '1.25',
       letterSpacing: '0.01em',
     },
     'text-sm-medium': {
-      fontFamily: 'Rubik',
-      fontWeight: '500', // medium
+      fontFamily: 'var(--font-ui)',
+      fontWeight: '500',
       fontSize: '0.875rem', // 14px
       lineHeight: '1.25',
       letterSpacing: '0.01em',
     },
     'text-sm-semibold': {
-      fontFamily: 'Rubik',
-      fontWeight: '600', // semibold
+      fontFamily: 'var(--font-ui)',
+      fontWeight: '600',
       fontSize: '0.875rem', // 14px
       lineHeight: '1.5',
       letterSpacing: '0.14px',
     },
-    
-    // 16px combinations
+
     'text-base-regular': {
-      fontFamily: 'Rubik',
-      fontWeight: '400', // normal
+      fontFamily: 'var(--font-ui)',
+      fontWeight: '400',
       fontSize: '1rem', // 16px
       lineHeight: '1.25',
     },
     'text-base-medium': {
-      fontFamily: 'Rubik',
-      fontWeight: '500', // medium
+      fontFamily: 'var(--font-ui)',
+      fontWeight: '500',
       fontSize: '1rem', // 16px
       lineHeight: '1.25',
     },
     'text-base-list': {
-      fontFamily: 'Rubik',
-      fontWeight: '400', // normal
+      fontFamily: 'var(--font-ui)',
+      fontWeight: '400',
       fontSize: '1rem', // 16px
-      lineHeight: '1.4', // 140%
+      lineHeight: '1.4',
       color: 'var(--color-text-secondary)',
     },
-    
-    // Heading combinations
+
     'heading-small': {
-      fontFamily: 'Rubik',
-      fontWeight: '600', // semibold
+      fontFamily: 'var(--font-ui)',
+      fontWeight: '600',
       fontSize: '1.125rem', // 18px
       lineHeight: '1.25',
     },
     'heading-medium': {
-      fontFamily: 'Rubik',
-      fontWeight: '600', // semibold
+      fontFamily: 'var(--font-ui)',
+      fontWeight: '600',
       fontSize: '1.5rem', // 24px
       lineHeight: '1.25',
     },
     'header-m02': {
-      fontFamily: 'Rubik',
-      fontWeight: '500', // medium
+      fontFamily: 'var(--font-ui)',
+      fontWeight: '500',
       fontSize: '1.375rem', // 22px
-      lineHeight: '1.25', // 125%
+      lineHeight: '1.25',
       color: 'var(--color-text-secondary)',
     },
     'heading-large': {
-      fontFamily: 'Rubik',
-      fontWeight: '700', // bold
-      fontSize: '2.25rem', // 36px
+      fontFamily: 'var(--font-ui)',
+      fontWeight: '700',
+      fontSize: '2.25rem', // 36px — unused leftover, no CSS var yet
       lineHeight: '1.25',
     },
   },
-  
-  // Individual tokens (for custom combinations)
+
   fontFamily: {
-    sans: ['Rubik', 'system-ui', 'sans-serif'],
-    mono: ['JetBrains Mono', 'monospace'],
+    sans: 'var(--font-ui)',
   },
-  
+
   fontSize: {
-    '2xs': '0.6875rem', // 11px
-    xs: '0.75rem',      // 12px
-    sm: '0.875rem',     // 14px
-    base: '1rem',       // 16px
-    lg: '1.125rem',     // 18px
-    xl: '1.25rem',      // 20px
-    '2xl': '1.5rem',    // 24px
-    '3xl': '1.875rem',  // 30px
-    '4xl': '2.25rem',   // 36px
-    '5xl': '3rem',      // 48px
+    avatar: '0.5625rem', // 9px
+    caption: '0.75rem',  // 12px
+    xs: '0.75rem',       // 12px
+    sm: '0.875rem',      // 14px
+    base: '1rem',        // 16px
+    lg: '1.125rem',      // 18px
+    xl: '1.375rem',      // 22px — matches --font-size-xl
+    '2xl': '1.5rem',     // 24px
   },
-  
+
   fontWeight: {
-    light: '300',
-    normal: '400',
+    regular: '400',
     medium: '500',
     semibold: '600',
     bold: '700',
-    extrabold: '800',
   },
-  
+
   lineHeight: {
     tight: '1.25',
     normal: '1.5',
-    relaxed: '1.75',
   },
 } as const;
 

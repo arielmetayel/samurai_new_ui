@@ -1,0 +1,103 @@
+.root {
+  margin-top: var(--space-8);
+}
+
+.header {
+  display: grid;
+  align-items: center;
+  min-height: 36px;
+  margin-bottom: 6px;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-normal);
+  letter-spacing: 0.04em;
+}
+
+.header > * {
+  min-width: 0;
+  padding: 0 6px;
+  color: var(--color-text-muted);
+}
+
+.item {
+  display: flex;
+  align-items: flex-start;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--color-text) 6%, transparent);
+  margin-bottom: 6px;
+}
+
+.selected {
+  border-color: var(--color-primary);
+  border-width: 2px;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-primary) 12%, transparent);
+}
+
+.lead {
+  display: grid;
+  place-items: center;
+  width: var(--table-lead-width, 60px);
+  padding: 0 6px;
+  align-self: center;
+  flex-shrink: 0;
+}
+
+.body {
+  flex: 1;
+  min-width: 0;
+  border-radius: 10px;
+  background: var(--color-surface);
+  overflow: hidden;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform var(--duration-normal) ease, box-shadow var(--duration-normal) ease;
+}
+
+.accent {
+  border-inline-start: 5px solid var(--table-accent, var(--color-border-strong));
+}
+
+.item:hover .body {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-card);
+}
+
+@media (max-width: 900px) {
+  .root > .header {
+    display: none;
+  }
+
+  .root > .item {
+    margin-bottom: 12px;
+    box-shadow: none;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border-strong);
+    overflow: hidden;
+  }
+
+  .root > .selected {
+    border: 2px solid var(--color-primary);
+  }
+
+  .root .lead {
+    display: none;
+  }
+
+  .root .body,
+  .root .accent {
+    border-radius: 0;
+  }
+
+  .root .accent {
+    border-inline-start-width: 4px;
+  }
+
+  .root > .item:hover .body {
+    transform: none;
+    box-shadow: none;
+  }
+}

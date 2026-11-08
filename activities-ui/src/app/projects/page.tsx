@@ -3,7 +3,7 @@
 import React, { useMemo, useState } from "react";
 import Link from "next/link";
 import styles from "./styles.module.css";
-import { Button, Checkbox } from "@/design-system";
+import { Button, Checkbox, Table, TableHeader, TableRow, TableRowBody } from "@/design-system";
 import { MoreVertical, Filter, FileText, Search } from "react-feather";
 import CreateNewPopup from "../activities/CreateNewPopup";
 import { useI18n } from "@/i18n";
@@ -13,6 +13,12 @@ import { mockProjects, TOTAL_PROJECTS } from "./data";
 function displayValue(value: string | number | null | undefined) {
   if (value === null || value === undefined || value === "") return "0";
   return String(value);
+}
+
+function contractAccent(status: string | null | undefined) {
+  if (status === "Signed Contract") return "var(--status-confirmed-bg)";
+  if (status === "No Contract") return "var(--status-review-bg)";
+  return "var(--color-border-strong)";
 }
 
 export default function ProjectsPage() {
@@ -50,10 +56,10 @@ export default function ProjectsPage() {
             />
           </div>
           <div className={styles.headerActions}>
-            <Button variant="tertiary" icon={Filter} iconSize={22}>
+            <Button variant="tertiary" icon={Filter}>
               {t("common.filter")}
             </Button>
-            <Button variant="tertiary" icon={FileText} iconSize={22}>
+            <Button variant="tertiary" icon={FileText}>
               {t("common.createReport")}
             </Button>
           </div>
@@ -63,8 +69,8 @@ export default function ProjectsPage() {
           {filtered.length} | {TOTAL_PROJECTS}
         </div>
 
-        <div className={styles.table}>
-          <div className={styles.tableHeader}>
+        <Table className={styles.table}>
+          <TableHeader className={styles.tableHeader}>
             <div className={styles.colCheckbox}></div>
             <div className={styles.colThumb}></div>
             <div className={styles.colName}>{t("table.projectName")}</div>
@@ -75,27 +81,23 @@ export default function ProjectsPage() {
             </div>
             <div className={styles.colAssignees}>{t("table.assignee")}</div>
             <div className={styles.colMenu}></div>
-          </div>
+          </TableHeader>
 
           {filtered.map((p) => {
             const selected = selectedId === p.id;
             return (
-              <div
+              <TableRow
                 key={p.id}
-                className={`${styles.rowWrapper} ${selected ? styles.rowSelected : ""}`}
-                data-status={p.contractStatus ?? "None"}
-              >
-                <div
-                  className={styles.colCheckbox}
-                  onClick={(e) => e.stopPropagation()}
-                >
+                selected={selected}
+                leading={
                   <Checkbox
                     size="md"
                     checked={selected}
                     onChange={() => toggleSelected(p.id)}
                   />
-                </div>
-                <Link href={`/projects/${p.id}`} className={styles.columnBlock}>
+                }
+              >
+                <TableRowBody as={Link} href={`/projects/${p.id}`} accent={contractAccent(p.contractStatus)}>
                   <div className={styles.row}>
                     <div className={styles.colThumb}>
                       <div
@@ -144,11 +146,11 @@ export default function ProjectsPage() {
                       </div>
                     </div>
                   </div>
-                </Link>
-              </div>
+                </TableRowBody>
+              </TableRow>
             );
           })}
-        </div>
+        </Table>
 
       <CreateNewPopup
         isOpen={isCreatePopupOpen}

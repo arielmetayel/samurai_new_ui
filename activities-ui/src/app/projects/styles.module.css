@@ -44,27 +44,12 @@
 }
 
 .table {
-  margin-top: 12px;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  overflow: hidden;
+  --table-lead-width: 60px;
 }
 
 .tableHeader {
-  background: var(--color-surface-muted);
-  border-bottom: 1px solid var(--color-border-strong);
-  color: var(--color-text-secondary);
-  min-height: 60px;
-  display: grid;
-  grid-template-columns: 60px 88px minmax(140px, 1.1fr) minmax(260px, 2.2fr) 90px 40px;
-  align-items: center;
+  grid-template-columns: var(--table-lead-width) 88px minmax(140px, 1.1fr) minmax(260px, 2.2fr) 90px 40px;
   gap: 10px;
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 125%;
-  letter-spacing: 0.14px;
-  padding-right: 10px;
 }
 
 .tableHeader > * {
@@ -90,47 +75,8 @@
   justify-content: flex-start;
 }
 
-.rowWrapper {
-  display: flex;
-  align-items: stretch;
-  position: relative;
-  box-shadow: 1.2px 1.2px 1.2px 0px rgba(232, 232, 232, 0.8);
-  border-radius: 10px;
-  background: var(--color-surface);
-  margin-bottom: 12px;
-  border: 1px solid transparent;
-  cursor: pointer;
-}
-
-.rowSelected {
-  border: 2px solid var(--color-primary);
-  box-shadow: 0 0 0 1px rgba(0, 130, 200, 0.12);
-}
-
 .colCheckbox {
-  display: grid;
-  place-items: center;
-  padding: 0 6px;
-  align-self: center;
-  width: 60px;
-  flex-shrink: 0;
-}
-
-.columnBlock {
-  flex: 1;
-  min-width: 0;
-  border-inline-start: 5px solid var(--status-color, var(--color-border-strong));
-  border-radius: 10px;
-  background: var(--color-surface);
-  overflow: hidden;
-  width: 100%;
-  transition: box-shadow 0.2s ease;
-  text-decoration: none;
-  color: inherit;
-}
-
-.rowWrapper:hover .columnBlock {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  width: var(--table-lead-width);
 }
 
 .row {
@@ -198,7 +144,7 @@
   top: 4px;
   left: 6px;
   color: var(--color-surface);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
 }
@@ -243,10 +189,6 @@
 
 .fieldValue[data-status="Signed Contract"] { color: var(--status-confirmed); }
 .fieldValue[data-status="No Contract"] { color: var(--status-review); }
-
-.rowWrapper[data-status="Signed Contract"] .columnBlock { --status-color: var(--status-confirmed-bg); }
-.rowWrapper[data-status="No Contract"] .columnBlock { --status-color: var(--status-review-bg); }
-.rowWrapper[data-status="None"] .columnBlock { --status-color: var(--color-border-strong); }
 
 .colAssignees {
   display: flex;
@@ -295,17 +237,16 @@
 }
 
 @media (max-width: 1100px) {
+  .table {
+    --table-lead-width: 44px;
+  }
 
   .tableHeader {
-    grid-template-columns: 44px 72px minmax(120px, 1.1fr) minmax(200px, 2.2fr) 72px 32px;
+    grid-template-columns: var(--table-lead-width) 72px minmax(120px, 1.1fr) minmax(200px, 2.2fr) 72px 32px;
   }
 
   .row {
     grid-template-columns: 72px minmax(120px, 1.1fr) minmax(200px, 2.2fr) 72px 32px;
-  }
-
-  .colCheckbox {
-    width: 44px;
   }
 
   .thumb {
@@ -337,40 +278,8 @@
     width: 100%;
   }
 
-  .table {
-    background: transparent;
-    border: 0;
-    border-radius: 0;
-  }
-
-  .tableHeader {
-    display: none;
-  }
-
   .fieldLabel {
     display: block;
-  }
-
-  .rowWrapper {
-    margin-bottom: 12px;
-    box-shadow: none;
-    border-radius: 16px;
-    border: 1px solid var(--color-border-strong);
-    overflow: hidden;
-  }
-
-  .rowSelected {
-    border: 2px solid var(--color-primary);
-  }
-
-  .colCheckbox {
-    display: none;
-  }
-
-  .columnBlock {
-    border-inline-start: 4px solid var(--status-color, var(--color-border-strong));
-    border-radius: 0;
-    box-shadow: none;
   }
 
   .row {

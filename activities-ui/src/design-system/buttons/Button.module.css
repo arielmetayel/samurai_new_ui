@@ -7,10 +7,15 @@
   border: none;
   border-radius: var(--radius-button);
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  transition: all var(--duration-normal) var(--ease-standard);
   font-weight: 500; /* medium */
   text-decoration: none;
   outline: none;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }
 
 .btn:disabled {
@@ -21,7 +26,7 @@
 /* Click state - shrink effect for all buttons */
 .btn:active:not(:disabled) {
   transform: scale(0.98);
-  transition: transform 0.15s ease-out;
+  transition: transform var(--duration-fast) ease-out;
 }
 
 /* Variants */
@@ -85,9 +90,9 @@
   align-items: center;
   gap: 6px;
   flex-shrink: 0;
-  border-radius: 12px;
+  border-radius: var(--radius-button-action);
   background: var(--color-surface);
-  box-shadow: 0 -1px 3px 0 rgba(60, 66, 87, 0.08), 0 0 0 1px rgba(60, 66, 87, 0.16), 0 1px 1px 0 rgba(0, 0, 0, 0.12);
+  box-shadow: var(--shadow-action);
   color: var(--color-primary);
   font-size: 14px;
   font-style: normal;
@@ -105,7 +110,7 @@
   height: 24px;
   padding: 4px 8px;
   font-size: 12px;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
 }
 
 .ghost {
@@ -131,7 +136,7 @@
 }
 
 .btn.ghost.sm {
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.25;
   letter-spacing: 0.01em;
 }
@@ -168,15 +173,55 @@
   flex-shrink: 0;
 }
 
-.btn.primary.sm {
+.btn.primary.sm,
+.btn.primary.shapeAction {
   height: 40px;
   min-height: 40px;
   padding: 6px 16px;
-  border-radius: 12px;
+  border-radius: var(--radius-button-action);
   font-size: 14px;
   font-weight: 500;
   letter-spacing: 0.18px;
   gap: 8px;
+}
+
+.btn.primary.shapeCreate {
+  height: 48px;
+  min-height: 48px;
+  padding: 12px 24px;
+  border-radius: var(--radius-button);
+  font-size: 16px;
+  gap: 12px;
+}
+
+.danger {
+  display: inline-flex;
+  height: 40px;
+  min-height: 40px;
+  max-width: 380px;
+  padding: 6px 12px;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  border-radius: var(--radius-button-action);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-action);
+  color: var(--color-danger);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.18px;
+}
+.danger:hover:not(:disabled) {
+  background: var(--color-surface);
+  color: var(--color-danger-hover);
+}
+.danger:active:not(:disabled) {
+  background: var(--color-surface);
+  color: var(--color-danger-hover);
+}
+.danger:focus-visible {
+  outline-color: var(--color-danger);
 }
 
 .icon {

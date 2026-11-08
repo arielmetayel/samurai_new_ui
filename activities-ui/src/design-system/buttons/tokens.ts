@@ -19,31 +19,31 @@ export const checkboxTokens = {
 
   colors: {
     unchecked: {
-      border: "#d5dbe3",
-      background: "#ffffff",
+      border: "var(--color-border-muted)",
+      background: "var(--color-surface)",
       hover: {
-        border: "#868fa0",
-        background: "#f6f8fa",
+        border: "var(--color-text-muted)",
+        background: "var(--color-surface-muted)",
       },
     },
     checked: {
-      border: "#0082C8",
-      background: "#0082C8",
+      border: "var(--color-primary)",
+      background: "var(--color-primary)",
       hover: {
-        border: "#026093",
-        background: "#026093",
+        border: "var(--color-primary-hover)",
+        background: "var(--color-primary-hover)",
       },
     },
     disabled: {
-      border: "#e6e9ef",
-      background: "#f6f8fa",
-      text: "#868fa0",
+      border: "var(--color-border)",
+      background: "var(--color-surface-muted)",
+      text: "var(--color-text-muted)",
     },
   },
 
   states: {
     focus: {
-      outline: "2px solid #0082C8",
+      outline: "2px solid var(--color-primary)",
       outlineOffset: "2px",
     },
   },
@@ -57,7 +57,7 @@ export const iconTokens = {
   },
 
   colors: {
-    checked: "#FFFFFF",
-    disabled: "#868fa0",
+    checked: "var(--color-surface)",
+    disabled: "var(--color-text-muted)",
   },
 };

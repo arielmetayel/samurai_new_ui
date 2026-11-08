@@ -24,7 +24,7 @@
   position: fixed;
   background: var(--color-surface);
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(47, 48, 54, 0.16);
+  box-shadow: var(--shadow-card);
   padding: 8px 0;
   min-width: 180px;
   z-index: 1300;

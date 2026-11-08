@@ -1,40 +1,75 @@
 :root {
   --font-ui: var(--font-rubik), Rubik, system-ui, sans-serif;
 
-  --color-primary: #0082c8;
-  --color-primary-hover: #026093;
-  --color-primary-soft: #e6f4ff;
-  --color-primary-mid: #9fd0ef;
+  /* Primitive — raw swatches. Screens use semantic names below. */
+  --primitive-blue-50: #e6f4ff;
+  --primitive-blue-200: #9fd0ef;
+  --primitive-blue-500: #0082C8;
+  --primitive-blue-600: #026093;
 
-  --color-text: #2f3036;
-  --color-text-secondary: #464f60;
-  --color-text-muted: #868fa0;
+  --primitive-neutral-0: #ffffff;
+  --primitive-neutral-25: #f7f9fb;
+  --primitive-neutral-50: #f6f8fa;
+  --primitive-neutral-75: #f3f4f6;
+  --primitive-neutral-100: #eef1f5;
+  --primitive-neutral-150: #e6e9ef;
+  --primitive-neutral-200: #e3e8ee;
+  --primitive-neutral-250: #d5dbe3;
+  --primitive-neutral-300: #c5cad3;
+  --primitive-neutral-350: #c4c7ce;
+  --primitive-neutral-400: #868fa0;
+  --primitive-neutral-500: #464f60;
+  --primitive-neutral-600: #2f3036;
 
-  --color-canvas: #f7f9fb;
-  --color-surface: #ffffff;
-  --color-surface-muted: #f6f8fa;
-  --color-chip: #f3f4f6;
+  --primitive-green-50: #d1fae5;
+  --primitive-green-500: #059669;
+  --primitive-orange-50: #ffedd5;
+  --primitive-orange-500: #d97706;
+  --primitive-red-50: #fee2e2;
+  --primitive-red-500: #dc2626;
+  --primitive-red-600: #b91c1c;
+  --primitive-pink-50: #f7d5e6;
+  --primitive-pink-500: #e477af;
+  --primitive-violet-50: #efe7ff;
+  --primitive-violet-500: #7c3aed;
+  --primitive-overlay: rgba(47, 48, 54, 0.45);
 
-  --color-border: #e6e9ef;
-  --color-border-strong: #e3e8ee;
-  --color-border-subtle: #eef1f5;
-  --color-border-muted: #d5dbe3;
-  --color-border-hover: #c5cad3;
-  --color-disabled: #c4c7ce;
+  /* Semantic color — same computed values as before Stage 2. */
+  --color-primary: var(--primitive-blue-500);
+  --color-primary-hover: var(--primitive-blue-600);
+  --color-primary-soft: var(--primitive-blue-50);
+  --color-primary-mid: var(--primitive-blue-200);
 
-  --color-success: #059669;
-  --color-success-bg: #d1fae5;
-  --color-warning: #d97706;
-  --color-warning-bg: #ffedd5;
-  --color-danger: #dc2626;
-  --color-danger-hover: #b91c1c;
-  --color-danger-bg: #fee2e2;
-  --color-overlay: rgba(47, 48, 54, 0.45);
+  --color-text: var(--primitive-neutral-600);
+  --color-text-secondary: var(--primitive-neutral-500);
+  --color-text-muted: var(--primitive-neutral-400);
 
-  --status-progress: #e477af;
-  --status-progress-bg: #f7d5e6;
-  --status-tested: #7c3aed;
-  --status-tested-bg: #efe7ff;
+  --color-canvas: var(--primitive-neutral-25);
+  --color-surface: var(--primitive-neutral-0);
+  --color-surface-muted: var(--primitive-neutral-50);
+  --color-chip: var(--primitive-neutral-75);
+
+  --color-border: var(--primitive-neutral-150);
+  --color-border-strong: var(--primitive-neutral-200);
+  --color-border-subtle: var(--primitive-neutral-100);
+  --color-border-muted: var(--primitive-neutral-250);
+  --color-border-hover: var(--primitive-neutral-300);
+  --color-disabled: var(--primitive-neutral-350);
+
+  --color-success: var(--primitive-green-500);
+  --color-success-bg: var(--primitive-green-50);
+  --color-warning: var(--primitive-orange-500);
+  --color-warning-bg: var(--primitive-orange-50);
+  --color-danger: var(--primitive-red-500);
+  --color-danger-hover: var(--primitive-red-600);
+  --color-danger-bg: var(--primitive-red-50);
+  --color-overlay: var(--primitive-overlay);
+
+  /* Legacy mock statuses — live on screens. Do not re-point until Stage 6. */
+  --status-progress: var(--primitive-pink-500);
+  --status-progress-bg: var(--primitive-pink-50);
+  --status-tested: var(--primitive-violet-500);
+  --status-tested-bg: var(--primitive-violet-50);
   --status-review: var(--color-warning);
   --status-review-bg: var(--color-warning-bg);
   --status-confirmed: var(--color-success);
@@ -42,14 +77,57 @@
   --status-done: var(--color-primary);
   --status-done-bg: var(--color-primary-soft);
 
+  /* Environment catalog — unused on screens until Stage 6. */
+  --env-status-open: #d1f0b0;
+  --env-status-rejected: #9b9b9b;
+  --env-status-assignment: #7ed321;
+  --env-status-assignment-confirmed: #497d0c;
+  --env-status-reported: #4abde2;
+  --env-status-for-review: #fc6c85;
+  --env-status-completed: #2161f3;
+  --env-status-inspected: #bd10e0;
+  --env-status-inspector-care: #d0021b;
+  --env-status-complete-report: #244102;
+  --env-status-pm-care: #f8e71c;
+
+  --font-size-avatar: 9px;
+  --font-size-caption: 12px;
+  --font-size-sm: 14px;
+  --font-size-md: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 22px;
+  --font-size-2xl: 24px;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-24: 24px;
+  --space-32: 32px;
+
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
   --radius-pill: 999px;
   --radius-button: 30px;
+  --radius-button-action: 12px;
+  --radius-field: 10px;
 
   --shadow-card: 0 4px 12px rgba(47, 48, 54, 0.06);
+  --shadow-card-tight: 1.2px 1.2px 1.2px 0 rgba(232, 232, 232, 0.8);
   --shadow-modal: 0 16px 48px rgba(47, 48, 54, 0.2);
+  --shadow-action: 0 -1px 3px 0 rgba(60, 66, 87, 0.08), 0 0 0 1px rgba(60, 66, 87, 0.16),
+    0 1px 1px 0 rgba(0, 0, 0, 0.12);
+
+  --duration-fast: 150ms;
+  --duration-normal: 200ms;
+  --ease-standard: ease-in-out;
 
   --sidebar-width: 240px;
   --sidebar-width-collapsed: 72px;

@@ -3,7 +3,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Activity, QuestionSection, isAnswerableQuestion } from "@/types";
 import { Project } from "../projects/data";
-import { ArrowLeft, ArrowRight, Check, X } from "react-feather";
+import { Check, X } from "react-feather";
+import { Button } from "@/design-system";
 import { useI18n, localize } from "@/i18n";
 import {
   AnswerEditor,
@@ -159,25 +160,24 @@ export default function ActivityAnswerWizard({
           })}
         </div>
 
-        <div className={styles.wizardFooter} dir="ltr">
-          <button
+        <div className={styles.wizardFooter}>
+          <Button
             type="button"
-            className={styles.secondaryButton}
+            variant="tertiary"
             onClick={() => (page === 0 ? onClose() : setPage((current) => current - 1))}
           >
-            <ArrowLeft size={16} />
             {page === 0 ? t("common.cancel") : t("common.back")}
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
-            className={styles.primaryButton}
-            aria-disabled={!canContinue}
+            variant="primary"
+            shape="action"
+            icon={isLast ? Check : undefined}
+            disabled={!canContinue}
             onClick={goNext}
           >
-            {isLast ? <Check size={16} /> : null}
             {isLast ? t("common.submit") : t("common.next")}
-            {!isLast ? <ArrowRight size={16} /> : null}
-          </button>
+          </Button>
         </div>
         {attempted && !canContinue ? (
           <p className={styles.wizardHint}>Answer required questions before leaving this section.</p>

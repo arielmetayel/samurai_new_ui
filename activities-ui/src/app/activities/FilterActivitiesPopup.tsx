@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
-import { Check, ChevronDown, Search, X } from "react-feather";
+import { ChevronDown, X } from "react-feather";
+import { Button, Drawer, StatusChip, TextInput, filterStatusColor } from "@/design-system";
 import { localize, t, useI18n } from "@/i18n";
 import styles from "./FilterActivitiesPopup.module.css";
 
@@ -40,7 +41,7 @@ const DATE_PRESETS = [
   "Custom",
 ];
 
-const STATUS_OPTIONS = [
+export const STATUS_OPTIONS = [
   "In Progress",
   "Tested",
   "To Review",
@@ -54,7 +55,7 @@ const STATUS_OPTIONS = [
   "Rejected",
 ];
 
-const PROJECT_OPTIONS = [
+export const PROJECT_OPTIONS = [
   "FoodChain Suppliers",
   "Event Masters",
   "Legal Pro Consulting",
@@ -64,7 +65,7 @@ const PROJECT_OPTIONS = [
   "Dania Sibus",
 ];
 
-const USER_OPTIONS = ["AB", "CD", "EF", "GH", "IJ", "KL", "MN", "OP", "QR", "ST"];
+export const USER_OPTIONS = ["AB", "CD", "EF", "GH", "IJ", "KL", "MN", "OP", "QR", "ST"];
 
 const ACTIVITY_TYPE_OPTIONS = [
   "Support Case",
@@ -93,6 +94,27 @@ export function countFilters(filters: ActivityFilters): number {
     Number(Boolean(filters.date)) +
     filters.statuses.length +
     filters.activityTypes.length
+  );
+}
+
+export function countAdvancedFilters(filters: ActivityFilters): number {
+  return Number(Boolean(filters.date)) + filters.statuses.length + filters.activityTypes.length;
+}
+
+export function clearAdvancedFilters(filters: ActivityFilters): ActivityFilters {
+  return {
+    ...filters,
+    date: null,
+    customFrom: "",
+    customTo: "",
+    statuses: [],
+    activityTypes: [],
+  };
+}
+
+export function advancedChipLabels(filters: ActivityFilters): { key: string; label: string }[] {
+  return filterChipLabels(filters).filter(
+    (chip) => chip.key === "date" || chip.key.startsWith("status:") || chip.key.startsWith("type:")
   );
 }
 
@@ -207,10 +229,6 @@ function toggleList(list: string[], value: string) {
   return list.includes(value) ? list.filter((item) => item !== value) : [...list, value];
 }
 
-function statusClass(status: string) {
-  return `statusChip${status.replace(/\s+/g, "")}`;
-}
-
 function FieldGroup({
   title,
   count,
@@ -255,63 +273,6 @@ function FieldGroup({
   );
 }
 
-function SearchableChecks({
-  options,
-  selected,
-  query,
-  onQuery,
-  onToggle,
-  placeholder,
-  emptyLabel,
-}: {
-  options: string[];
-  selected: string[];
-  query: string;
-  onQuery: (value: string) => void;
-  onToggle: (value: string) => void;
-  placeholder: string;
-  emptyLabel: string;
-}) {
-  const visible = options.filter((option) => option.toLowerCase().includes(query.trim().toLowerCase()));
-
-  return (
-    <div className={styles.picker}>
-      <div className={styles.pickerSearch}>
-        <Search size={16} className={styles.pickerSearchIcon} />
-        <input
-          value={query}
-          onChange={(event) => onQuery(event.target.value)}
-          placeholder={placeholder}
-          className={styles.pickerInput}
-        />
-      </div>
-      <div className={styles.optionList}>
-        {visible.length === 0 ? (
-          <div className={styles.optionEmpty}>{emptyLabel}</div>
-        ) : (
-          visible.map((option) => {
-            const checked = selected.includes(option);
-            return (
-              <button
-                key={option}
-                type="button"
-                className={styles.optionRow}
-                data-checked={checked}
-                onClick={() => onToggle(option)}
-              >
-                <span className={styles.optionCheck} data-checked={checked}>
-                  {checked ? <Check size={12} /> : null}
-                </span>
-                {option}
-              </button>
-            );
-          })
-        )}
-      </div>
-    </div>
-  );
-}
-
 interface FilterActivitiesPopupProps {
   isOpen: boolean;
   value: ActivityFilters;
@@ -331,8 +292,6 @@ export default function FilterActivitiesPopup({
 }: FilterActivitiesPopupProps) {
   const { t, localize } = useI18n();
   const [draft, setDraft] = useState<ActivityFilters>(EMPTY_FILTERS);
-  const [projectQuery, setProjectQuery] = useState("");
-  const [userQuery, setUserQuery] = useState("");
   const [savingTab, setSavingTab] = useState(false);
   const [tabName, setTabName] = useState("");
   const tabNameRef = React.useRef<HTMLInputElement>(null);
@@ -340,8 +299,6 @@ export default function FilterActivitiesPopup({
   useEffect(() => {
     if (!isOpen) return;
     setDraft(cloneFilters(value));
-    setProjectQuery("");
-    setUserQuery("");
     setSavingTab(false);
     setTabName("");
   }, [isOpen, value]);
@@ -352,49 +309,27 @@ export default function FilterActivitiesPopup({
     tabNameRef.current?.select();
   }, [savingTab]);
 
-  useEffect(() => {
-    if (!isOpen) return;
-    function onKey(event: KeyboardEvent) {
-      if (event.key === "Escape") onClose();
-    }
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [isOpen, onClose]);
-
   const selectedCount = countFilters(draft);
+  const advancedCount = countAdvancedFilters(draft);
   const results = matchCount(draft);
-  const summary = useMemo(() => filterChipLabels(draft), [draft]);
-
-  if (!isOpen) return null;
+  const summary = useMemo(() => advancedChipLabels(draft), [draft]);
+  const subtitle =
+    selectedCount === 0
+      ? t("filter.pick")
+      : results === 1
+        ? t("filter.matchOne")
+        : t("filter.matchMany", { count: results });
 
   return (
-    <div className={styles.overlay} onClick={onClose}>
-      <aside
-        className={styles.panel}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="filter-title"
-        onClick={(event) => event.stopPropagation()}
-      >
-        <div className={styles.header}>
-          <div>
-            <h2 id="filter-title" className={styles.title}>
-              {t("filter.title")}
-            </h2>
-            <p className={styles.subtitle}>
-              {selectedCount === 0
-                ? t("filter.pick")
-                : results === 1
-                  ? t("filter.matchOne")
-                  : t("filter.matchMany", { count: results })}
-            </p>
-          </div>
-          <button type="button" className={styles.closeButton} aria-label={t("filter.close")} onClick={onClose}>
-            <X size={18} />
-          </button>
-        </div>
-
-        {summary.length > 0 ? (
+    <Drawer
+      open={isOpen}
+      onClose={onClose}
+      title={t("filter.advanced")}
+      subtitle={subtitle}
+      padded={false}
+      bodyClassName={styles.body}
+      banner={
+        summary.length > 0 ? (
           <div className={styles.summary}>
             {summary.map((chip) => (
               <button
@@ -408,68 +343,69 @@ export default function FilterActivitiesPopup({
               </button>
             ))}
           </div>
-        ) : null}
-
-        <div className={styles.body}>
-          <FieldGroup title={t("filter.scope")} count={Number(draft.myActivities) + Number(draft.myProjects)}>
-            <div className={styles.quickFilters}>
-              <button
-                type="button"
-                className={styles.quickCard}
-                data-on={draft.myActivities}
-                onClick={() => setDraft((current) => ({ ...current, myActivities: !current.myActivities }))}
-              >
-                <span className={styles.optionCheck} data-checked={draft.myActivities}>
-                  {draft.myActivities ? <Check size={12} /> : null}
-                </span>
-                <span>
-                  <strong>{t("filter.myActivities")}</strong>
-                  <small>{t("filter.myActivitiesHint")}</small>
-                </span>
-              </button>
-              <button
-                type="button"
-                className={styles.quickCard}
-                data-on={draft.myProjects}
-                onClick={() => setDraft((current) => ({ ...current, myProjects: !current.myProjects }))}
-              >
-                <span className={styles.optionCheck} data-checked={draft.myProjects}>
-                  {draft.myProjects ? <Check size={12} /> : null}
-                </span>
-                <span>
-                  <strong>{t("filter.myProjects")}</strong>
-                  <small>{t("filter.myProjectsHint")}</small>
-                </span>
-              </button>
+        ) : null
+      }
+      footer={
+        <>
+          {selectedCount > 0 ? (
+            <div className={styles.saveTabRow}>
+              {savingTab ? (
+                <>
+                  <TextInput
+                    ref={tabNameRef}
+                    className={styles.tabNameInput}
+                    value={tabName}
+                    placeholder={t("filter.tabName")}
+                    onChange={(event) => setTabName(event.target.value)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter") {
+                        onSaveTab(tabName.trim() || suggestedTabName(draft), draft);
+                      }
+                      if (event.key === "Escape") setSavingTab(false);
+                    }}
+                  />
+                  <Button
+                    type="button"
+                    variant="primary"
+                    shape="action"
+                    onClick={() => onSaveTab(tabName.trim() || suggestedTabName(draft), draft)}
+                  >
+                    {t("filter.saveTab")}
+                  </Button>
+                </>
+              ) : (
+                <Button
+                  type="button"
+                  variant="tertiary"
+                  onClick={() => {
+                    setTabName(suggestedTabName(draft));
+                    setSavingTab(true);
+                  }}
+                >
+                  {t("filter.saveAsTab")}
+                </Button>
+              )}
             </div>
-          </FieldGroup>
-
-          <FieldGroup title={t("filter.projects")} count={draft.projects.length} collapsible>
-            <SearchableChecks
-              options={PROJECT_OPTIONS}
-              selected={draft.projects}
-              query={projectQuery}
-              onQuery={setProjectQuery}
-              onToggle={(project) =>
-                setDraft((current) => ({ ...current, projects: toggleList(current.projects, project) }))
-              }
-              placeholder={t("filter.searchProjects")}
-              emptyLabel={t("filter.noProjects")}
-            />
-          </FieldGroup>
-
-          <FieldGroup title={t("filter.people")} count={draft.users.length} collapsible>
-            <SearchableChecks
-              options={USER_OPTIONS}
-              selected={draft.users}
-              query={userQuery}
-              onQuery={setUserQuery}
-              onToggle={(user) => setDraft((current) => ({ ...current, users: toggleList(current.users, user) }))}
-              placeholder={t("filter.searchPeople")}
-              emptyLabel={t("filter.noPeople")}
-            />
-          </FieldGroup>
-
+          ) : null}
+          <div className={styles.footerActions}>
+            <Button
+              type="button"
+              variant="tertiary"
+              disabled={advancedCount === 0}
+              onClick={() => {
+                setDraft(clearAdvancedFilters(draft));
+                setSavingTab(false);
+              }}
+            >
+              {t("common.clear")}
+            </Button>
+            <Button type="button" variant="primary" shape="action" onClick={() => onApply(draft)}>
+              {results === 1 ? t("filter.showOne") : t("filter.showMany", { count: results })}
+            </Button>
+          </div>
+        </>
+      }
+    >
           <FieldGroup title={t("filter.when")} count={draft.date ? 1 : 0} hint={t("filter.oneRange")}>
             <div className={styles.chipRow}>
               {DATE_PRESETS.map((preset) => (
@@ -514,17 +450,16 @@ export default function FilterActivitiesPopup({
           <FieldGroup title={t("table.status")} count={draft.statuses.length} hint={t("filter.statusHint")}>
             <div className={styles.chipRow}>
               {STATUS_OPTIONS.map((status) => (
-                <button
+                <StatusChip
                   key={status}
-                  type="button"
-                  className={`${styles.statusChip} ${styles[statusClass(status) as keyof typeof styles] ?? ""}`}
-                  data-on={draft.statuses.includes(status)}
+                  color={filterStatusColor(status)}
+                  selected={draft.statuses.includes(status)}
                   onClick={() =>
                     setDraft((current) => ({ ...current, statuses: toggleList(current.statuses, status) }))
                   }
                 >
                   {localize(status)}
-                </button>
+                </StatusChip>
               ))}
             </div>
           </FieldGroup>
@@ -549,66 +484,6 @@ export default function FilterActivitiesPopup({
               ))}
             </div>
           </FieldGroup>
-        </div>
-
-        <div className={styles.footer}>
-          {selectedCount > 0 ? (
-            <div className={styles.saveTabRow}>
-              {savingTab ? (
-                <>
-                  <input
-                    ref={tabNameRef}
-                    className={styles.tabNameInput}
-                    value={tabName}
-                    placeholder={t("filter.tabName")}
-                    onChange={(event) => setTabName(event.target.value)}
-                    onKeyDown={(event) => {
-                      if (event.key === "Enter") {
-                        onSaveTab(tabName.trim() || suggestedTabName(draft), draft);
-                      }
-                      if (event.key === "Escape") setSavingTab(false);
-                    }}
-                  />
-                  <button
-                    type="button"
-                    className={styles.saveTabConfirm}
-                    onClick={() => onSaveTab(tabName.trim() || suggestedTabName(draft), draft)}
-                  >
-                    {t("filter.saveTab")}
-                  </button>
-                </>
-              ) : (
-                <button
-                  type="button"
-                  className={styles.saveTabButton}
-                  onClick={() => {
-                    setTabName(suggestedTabName(draft));
-                    setSavingTab(true);
-                  }}
-                >
-                  {t("filter.saveAsTab")}
-                </button>
-              )}
-            </div>
-          ) : null}
-          <div className={styles.footerActions}>
-            <button
-              type="button"
-              className={styles.clearButton}
-              disabled={selectedCount === 0}
-              onClick={() => {
-                setDraft(cloneFilters(EMPTY_FILTERS));
-                setSavingTab(false);
-              }}
-            >
-              {t("common.clear")}
-            </button>
-            <button type="button" className={styles.applyButton} onClick={() => onApply(draft)}>
-              {results === 1 ? t("filter.showOne") : t("filter.showMany", { count: results })}
-            </button>
-          </div>
-        </div>
-      </aside>
-    </div>
+    </Drawer>
   );
 }

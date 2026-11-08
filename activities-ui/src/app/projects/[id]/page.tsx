@@ -2,7 +2,7 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { Button, Checkbox } from "@/design-system";
+import { Button, Checkbox, StatusChip, Table, TableHeader, TableRow, TableRowBody, statusAccent, statusColor } from "@/design-system";
 import {
   Briefcase,
   Calendar,
@@ -90,7 +90,7 @@ function exportWorkDiaries(projectName: string, activities: ProjectActivity[]) {
         h1 { font-size: 22px; margin: 0 0 8px; }
         p { color: #868fa0; margin: 0 0 24px; }
         table { width: 100%; border-collapse: collapse; }
-        th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid #e6e9ef; font-size: 13px; }
+        th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid #e6e9ef; font-size: 14px; }
         th { color: #868fa0; font-weight: 600; }
       </style>
     </head>
@@ -114,26 +114,6 @@ function exportWorkDiaries(projectName: string, activities: ProjectActivity[]) {
   popup.document.close();
   popup.focus();
   popup.print();
-}
-
-function goToPreviousPage(router: ReturnType<typeof useRouter>, fallback = "/projects") {
-  const referrer = document.referrer;
-  let sameOriginReferrer = false;
-  if (referrer) {
-    try {
-      sameOriginReferrer = new URL(referrer).origin === window.location.origin;
-    } catch {
-      sameOriginReferrer = false;
-    }
-  }
-
-  // Empty referrer is normal for in-app Next.js navigations.
-  if ((sameOriginReferrer || !referrer) && window.history.length > 1) {
-    router.back();
-    return;
-  }
-
-  router.push(fallback);
 }
 
 export default function ProjectDetailPage() {
@@ -222,7 +202,7 @@ export default function ProjectDetailPage() {
       <AppShell
         title={t("create.project")}
         backLabel={t("common.back")}
-        onBack={() => goToPreviousPage(router)}
+        onBack={() => router.push("/projects")}
         onCreateNew={() => setIsCreatePopupOpen(true)}
       >
         <p className={styles.missing}>{t("projects.missing")}</p>
@@ -234,7 +214,7 @@ export default function ProjectDetailPage() {
     <AppShell
       title={t("create.project")}
       backLabel={t("common.back")}
-      onBack={() => goToPreviousPage(router)}
+      onBack={() => router.push("/projects")}
       onCreateNew={() => setIsCreatePopupOpen(true)}
       contentClassName={styles.main}
     >
@@ -477,15 +457,15 @@ export default function ProjectDetailPage() {
                   <h3>Actions</h3>
                 </div>
                 <div className={styles.actionStack}>
-                  <button type="button" className={styles.actionBtn}>
-                    <Calendar size={16} /> Diary
-                  </button>
-                  <button type="button" className={styles.actionBtn}>
-                    <Shield size={16} /> Permits & Report Approval
-                  </button>
-                  <button type="button" className={styles.actionBtn}>
-                    <Mail size={16} /> Send Report Email
-                  </button>
+                  <Button type="button" variant="tertiary" icon={Calendar}>
+                    Diary
+                  </Button>
+                  <Button type="button" variant="tertiary" icon={Shield}>
+                    Permits & Report Approval
+                  </Button>
+                  <Button type="button" variant="tertiary" icon={Mail}>
+                    Send Report Email
+                  </Button>
                 </div>
               </article>
             </section>
@@ -517,7 +497,6 @@ export default function ProjectDetailPage() {
               <Button
                 variant="tertiary"
                 icon={Download}
-                iconSize={18}
                 disabled={selectedActivities.length === 0}
                 onClick={() => exportWorkDiaries(project.name, selectedActivities)}
               >
@@ -578,8 +557,8 @@ export default function ProjectDetailPage() {
             {filteredActivities.length === 0 ? (
               <div className={styles.empty}>{t("projects.empty")}</div>
             ) : (
-              <div className={list.table}>
-                <div className={list.tableHeader}>
+              <Table className={list.table}>
+                <TableHeader className={list.tableHeader}>
                   <div className={list.colCheckbox} />
                   <div className={list.colIcon} />
                   <div className={list.colDate}>{t("table.dateTime")}</div>
@@ -588,27 +567,26 @@ export default function ProjectDetailPage() {
                   <div className={list.colAssignees}>{t("table.assignee")}</div>
                   <div className={list.colActions} />
                   <div className={list.colMenu} />
-                </div>
+                </TableHeader>
                 {filteredActivities.map((activity) => {
                   const selected = selectedIds.includes(activity.id);
                   const expanded = !!expandedRowIds[activity.id];
                   const previewQuestions = activityPreviewQuestions(activity);
                   const [dateDay, dateTime] = activity.dateLabel.trim().split(/\s+/);
                   return (
-                    <div
+                    <TableRow
                       key={activity.id}
-                      className={list.rowWrapper}
-                      data-status={activity.status}
-                    >
-                      <div className={list.colCheckbox}>
+                      selected={selected}
+                      leading={
                         <Checkbox
                           size="md"
                           checked={selected}
                           onChange={() => setSelectedIds(toggleValue(selectedIds, activity.id))}
                         />
-                      </div>
-                      <div
-                        className={list.columnBlock}
+                      }
+                    >
+                      <TableRowBody
+                        accent={statusAccent(activity.status)}
                         onClick={() => router.push("/activities")}
                       >
                         <div className={list.row}>
@@ -628,8 +606,10 @@ export default function ProjectDetailPage() {
                             <div className={list.activityType}>{localize(activity.type)}</div>
                             <div className={list.projectName}>{activity.title}</div>
                           </div>
-                          <div className={list.colStatus} data-status={activity.status}>
-                            {localize(activity.status)}
+                          <div className={list.colStatus}>
+                            <StatusChip color={statusColor(activity.status)}>
+                              {localize(activity.status)}
+                            </StatusChip>
                           </div>
                           <div className={list.colAssignees}>
                             {activity.assignee ? (
@@ -692,11 +672,11 @@ export default function ProjectDetailPage() {
                             </div>
                           </>
                         ) : null}
-                      </div>
-                    </div>
+                      </TableRowBody>
+                    </TableRow>
                   );
                 })}
-              </div>
+              </Table>
             )}
           </>
         )}

@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Button } from "@/design-system";
 import { Box, Check, Edit2, FileText, Image, Plus, Search, Trash2, X } from "react-feather";
+import { useI18n } from "@/i18n";
 import { Contact, FieldTone, Project, ProjectFile } from "../data";
 import styles from "./page.module.css";
 
@@ -77,14 +78,15 @@ function EditorActions({
   onCancel: () => void;
   disableSave?: boolean;
 }) {
+  const { t } = useI18n();
   return (
     <div className={styles.editActions}>
-      <button type="button" className={styles.editCancel} onClick={onCancel}>
-        Cancel
-      </button>
-      <button type="button" className={styles.editSave} disabled={disableSave} onClick={onSave}>
-        Save
-      </button>
+      <Button type="button" variant="tertiary" onClick={onCancel}>
+        {t("common.cancel")}
+      </Button>
+      <Button type="button" variant="primary" shape="action" disabled={disableSave} onClick={onSave}>
+        {t("common.save")}
+      </Button>
     </div>
   );
 }
@@ -701,7 +703,7 @@ export function FilesEditor({
                 }
               }}
             />
-            <Button type="button" variant="secondary" size="sm" icon={Plus} onClick={addFile}>
+            <Button type="button" variant="tertiary" icon={Plus} onClick={addFile}>
               Add
             </Button>
           </div>

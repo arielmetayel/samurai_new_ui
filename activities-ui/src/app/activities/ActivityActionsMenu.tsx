@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { Copy, Eye, FileText, MoreVertical, Share, Trash2 } from "react-feather";
+import { Copy, Eye, FileText, MoreVertical, Paperclip, Share, Trash2 } from "react-feather";
 import { useI18n } from "@/i18n";
 import type { MessageKey } from "@/i18n/messages";
 import styles from "./ActivityActionsMenu.module.css";
@@ -20,6 +20,7 @@ type ActivityActionsMenuProps = {
   onOpenChange: (open: boolean) => void;
   iconSize?: number;
   buttonClassName?: string;
+  onFiles?: () => void;
 };
 
 export default function ActivityActionsMenu({
@@ -27,6 +28,7 @@ export default function ActivityActionsMenu({
   onOpenChange,
   iconSize = 20,
   buttonClassName,
+  onFiles,
 }: ActivityActionsMenuProps) {
   const { t } = useI18n();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -38,7 +40,7 @@ export default function ActivityActionsMenu({
     if (!button) return;
     const rect = button.getBoundingClientRect();
     const menuWidth = 220;
-    const menuHeight = 220;
+    const menuHeight = onFiles ? 268 : 220;
     const pad = 8;
     const rtl = document.documentElement.dir === "rtl";
     let left = rtl ? rect.right - menuWidth : rect.left;
@@ -116,6 +118,20 @@ export default function ActivityActionsMenu({
               role="menu"
               style={{ top: coords.top, left: coords.left }}
             >
+              {onFiles ? (
+                <button
+                  type="button"
+                  role="menuitem"
+                  className={styles.menuItem}
+                  onClick={() => {
+                    onFiles();
+                    onOpenChange(false);
+                  }}
+                >
+                  <Paperclip size={16} />
+                  <span>{t("panel.files")}</span>
+                </button>
+              ) : null}
               {ACTIONS.map((action) => {
                 const Icon = action.icon;
                 return (
@@ -124,7 +140,9 @@ export default function ActivityActionsMenu({
                     type="button"
                     role="menuitem"
                     className={
-                      action.danger ? `${styles.menuItem} ${styles.menuItemDanger}` : styles.menuItem
+                      "danger" in action && action.danger
+                        ? `${styles.menuItem} ${styles.menuItemDanger}`
+                        : styles.menuItem
                     }
                     onClick={() => onOpenChange(false)}
                   >

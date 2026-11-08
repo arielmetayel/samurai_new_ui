@@ -98,7 +98,6 @@ export default function AssignmentBoard({
               type="button"
               variant="tertiary"
               icon={Filter}
-              iconSize={18}
               aria-label="סינון פעילויות"
               onClick={onOpenFilters}
             />
@@ -138,8 +137,7 @@ export default function AssignmentBoard({
         </Button>
         <Button
           type="button"
-          variant="tertiary"
-          className={styles.dangerBtn}
+          variant="danger"
           onClick={() => {
             /* TODO: wire to clear assignments when available */
           }}
@@ -149,8 +147,7 @@ export default function AssignmentBoard({
         <Button
           type="button"
           variant="primary"
-          size="sm"
-          className={styles.saveAllBtn}
+          shape="action"
           onClick={() => {
             /* TODO: wire to save logic when available */
           }}

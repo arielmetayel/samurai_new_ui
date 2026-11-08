@@ -103,7 +103,7 @@ export default function AutomationsPage() {
     <AppShell title={t("automations.title")} onCreateNew={() => setIsCreatePopupOpen(true)}>
         <div className={styles.headerRow}>
           <h1 className={styles.pageTitle}>{t("automations.title")}</h1>
-          <Button variant="primary" size="md" icon={Plus} onClick={() => setIsSetupOpen(true)}>
+          <Button variant="primary" shape="create" icon={Plus} onClick={() => setIsSetupOpen(true)}>
             {t("automations.add")}
           </Button>
         </div>
@@ -238,12 +238,12 @@ export default function AutomationsPage() {
             </p>
             <p className={styles.confirmName}>{deleteItem.name}</p>
             <div className={styles.confirmActions}>
-              <button type="button" className={styles.confirmCancel} onClick={() => setDeleteId(null)}>
+              <Button type="button" variant="tertiary" onClick={() => setDeleteId(null)}>
                 {t("common.cancel")}
-              </button>
-              <button type="button" className={styles.confirmDelete} onClick={() => removeItem(deleteItem.id)}>
+              </Button>
+              <Button type="button" variant="danger" onClick={() => removeItem(deleteItem.id)}>
                 {t("common.delete")}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

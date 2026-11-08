@@ -775,7 +775,7 @@ export default function AutomationSetupWizard({ onClose, onCreate }: AutomationS
           <Button type="button" variant="tertiary" onClick={onClose}>
             Cancel
           </Button>
-          <Button type="button" variant="primary" size="sm" onClick={submit}>
+          <Button type="button" variant="primary" shape="action" onClick={submit}>
             Create automation
           </Button>
         </footer>

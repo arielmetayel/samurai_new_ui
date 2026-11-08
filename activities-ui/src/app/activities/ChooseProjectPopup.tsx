@@ -2,11 +2,11 @@
 
 import React, { useState } from "react";
 import styles from "./styles.module.css";
-import { Button } from "@/design-system";
-import { typography } from "@/design-system";
+import { Button, TextInput, typography } from "@/design-system";
 import { ArrowLeft, Search } from "react-feather";
 import { useI18n } from "@/i18n";
 import ScheduleActivityPopup from "./ScheduleActivityPopup";
+import CreateDialog from "./CreateDialog";
 import dbData from "@/data/db.json";
 
 interface ChooseProjectPopupProps {
@@ -56,13 +56,10 @@ export default function ChooseProjectPopup({
     onNext(selectedProject);
   };
 
-  if (!isOpen) return null;
-
-  // Show the schedule popup if it's open
   if (showSchedulePopup) {
     return (
       <ScheduleActivityPopup
-        isOpen={true}
+        isOpen={isOpen}
         onClose={onClose}
         onBack={handleScheduleBack}
         onNext={handleScheduleNext}
@@ -75,8 +72,7 @@ export default function ChooseProjectPopup({
   }
 
   return (
-    <div className={styles.popupOverlay} onClick={onClose}>
-      <div className={styles.popupContent} onClick={(e) => e.stopPropagation()}>
+    <CreateDialog open={isOpen} onClose={onClose}>
         {/* Header */}
         <div className={styles.popupHeader}>
           <button className={styles.backButton} onClick={onBack}>
@@ -88,10 +84,12 @@ export default function ChooseProjectPopup({
         {/* Search Bar */}
         <div className={styles.searchContainer}>
           <div className={styles.searchWrapper}>
-            <Search size={20} className={styles.searchIcon} />
-            <input
-              type="text"
+            <span className={styles.searchIcon} aria-hidden>
+              <Search size={20} />
+            </span>
+            <TextInput
               placeholder={t("common.search")}
+              aria-label={t("common.search")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className={styles.searchInput}
@@ -117,7 +115,7 @@ export default function ChooseProjectPopup({
         <div className={styles.popupFooter}>
           <Button 
             type="button" 
-            variant="secondary" 
+            variant="tertiary" 
             onClick={onClose}
             className={styles.cancelButton}
           >
@@ -126,6 +124,7 @@ export default function ChooseProjectPopup({
           <Button 
             type="button" 
             variant="primary"
+            shape="action"
             onClick={handleNext}
             disabled={!selectedProject}
             className={styles.nextButton}
@@ -133,7 +132,6 @@ export default function ChooseProjectPopup({
             {t("common.next")}
           </Button>
         </div>
-      </div>
-    </div>
+    </CreateDialog>
   );
 }

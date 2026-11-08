@@ -17,9 +17,10 @@ import {
 } from "react-feather";
 import ActivityDetailSidePanel from "./activities/ActivityDetailSidePanel";
 import CreateNewPopup from "./activities/CreateNewPopup";
-import { getActivityById } from "./activities/data";
+import { getActivityById, mockActivities } from "./activities/data";
 import { Activity } from "@/types";
 import { useI18n } from "@/i18n";
+import { StatusChip, statusColor } from "@/design-system";
 import AppShell from "./AppShell";
 import styles from "./page.module.css";
 
@@ -287,13 +288,6 @@ function ActivityGlyph({ icon, size = 18 }: { icon: ActivityIcon; size?: number 
   return <Briefcase {...props} />;
 }
 
-function statusClass(status: string) {
-  if (status === "To Review") return styles.statusReview;
-  if (status === "Confirmed") return styles.statusConfirmed;
-  if (status === "Overdue" || status === "Pinned") return styles.statusOverdue;
-  return styles.statusProgress;
-}
-
 function CarouselCard({ card, onOpen }: { card: DashboardCard; onOpen: (id: string) => void }) {
   const { localize } = useI18n();
   return (
@@ -311,7 +305,9 @@ function CarouselCard({ card, onOpen }: { card: DashboardCard; onOpen: (id: stri
       <div className={styles.cardType}>{localize(card.type)}</div>
       <div className={styles.cardTitle}>{card.project}</div>
       <div className={styles.cardBottom}>
-        <span className={`${styles.statusChip} ${statusClass(card.status)}`}>{localize(card.status)}</span>
+        <StatusChip color={statusColor(card.status)} className={styles.statusChip}>
+          {localize(card.status)}
+        </StatusChip>
         <div className={styles.cardPeople}>
           {card.assignees.map((initials) => (
             <span key={initials} className={styles.personBadge}>
@@ -344,7 +340,9 @@ function ActivityRow({ row, onOpen }: { row: DashboardRow; onOpen: (id: string) 
         <div className={styles.rowTitle}>{row.project}</div>
         <div className={styles.rowSub}>{localize(row.type)}</div>
       </div>
-      <span className={`${styles.statusChip} ${statusClass(row.status)}`}>{localize(row.status)}</span>
+      <StatusChip color={statusColor(row.status)} className={styles.statusChip}>
+        {localize(row.status)}
+      </StatusChip>
       <span className={styles.rowAssignee}>{row.assignee}</span>
     </button>
   );
@@ -509,8 +507,10 @@ export default function Home() {
 
       <ActivityDetailSidePanel
         activity={selectedActivity}
+        activities={[...mockActivities].sort((a, b) => a.dateTime.localeCompare(b.dateTime))}
         isOpen={Boolean(selectedActivity)}
         onClose={() => setSelectedActivity(null)}
+        onSelect={(activity) => setSelectedActivity(activity)}
       />
     </AppShell>
   );

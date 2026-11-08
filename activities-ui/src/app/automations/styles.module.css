@@ -80,7 +80,7 @@
   padding: 8px 16px;
   border-top: 1px solid var(--color-border-subtle);
   background: var(--color-surface);
-  font-size: 13px;
+  font-size: 14px;
   color: var(--color-text);
 }
 
@@ -164,7 +164,7 @@
   border: 1px solid var(--color-primary);
   border-radius: 8px;
   padding: 0 10px;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--color-text);
 }
 
@@ -268,7 +268,7 @@
   background: var(--color-surface);
   border-radius: 16px;
   padding: 20px;
-  box-shadow: 0 16px 40px rgba(47, 48, 54, 0.16);
+  box-shadow: var(--shadow-modal);
 }
 
 .infoHead {
@@ -319,7 +319,7 @@
 
 .confirmName {
   margin: 0 0 20px;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
   color: var(--color-text);
 }
@@ -329,38 +329,8 @@
   gap: 8px;
 }
 
-.confirmCancel,
-.confirmDelete {
-  appearance: none;
+.confirmActions > * {
   flex: 1;
-  height: 40px;
-  border-radius: 12px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-}
-
-.confirmCancel {
-  border: 1px solid var(--color-border-strong);
-  background: var(--color-surface);
-  color: var(--color-primary);
-}
-
-.confirmCancel:hover,
-.confirmCancel:focus-visible {
-  background: var(--color-surface-muted);
-}
-
-.confirmDelete {
-  border: 1px solid var(--color-danger);
-  background: var(--color-danger);
-  color: var(--color-surface);
-}
-
-.confirmDelete:hover,
-.confirmDelete:focus-visible {
-  background: var(--color-danger-hover);
-  border-color: var(--color-danger-hover);
 }
 
 @media (max-width: 1100px) {
@@ -443,7 +413,7 @@
   .colAction::before {
     content: attr(data-label);
     display: block;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 600;
     color: var(--color-text-muted);
     margin-bottom: 2px;

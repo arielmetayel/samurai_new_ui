@@ -5,14 +5,25 @@ import { useRouter, useSearchParams } from "next/navigation";
 import styles from "./styles.module.css";
 import { Activity, listPreviewQuestions, questionAnswerText } from "@/types";
 import { getActivityById, mockActivities } from "./data";
-import { Button, Checkbox } from "@/design-system";
+import {
+  Button,
+  Checkbox,
+  StatusChip,
+  Table,
+  TableHeader,
+  TableRow,
+  TableRowBody,
+  TextInput,
+  statusAccent,
+  statusColor,
+} from "@/design-system";
 import { useI18n } from "@/i18n";
 import AppShell from "../AppShell";
 import {
-  BarChart2,
   Briefcase,
   ChevronDown,
   ChevronUp,
+  FileText,
   Filter,
   Link as LinkIcon,
   Search,
@@ -23,13 +34,15 @@ import {
 import CreateNewPopup from "./CreateNewPopup";
 import ActivityDetailSidePanel from "./ActivityDetailSidePanel";
 import ActivityActionsMenu from "./ActivityActionsMenu";
+import ActivitiesQuickFilters from "./ActivitiesQuickFilters";
 import FilterActivitiesPopup, {
   ActivityFilters,
   EMPTY_FILTERS,
   activityMatchesFilters,
+  advancedChipLabels,
   cloneFilters,
+  countAdvancedFilters,
   countFilters,
-  filterChipLabels,
   filtersEqual,
   removeFilterChip,
 } from "./FilterActivitiesPopup";
@@ -91,8 +104,9 @@ function ActivitiesPageContent() {
     setIsSidePanelOpen(true);
   }, [openId]);
 
-  const appliedCount = countFilters(appliedFilters);
-  const appliedChips = filterChipLabels(appliedFilters);
+  const appliedCount = countAdvancedFilters(appliedFilters);
+  const appliedChips = advancedChipLabels(appliedFilters);
+  const hasFilters = countFilters(appliedFilters) > 0;
 
   const filtered = useMemo(() => {
     const lower = search.toLowerCase();
@@ -102,8 +116,7 @@ function ActivitiesPageContent() {
           v.toLowerCase().includes(lower)
         )
       )
-      .filter((a) => activityMatchesFilters(a, appliedFilters))
-      .sort((a, b) => a.dateTime.localeCompare(b.dateTime));
+      .filter((a) => activityMatchesFilters(a, appliedFilters));
   }, [search, appliedFilters]);
 
   function toggleExpand(id: string) {
@@ -179,8 +192,9 @@ function ActivitiesPageContent() {
         <div className={styles.searchRow}>
           <div className={styles.mainSearchWrapper}>
             <Search size={18} className={styles.mainSearchIcon} />
-            <input
+            <TextInput
               placeholder={t("common.search")}
+              aria-label={t("common.search")}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className={styles.searchInput}
@@ -189,20 +203,21 @@ function ActivitiesPageContent() {
           <div className={styles.headerActions}>
             <div className={styles.filterBtnWrap}>
               <Button
-                variant={appliedCount > 0 ? "secondary" : "tertiary"}
+                variant="tertiary"
                 icon={Filter}
-                iconSize={22}
                 onClick={() => setIsFilterPopupOpen(true)}
               >
                 {t("common.filter")}
               </Button>
               {appliedCount > 0 ? <span className={styles.filterCount}>{appliedCount}</span> : null}
             </div>
-            <Button variant="tertiary" icon={BarChart2} iconSize={22}>
+            <Button variant="tertiary" icon={FileText}>
               {t("common.createReport")}
             </Button>
           </div>
         </div>
+
+        <ActivitiesQuickFilters filters={appliedFilters} onChange={patchAppliedFilters} />
 
         {savedTabs.length > 0 ? (
           <div className={styles.filterTabs} role="tablist" aria-label={t("activities.savedFilters")}>
@@ -240,7 +255,7 @@ function ActivitiesPageContent() {
           </div>
         ) : null}
 
-        {appliedChips.length > 0 ? (
+        {hasFilters ? (
           <div className={styles.activeFilters}>
             {appliedChips.map((chip) => (
               <button
@@ -260,14 +275,11 @@ function ActivitiesPageContent() {
             >
               {t("common.clearAll")}
             </button>
-            <span className={styles.filterResultCount}>
-              {filtered.length} | {mockActivities.length}
-            </span>
           </div>
         ) : null}
 
-        <div className={styles.table}>
-          <div className={styles.tableHeader}>
+        <Table className={styles.table}>
+          <TableHeader className={styles.tableHeader}>
             <div className={styles.colCheckbox}></div>
             <div className={styles.colIcon}></div>
             <div className={styles.colDate}>{t("table.dateTime")}</div>
@@ -276,12 +288,12 @@ function ActivitiesPageContent() {
             <div className={styles.colAssignees}>{t("table.assignee")}</div>
             <div className={styles.colActions}></div>
             <div className={styles.colMenu}></div>
-          </div>
+          </TableHeader>
 
           {filtered.length === 0 ? (
             <div className={styles.emptyFilters}>
               <p>{t("activities.empty")}</p>
-              <Button variant="secondary" size="md" onClick={() => applyFilters(EMPTY_FILTERS, "all")}>
+              <Button variant="secondary" onClick={() => applyFilters(EMPTY_FILTERS, "all")}>
                 {t("common.clearFilters")}
               </Button>
             </div>
@@ -291,11 +303,11 @@ function ActivitiesPageContent() {
             const previewQuestions = listPreviewQuestions(a);
             const dateParts = formatDateParts(a.dateTime);
             return (
-              <div key={a.id} className={styles.rowWrapper} data-status={a.status}>
-                <div className={styles.colCheckbox}>
-                  <Checkbox size="md" />
-                </div>
-                <div className={styles.columnBlock} onClick={() => handleActivityClick(a)}>
+              <TableRow
+                key={a.id}
+                leading={<Checkbox size="md" />}
+              >
+                <TableRowBody accent={statusAccent(a.status)} onClick={() => handleActivityClick(a)}>
                   <div className={styles.row}>
                     <div className={styles.colIcon}>
                       <div className={styles.iconWrapper}>
@@ -313,8 +325,10 @@ function ActivitiesPageContent() {
                       <div className={styles.activityType}>{localize(a.activityType)}</div>
                       <div className={styles.projectName}>{a.projectName}</div>
                     </div>
-                    <div className={styles.colStatus} data-status={a.status}>
-                      {localize(a.status)}
+                    <div className={styles.colStatus}>
+                      <StatusChip color={statusColor(a.status)}>
+                        {localize(a.status)}
+                      </StatusChip>
                     </div>
                     <div className={styles.colAssignees}>
                       {a.assignees.map((s) => (
@@ -373,11 +387,11 @@ function ActivitiesPageContent() {
                       </div>
                     </>
                   )}
-                </div>
-              </div>
+                </TableRowBody>
+              </TableRow>
             );
           })}
-        </div>
+        </Table>
 
       <CreateNewPopup 
         isOpen={isCreatePopupOpen}
@@ -403,8 +417,10 @@ function ActivitiesPageContent() {
       
       <ActivityDetailSidePanel
         activity={selectedActivity}
+        activities={filtered}
         isOpen={isSidePanelOpen}
         onClose={handleCloseSidePanel}
+        onSelect={handleActivityClick}
       />
     </AppShell>
   );

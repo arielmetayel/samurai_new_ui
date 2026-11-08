@@ -2,10 +2,10 @@
 
 import React, { useState } from "react";
 import styles from "./styles.module.css";
-import { Button } from "@/design-system";
-import { typography } from "@/design-system";
+import { Button, typography } from "@/design-system";
 import { ArrowLeft, Calendar, Clock, Briefcase } from "react-feather";
 import { useI18n } from "@/i18n";
+import CreateDialog from "./CreateDialog";
 
 
 interface ScheduleActivityPopupProps {
@@ -45,11 +45,8 @@ export default function ScheduleActivityPopup({
     }
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className={styles.popupOverlay} onClick={onClose}>
-      <div className={styles.popupContent} onClick={(e) => e.stopPropagation()}>
+    <CreateDialog open={isOpen} onClose={onClose}>
         {/* Header */}
         <div className={styles.popupHeader}>
           <button className={styles.backButton} onClick={onBack}>
@@ -103,7 +100,7 @@ export default function ScheduleActivityPopup({
         <div className={styles.popupFooter}>
           <Button 
             type="button" 
-            variant="secondary" 
+            variant="tertiary" 
             onClick={onBack}
             className={styles.cancelButton}
           >
@@ -112,6 +109,7 @@ export default function ScheduleActivityPopup({
           <Button 
             type="button" 
             variant="primary"
+            shape="create"
             onClick={handleNext}
             disabled={!selectedDate || !selectedTime}
             className={styles.nextButton}
@@ -119,7 +117,6 @@ export default function ScheduleActivityPopup({
             {t("chrome.createNew")}
           </Button>
         </div>
-      </div>
-    </div>
+    </CreateDialog>
   );
 }

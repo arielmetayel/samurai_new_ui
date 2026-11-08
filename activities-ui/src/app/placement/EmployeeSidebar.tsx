@@ -1,7 +1,7 @@
 "use client";
 
 import { Search } from "react-feather";
-import { Button } from "@/design-system";
+import { Button, TextInput } from "@/design-system";
 import { employees as allEmployees } from "./data";
 import { DayKey, FilterType } from "./types";
 import EmployeeRow from "./EmployeeRow";
@@ -41,7 +41,7 @@ export default function EmployeeSidebar({
       <div className={styles.sidebarHeader}>
         <div className={styles.searchWrap}>
           <Search size={16} />
-          <input
+          <TextInput
             className={styles.searchInput}
             placeholder="חיפוש עובד..."
             aria-label="חיפוש עובד"

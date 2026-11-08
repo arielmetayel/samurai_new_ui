@@ -3,6 +3,7 @@
 import type { Icon } from "react-feather";
 import { useI18n } from "@/i18n";
 import {
+  Aperture,
   Award,
   BarChart2,
   Calendar,
@@ -26,6 +27,7 @@ export type NavItem = {
 
 export const navItems: NavItem[] = [
   { id: "home", labelKey: "nav.home", href: "/", icon: Home },
+  { id: "designSystem", labelKey: "nav.designSystem", href: "/button-demo", icon: Aperture },
   { id: "activities", labelKey: "nav.activities", href: "/activities", icon: Calendar },
   { id: "projects", labelKey: "nav.projects", href: "/projects", icon: Folder },
   { id: "users", labelKey: "nav.users", href: "/users", icon: Users },

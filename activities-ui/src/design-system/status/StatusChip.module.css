@@ -1,0 +1,37 @@
+.chip {
+  --chip-color: var(--color-text-secondary);
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  height: 24px;
+  padding-block: 0;
+  padding-inline: 10px;
+  border: 1px solid color-mix(in srgb, var(--chip-color) 18%, var(--color-border));
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--chip-color) 14%, var(--color-surface));
+  color: color-mix(in srgb, var(--chip-color) 38%, var(--color-text));
+  font-family: inherit;
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-medium);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+button.chip {
+  cursor: pointer;
+}
+
+button.chip:hover {
+  background: color-mix(in srgb, var(--chip-color) 20%, var(--color-surface));
+}
+
+button.chip:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.selected {
+  background: color-mix(in srgb, var(--chip-color) 22%, var(--color-surface));
+  border-color: color-mix(in srgb, var(--chip-color) 45%, var(--color-border));
+  font-weight: var(--font-weight-semibold);
+}

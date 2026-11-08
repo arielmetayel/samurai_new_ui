@@ -2,9 +2,9 @@
 
 import React from "react";
 import styles from "./styles.module.css";
-import { Button } from "@/design-system";
-import { typography } from "@/design-system";
+import { Button, typography } from "@/design-system";
 import { ArrowLeft } from "react-feather";
+import CreateDialog from "./CreateDialog";
 
 interface ActivityOverviewPopupProps {
   isOpen: boolean;
@@ -41,11 +41,8 @@ export default function ActivityOverviewPopup({
     return `${formattedDate} at ${formattedTime}`;
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className={styles.popupOverlay} onClick={onClose}>
-      <div className={styles.popupContent} onClick={(e) => e.stopPropagation()}>
+    <CreateDialog open={isOpen} onClose={onClose}>
         {/* Header */}
         <div className={styles.popupHeader}>
           <button className={styles.backButton} onClick={onBack}>
@@ -78,7 +75,7 @@ export default function ActivityOverviewPopup({
         <div className={styles.popupFooter}>
           <Button 
             type="button" 
-            variant="secondary" 
+            variant="tertiary" 
             onClick={onBack}
             className={styles.cancelButton}
           >
@@ -87,13 +84,13 @@ export default function ActivityOverviewPopup({
           <Button 
             type="button" 
             variant="primary"
+            shape="create"
             onClick={onComplete}
             className={styles.nextButton}
           >
             Create Activity
           </Button>
         </div>
-      </div>
-    </div>
+    </CreateDialog>
   );
 }

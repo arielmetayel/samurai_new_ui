@@ -100,7 +100,7 @@ export default function AppSidebar({
             {collapsed ? (
               <Button
                 variant="primary"
-                size="md"
+                shape="create"
                 className={styles.createBtn}
                 icon={Plus}
                 aria-label={t("chrome.createNew")}
@@ -109,7 +109,7 @@ export default function AppSidebar({
             ) : (
               <Button
                 variant="primary"
-                size="md"
+                shape="create"
                 className={styles.createBtn}
                 onClick={onCreateNew}
               >

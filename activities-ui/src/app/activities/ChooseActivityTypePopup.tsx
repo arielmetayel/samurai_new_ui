@@ -2,11 +2,11 @@
 
 import React, { useState } from "react";
 import styles from "./styles.module.css";
-import { Button } from "@/design-system";
-import { typography } from "@/design-system";
+import { Button, TextInput, typography } from "@/design-system";
 import { ArrowLeft, Search } from "react-feather";
 import { useI18n } from "@/i18n";
 import ChooseProjectPopup from "./ChooseProjectPopup";
+import CreateDialog from "./CreateDialog";
 import dbData from "@/data/db.json";
 
 interface ChooseActivityTypePopupProps {
@@ -55,13 +55,10 @@ export default function ChooseActivityTypePopup({
     onNext(selectedType);
   };
 
-  if (!isOpen) return null;
-
-  // Show the project popup if it's open
   if (showProjectPopup) {
     return (
       <ChooseProjectPopup
-        isOpen={true}
+        isOpen={isOpen}
         onClose={onClose}
         onBack={handleProjectBack}
         onNext={handleProjectNext}
@@ -71,8 +68,7 @@ export default function ChooseActivityTypePopup({
   }
 
   return (
-    <div className={styles.popupOverlay} onClick={onClose}>
-      <div className={styles.popupContent} onClick={(e) => e.stopPropagation()}>
+    <CreateDialog open={isOpen} onClose={onClose}>
         {/* Header */}
         <div className={styles.popupHeader}>
           <button className={styles.backButton} onClick={onBack}>
@@ -84,10 +80,12 @@ export default function ChooseActivityTypePopup({
         {/* Search Bar */}
         <div className={styles.searchContainer}>
           <div className={styles.searchWrapper}>
-            <Search size={20} className={styles.searchIcon} />
-            <input
-              type="text"
+            <span className={styles.searchIcon} aria-hidden>
+              <Search size={20} />
+            </span>
+            <TextInput
               placeholder={t("common.search")}
+              aria-label={t("common.search")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className={styles.searchInput}
@@ -113,7 +111,7 @@ export default function ChooseActivityTypePopup({
         <div className={styles.popupFooter}>
           <Button 
             type="button" 
-            variant="secondary" 
+            variant="tertiary" 
             onClick={onClose}
             className={styles.cancelButton}
           >
@@ -122,6 +120,7 @@ export default function ChooseActivityTypePopup({
           <Button 
             type="button" 
             variant="primary"
+            shape="action"
             onClick={handleNext}
             disabled={!selectedType}
             className={styles.nextButton}
@@ -129,7 +128,6 @@ export default function ChooseActivityTypePopup({
             {t("common.next")}
           </Button>
         </div>
-      </div>
-    </div>
+    </CreateDialog>
   );
 }

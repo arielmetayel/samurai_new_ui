@@ -3,6 +3,7 @@
 import React, { useMemo, useState } from "react";
 import styles from "./styles.module.css";
 import { MoreVertical, Search } from "react-feather";
+import { Table, TableHeader, TableRow, TableRowBody } from "@/design-system";
 import CreateNewPopup from "../activities/CreateNewPopup";
 import { useI18n } from "@/i18n";
 import AppShell from "../AppShell";
@@ -119,25 +120,24 @@ export default function DataAnalysisPage() {
           {filtered.length} | {TOTAL_REPORTS}
         </div>
 
-        <div className={styles.table}>
-          <div className={styles.tableHeader}>
+        <Table className={styles.table}>
+          <TableHeader className={styles.tableHeader}>
             <div className={styles.colTitle}>{t("table.report")}</div>
             <div className={styles.colDate}>{t("table.dateTime")}</div>
             <div className={styles.colOwner}>{t("table.owner")}</div>
             <div className={styles.colVisibility}>{t("table.visibility")}</div>
             <div className={styles.colMenu}></div>
-          </div>
+          </TableHeader>
 
           {filtered.map((r) => {
             const selected = selectedId === r.id;
             return (
-              <div
+              <TableRow
                 key={r.id}
-                className={`${styles.rowWrapper} ${selected ? styles.rowSelected : ""}`}
-                data-visibility={r.visibility}
+                selected={selected}
                 onClick={() => toggleSelected(r.id)}
               >
-                <div className={styles.columnBlock}>
+                <TableRowBody>
                   <div className={styles.row}>
                     <div className={styles.colTitle}>{localize(r.title)}</div>
                     <div className={styles.colDate}>{formatDate(r.dateTime)}</div>
@@ -161,11 +161,11 @@ export default function DataAnalysisPage() {
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
+                </TableRowBody>
+              </TableRow>
             );
           })}
-        </div>
+        </Table>
 
       <CreateNewPopup
         isOpen={isCreatePopupOpen}

@@ -2,7 +2,7 @@
 
 import React, { useMemo, useState } from "react";
 import styles from "./styles.module.css";
-import { Button } from "@/design-system";
+import { Button, Table, TableHeader, TableRow, TableRowBody } from "@/design-system";
 import { MoreVertical, Filter, FileText, Search } from "react-feather";
 import CreateNewPopup from "../activities/CreateNewPopup";
 import { useI18n } from "@/i18n";
@@ -124,10 +124,10 @@ export default function UsersPage() {
             />
           </div>
           <div className={styles.headerActions}>
-            <Button variant="tertiary" icon={Filter} iconSize={22}>
+            <Button variant="tertiary" icon={Filter}>
               {t("common.filter")}
             </Button>
-            <Button variant="tertiary" icon={FileText} iconSize={22}>
+            <Button variant="tertiary" icon={FileText}>
               {t("common.createReport")}
             </Button>
           </div>
@@ -137,19 +137,19 @@ export default function UsersPage() {
           {filtered.length} | {TOTAL_USERS}
         </div>
 
-        <div className={styles.table}>
-          <div className={styles.tableHeader}>
+        <Table className={styles.table}>
+          <TableHeader className={styles.tableHeader}>
             <div className={styles.colAvatar}></div>
             <div className={styles.colName}>{t("table.name")}</div>
             <div className={styles.colRole}>{t("table.role")}</div>
             <div className={styles.colPhone}>{t("table.phone")}</div>
             <div className={styles.colEmail}>{t("table.email")}</div>
             <div className={styles.colMenu}></div>
-          </div>
+          </TableHeader>
 
           {filtered.map((u) => (
-            <div key={u.id} className={styles.rowWrapper}>
-              <div className={styles.columnBlock}>
+            <TableRow key={u.id}>
+              <TableRowBody>
                 <div className={styles.row}>
                   <div className={styles.colAvatar}>
                     <div className={styles.userAvatar} data-tone={u.thumbTone}>
@@ -169,10 +169,10 @@ export default function UsersPage() {
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
+              </TableRowBody>
+            </TableRow>
           ))}
-        </div>
+        </Table>
 
       <CreateNewPopup
         isOpen={isCreatePopupOpen}

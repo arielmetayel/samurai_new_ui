@@ -10,6 +10,7 @@ import {
   getSystemListValues,
 } from "../projects/data";
 import { Mail, PenTool } from "react-feather";
+import { Button } from "@/design-system";
 import { localize, t } from "@/i18n";
 import styles from "./ActivityDetailSidePanel.module.css";
 
@@ -290,10 +291,9 @@ export function ReportCard({
           <PenTool size={16} />
           {signed ? <em>{t("wizard.signed")}</em> : t("wizard.addSignature")}
         </button>
-        <button type="button" className={styles.reportSend} onClick={sendEmail}>
-          <Mail size={16} />
+        <Button type="button" variant="primary" shape="action" icon={Mail} onClick={sendEmail}>
           {t("panel.sendEmail")}
-        </button>
+        </Button>
       </div>
     </div>
   );
@@ -305,14 +305,12 @@ export function ActivityQuestions({
   answers,
   editing,
   onAnswersChange,
-  onEditingChange,
 }: {
   activity: Activity;
   project: Project;
   answers: Record<string, AnswerValue>;
   editing: boolean;
   onAnswersChange: (answers: Record<string, AnswerValue>) => void;
-  onEditingChange: (editing: boolean) => void;
 }) {
   const sections = activity.sections.length
     ? activity.sections
@@ -326,28 +324,14 @@ export function ActivityQuestions({
 
   return (
     <div className={styles.qaList}>
-      <div className={styles.modeSwitch}       role="tablist" aria-label={t("wizard.answersMode")}>
-        <button
-          type="button"
-          className={!editing ? styles.modeActive : styles.modeButton}
-          onClick={() => onEditingChange(false)}
-        >
-          {t("panel.viewAnswers")}
-        </button>
-        <button
-          type="button"
-          className={editing ? styles.modeActive : styles.modeButton}
-          onClick={() => onEditingChange(true)}
-        >
-          {t("panel.editAnswers")}
-        </button>
-      </div>
-
       {sections.map((section) => {
         const visible = section.questions.filter((question) => question.type !== "summary");
         if (!visible.length) return null;
         return (
-          <section key={section.id} className={styles.qaSection}>
+          <section
+            key={section.id}
+            className={`${styles.qaSection} ${editing ? "" : styles.qaSectionView}`}
+          >
             <div className={styles.sectionHead}>
               <span>{localize(section.title)}</span>
             </div>

@@ -16,7 +16,7 @@
   border-radius: 999px;
   background: var(--color-primary);
   color: var(--color-surface);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   display: grid;
   place-items: center;
@@ -37,7 +37,7 @@
   border: 1px solid var(--color-border-strong);
   background: var(--color-surface);
   color: var(--color-text-secondary);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   display: inline-flex;
   align-items: center;
@@ -65,7 +65,7 @@
 }
 
 .filterTabClose:hover {
-  background: rgba(0, 130, 200, 0.12);
+  background: color-mix(in srgb, var(--color-primary) 12%, transparent);
 }
 
 .activeFilters {
@@ -96,7 +96,7 @@
   border: 0;
   background: transparent;
   color: var(--color-text-muted);
-  font-size: 13px;
+  font-size: 14px;
   cursor: pointer;
 }
 
@@ -146,13 +146,10 @@
   pointer-events: none;
 }
 
-.searchInput {
+.mainSearchWrapper .searchInput {
   width: 100%;
-  padding-block: 12px;
+  padding-block: 8px;
   padding-inline: 40px 12px;
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  outline: none;
 }
 
 .table {
@@ -161,14 +158,11 @@
   --row-gap: 12px;
   --row-pad: 10px;
   --date-pad: 6px;
+  --table-lead-width: 60px;
   --question-pad-x: 12px;
   --question-border: 1px;
   --date-start: calc(var(--row-pad) + var(--icon-col) + var(--row-gap) + var(--date-pad));
   --questions-inset: calc(var(--date-start) - var(--question-pad-x) - var(--question-border));
-  margin-top: 8px;
-  background: transparent;
-  border: 0;
-  overflow: visible;
 }
 .tableHeader, .row {
   display: grid;
@@ -179,7 +173,7 @@
 }
 
 /* Ensure consistent column behavior */
-.colFirst, .colIcon, .colActivityType, .colStatus, .colAssignees, .colActions, .colMenu {
+.colFirst, .colIcon, .colActivityType, .colAssignees, .colActions, .colMenu {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -191,49 +185,9 @@
   word-wrap: break-word;
 }
 
-.columnBlock {
-  flex: 1;
-  border-inline-start: 5px solid var(--status-color, var(--color-primary));
-  border-radius: 10px;
-  background: var(--color-surface);
-  overflow: hidden;
-  width: 100%;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.columnBlock:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
 .tableHeader {
-  background: transparent;
-  border-bottom: 0;
-  color: var(--color-text-muted);
-  min-height: 36px;
-  margin-bottom: 6px;
-  display: grid;
-  grid-template-columns: 60px 60px 148px minmax(160px, 1fr) 100px 120px 60px 40px;
-  align-items: center;
-  gap: 12px;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 150%;
-  letter-spacing: 0.04em;
-}
-
-.tableHeader > div,
-.tableHeader .colDate,
-.tableHeader .colActivityType,
-.tableHeader .colStatus,
-.tableHeader .colAssignees {
-  padding: 0 6px;
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 150%;
-  letter-spacing: 0.04em;
-  color: var(--color-text-muted);
+  grid-template-columns: var(--table-lead-width) var(--icon-col) var(--date-col) minmax(160px, 1fr) 100px 120px 60px 40px;
+  gap: var(--row-gap);
 }
 .colHeaderBtn {
   appearance: none;
@@ -267,13 +221,8 @@
 
 /* Remove the new styles */
 
-.colCheckbox { 
-  display: grid; 
-  place-items: center; 
-  padding: 0 6px;
-  align-self: center;
-  width: 60px;
-  justify-self: start;
+.colCheckbox {
+  width: var(--table-lead-width);
 }
 .colIcon { 
   display: grid; 
@@ -281,20 +230,6 @@
   position: relative;
 }
 
-.rowWrapper {
-  display: flex;
-  align-items: flex-start;
-  gap: 0px;
-  position: relative;
-  box-shadow: 0 1px 2px rgba(47, 48, 54, 0.06);
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  background: var(--color-surface);
-  margin-bottom: 6px;
-  min-height: fit-content;
-}
-
-/* Remove the line from the header row */
 .tableHeader .colIcon::before {
   display: none;
 }
@@ -315,7 +250,7 @@
   flex-shrink: 0;
 }
 .iconId {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--color-text-muted);
   font-weight: 400;
 }
@@ -357,8 +292,18 @@
   content: ",";
 }
 
+.tableHeader > * {
+  white-space: nowrap;
+}
+
 .tableHeader .colDate {
-  font-weight: 500;
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  font-style: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  align-items: center;
 }
 
 .colActions { 
@@ -413,41 +358,13 @@
 }
 
 .colStatus {
-  border-radius: 6px;
-  padding: 6px 6px;
+  overflow: visible;
   width: max-content;
-  font-size: 14px !important;
-  font-style: normal !important;
-  font-weight: 400 !important;
-  line-height: 125% !important;
-  letter-spacing: 0.36px !important;
 }
 
-/* Header-specific styles for status column */
 .tableHeader .colStatus {
-  color: var(--color-text-muted) !important;
-  font-size: 12px !important;
-  font-weight: 500 !important;
-  line-height: 150% !important;
-  letter-spacing: 0.04em !important;
-  background: transparent !important;
-  border-radius: 0 !important;
-  padding: 0 6px !important;
-  width: auto !important;
+  width: auto;
 }
-
-.colStatus[data-status="In Progress"] { color: var(--status-progress); background: var(--status-progress-bg); }
-.colStatus[data-status="Tested"] { color: var(--status-tested); background: var(--status-tested-bg); }
-.colStatus[data-status="To Review"] { color: var(--status-review); background: var(--status-review-bg); }
-.colStatus[data-status="Confirmed"] { color: var(--status-confirmed); background: var(--status-confirmed-bg); }
-.colStatus[data-status="Done"] { color: var(--color-primary); background: var(--color-primary-soft); }
-
-/* Set the left border color based on status background colors */
-.rowWrapper[data-status="In Progress"] .columnBlock { --status-color: var(--status-progress-bg); }
-.rowWrapper[data-status="Tested"] .columnBlock { --status-color: var(--status-tested-bg); }
-.rowWrapper[data-status="To Review"] .columnBlock { --status-color: var(--status-review-bg); }
-.rowWrapper[data-status="Confirmed"] .columnBlock { --status-color: var(--status-confirmed-bg); }
-.rowWrapper[data-status="Done"] .columnBlock { --status-color: var(--color-primary-soft); }
 
 .badge {
   display: inline-flex;
@@ -544,18 +461,18 @@
 @media (max-width: 1320px) {
   .table {
     --icon-col: 56px;
-    --date-col: 72px;
+    --table-lead-width: 56px;
   }
 
   .tableHeader {
-    grid-template-columns: 56px 56px var(--date-col) minmax(140px, 1fr) 100px 110px 52px 36px;
+    grid-template-columns: var(--table-lead-width) var(--icon-col) var(--date-col) minmax(140px, 1fr) 100px 110px 52px 36px;
   }
 
   .row {
     grid-template-columns: var(--icon-col) var(--date-col) minmax(140px, 1fr) 100px 110px 52px 36px;
   }
 
-  .colDate {
+  .row .colDate {
     flex-direction: column;
     align-items: flex-start;
     gap: 2px;
@@ -568,20 +485,16 @@
 }
 
 @media (max-width: 1100px) {
-  /* Header has 8 columns (incl. checkbox), row has 7 (checkbox sits outside) */
   .table {
     --icon-col: 48px;
-    --date-col: 72px;
+    --table-lead-width: 44px;
   }
 
   .tableHeader {
-    grid-template-columns: 44px 48px var(--date-col) 1fr 90px 100px 44px 32px;
+    grid-template-columns: var(--table-lead-width) var(--icon-col) var(--date-col) 1fr 90px 100px 44px 32px;
   }
   .row {
     grid-template-columns: var(--icon-col) var(--date-col) 1fr 90px 100px 44px 32px;
-  }
-  .colCheckbox {
-    width: 44px;
   }
   .questionsGrid { grid-template-columns: 1fr 1fr; }
 }
@@ -617,42 +530,6 @@
 
   .mainSearchWrapper {
     width: 100%;
-  }
-
-  .table {
-    margin-top: 12px;
-    background: transparent;
-    border: 0;
-    border-radius: 0;
-  }
-
-  .tableHeader {
-    display: none;
-  }
-
-  .rowWrapper {
-    margin-bottom: 12px;
-    display: flex;
-    align-items: flex-start;
-    gap: 0;
-    box-shadow: none;
-    border-radius: 16px;
-    border: 1px solid var(--color-border-strong);
-    overflow: hidden;
-    background: var(--color-surface);
-  }
-
-  .colCheckbox {
-    display: none;
-  }
-
-  .columnBlock {
-    flex: 1;
-    min-width: 0;
-    border-inline-start: 4px solid var(--status-color, var(--color-primary));
-    border-top: 0;
-    border-radius: 0;
-    box-shadow: none;
   }
 
   .row {
@@ -764,19 +641,19 @@
 
 @media (max-width: 560px) {
   .activityType {
-    font-size: 13px;
+    font-size: 14px;
   }
 
   .projectName {
-    font-size: 15px !important;
+    font-size: 16px !important;
   }
 
   .questionTitle {
-    font-size: 13px;
+    font-size: 14px;
   }
 
   .questionAnswer {
-    font-size: 15px;
+    font-size: 16px;
   }
 
   .questionsGrid {
@@ -801,8 +678,8 @@
 
 .popupContent {
   background: var(--color-surface);
-  border-radius: 12px;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-modal);
   width: min(1000px, calc(100vw - 32px));
   height: min(880px, 90vh);
   max-height: 90vh;
@@ -973,25 +850,26 @@
 
 .searchIcon {
   position: absolute;
-  left: 12px;
+  display: flex;
+  align-items: center;
+  inset-inline-start: 12px;
+  top: 50%;
+  transform: translateY(-50%);
   color: var(--color-text-muted);
   z-index: 1;
+  pointer-events: none;
 }
 
-.searchInput {
+.searchWrapper .searchInput {
   width: 100%;
-  padding: 12px 12px 12px 44px;
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  outline: none;
-  font-size: 14px;
-  background: var(--color-surface);
-  margin: 0 auto;
+  padding-block: 8px;
+  padding-inline-start: 44px;
+  padding-inline-end: 12px;
 }
 
 .searchInput:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(0, 130, 200, 0.1);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 10%, transparent);
 }
 
 .activityTypesList {
@@ -1084,7 +962,7 @@
 
 .dateInput:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(0, 130, 200, 0.1);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 10%, transparent);
 }
 
 .dateInput:not(:placeholder-shown):not([value=""]),
@@ -1139,7 +1017,7 @@
 
 .timeInput:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(0, 130, 200, 0.1);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 10%, transparent);
 }
 
 .timeInput:not(:placeholder-shown):not([value=""]),

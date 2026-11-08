@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { X } from "react-feather";
+import { Button, Drawer, StatusChip, filterStatusColor } from "@/design-system";
 import { useI18n } from "@/i18n";
 import { PlacementActivityType, Task } from "./types";
 import styles from "./FilterPlacementPopup.module.css";
@@ -37,10 +38,6 @@ export const PLACEMENT_TYPE_OPTIONS: PlacementActivityType[] = [
   "Office Hours",
   "Concrete Delivery",
 ];
-
-function statusClass(status: string) {
-  return `statusChip${status.replace(/\s+/g, "")}`;
-}
 
 export function clonePlacementFilters(value: PlacementFilters): PlacementFilters {
   return {
@@ -88,15 +85,6 @@ export default function FilterPlacementPopup({
     setDraft(clonePlacementFilters(value));
   }, [isOpen, value]);
 
-  useEffect(() => {
-    if (!isOpen) return;
-    function onKey(event: KeyboardEvent) {
-      if (event.key === "Escape") onClose();
-    }
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [isOpen, onClose]);
-
   const selectedCount = countPlacementFilters(draft);
   const results = matchCount(draft);
   const summary = useMemo(
@@ -107,41 +95,23 @@ export default function FilterPlacementPopup({
     [draft, localize]
   );
 
-  if (!isOpen) return null;
+  const subtitle =
+    selectedCount === 0
+      ? t("filter.pick")
+      : results === 1
+        ? t("filter.matchOne")
+        : t("filter.matchMany", { count: results });
 
   return (
-    <div className={styles.overlay} onClick={onClose}>
-      <aside
-        className={styles.panel}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="placement-filter-title"
-        onClick={(event) => event.stopPropagation()}
-      >
-        <div className={styles.header}>
-          <div>
-            <h2 id="placement-filter-title" className={styles.title}>
-              {t("filter.title")}
-            </h2>
-            <p className={styles.subtitle}>
-              {selectedCount === 0
-                ? t("filter.pick")
-                : results === 1
-                  ? t("filter.matchOne")
-                  : t("filter.matchMany", { count: results })}
-            </p>
-          </div>
-          <button
-            type="button"
-            className={styles.closeButton}
-            aria-label={t("filter.close")}
-            onClick={onClose}
-          >
-            <X size={18} />
-          </button>
-        </div>
-
-        {summary.length > 0 ? (
+    <Drawer
+      open={isOpen}
+      onClose={onClose}
+      title={t("filter.title")}
+      subtitle={subtitle}
+      padded={false}
+      bodyClassName={styles.body}
+      banner={
+        summary.length > 0 ? (
           <div className={styles.summary}>
             {summary.map((chip) => (
               <button
@@ -171,82 +141,78 @@ export default function FilterPlacementPopup({
               </button>
             ))}
           </div>
-        ) : null}
-
-        <div className={styles.body}>
-          <section className={styles.group}>
-            <div className={styles.groupHead}>
-              <h3 className={styles.groupTitle}>{t("filter.activityStatus")}</h3>
-              {draft.statuses.length > 0 ? (
-                <span className={styles.sectionCount}>{draft.statuses.length}</span>
-              ) : null}
-            </div>
-            <p className={styles.groupHint}>{t("filter.statusHint")}</p>
-            <div className={styles.chipRow}>
-              {PLACEMENT_STATUS_OPTIONS.map((status) => (
-                <button
-                  key={status}
-                  type="button"
-                  className={`${styles.statusChip} ${styles[statusClass(status) as keyof typeof styles] ?? ""}`}
-                  data-on={draft.statuses.includes(status)}
-                  onClick={() =>
-                    setDraft((current) => ({
-                      ...current,
-                      statuses: toggleList(current.statuses, status),
-                    }))
-                  }
-                >
-                  {localize(status)}
-                </button>
-              ))}
-            </div>
-          </section>
-
-          <section className={styles.group}>
-            <div className={styles.groupHead}>
-              <h3 className={styles.groupTitle}>{t("filter.activityType")}</h3>
-              {draft.activityTypes.length > 0 ? (
-                <span className={styles.sectionCount}>{draft.activityTypes.length}</span>
-              ) : null}
-            </div>
-            <p className={styles.groupHint}>{t("filter.statusHint")}</p>
-            <div className={styles.chipRow}>
-              {PLACEMENT_TYPE_OPTIONS.map((type) => (
-                <button
-                  key={type}
-                  type="button"
-                  className={styles.optionChip}
-                  data-on={draft.activityTypes.includes(type)}
-                  onClick={() =>
-                    setDraft((current) => ({
-                      ...current,
-                      activityTypes: toggleList(current.activityTypes, type),
-                    }))
-                  }
-                >
-                  {localize(type)}
-                </button>
-              ))}
-            </div>
-          </section>
+        ) : null
+      }
+      footer={
+        <div className={styles.footerActions}>
+          <Button
+            type="button"
+            variant="tertiary"
+            disabled={selectedCount === 0}
+            onClick={() => setDraft(clonePlacementFilters(EMPTY_PLACEMENT_FILTERS))}
+          >
+            {t("common.clear")}
+          </Button>
+          <Button type="button" variant="primary" shape="action" onClick={() => onApply(draft)}>
+            {results === 1 ? t("filter.showOne") : t("filter.showMany", { count: results })}
+          </Button>
         </div>
-
-        <div className={styles.footer}>
-          <div className={styles.footerActions}>
-            <button
-              type="button"
-              className={styles.clearButton}
-              disabled={selectedCount === 0}
-              onClick={() => setDraft(clonePlacementFilters(EMPTY_PLACEMENT_FILTERS))}
+      }
+    >
+      <section className={styles.group}>
+        <div className={styles.groupHead}>
+          <h3 className={styles.groupTitle}>{t("filter.activityStatus")}</h3>
+          {draft.statuses.length > 0 ? (
+            <span className={styles.sectionCount}>{draft.statuses.length}</span>
+          ) : null}
+        </div>
+        <p className={styles.groupHint}>{t("filter.statusHint")}</p>
+        <div className={styles.chipRow}>
+          {PLACEMENT_STATUS_OPTIONS.map((status) => (
+            <StatusChip
+              key={status}
+              color={filterStatusColor(status)}
+              selected={draft.statuses.includes(status)}
+              onClick={() =>
+                setDraft((current) => ({
+                  ...current,
+                  statuses: toggleList(current.statuses, status),
+                }))
+              }
             >
-              {t("common.clear")}
-            </button>
-            <button type="button" className={styles.applyButton} onClick={() => onApply(draft)}>
-              {results === 1 ? t("filter.showOne") : t("filter.showMany", { count: results })}
-            </button>
-          </div>
+              {localize(status)}
+            </StatusChip>
+          ))}
         </div>
-      </aside>
-    </div>
+      </section>
+
+      <section className={styles.group}>
+        <div className={styles.groupHead}>
+          <h3 className={styles.groupTitle}>{t("filter.activityType")}</h3>
+          {draft.activityTypes.length > 0 ? (
+            <span className={styles.sectionCount}>{draft.activityTypes.length}</span>
+          ) : null}
+        </div>
+        <p className={styles.groupHint}>{t("filter.statusHint")}</p>
+        <div className={styles.chipRow}>
+          {PLACEMENT_TYPE_OPTIONS.map((type) => (
+            <button
+              key={type}
+              type="button"
+              className={styles.optionChip}
+              data-on={draft.activityTypes.includes(type)}
+              onClick={() =>
+                setDraft((current) => ({
+                  ...current,
+                  activityTypes: toggleList(current.activityTypes, type),
+                }))
+              }
+            >
+              {localize(type)}
+            </button>
+          ))}
+        </div>
+      </section>
+    </Drawer>
   );
 }

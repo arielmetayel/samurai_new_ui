@@ -2,8 +2,9 @@ import React from 'react';
 import { Icon } from 'react-feather';
 import styles from './Button.module.css';
 
-export type ButtonVariant = 'primary' | 'secondary' | 'tertiary' | 'ghost';
+export type ButtonVariant = 'primary' | 'secondary' | 'tertiary' | 'ghost' | 'danger';
 export type ButtonSize = 'sm' | 'md' | 'lg';
+export type ButtonShape = 'create' | 'action';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
@@ -14,6 +15,8 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   icon?: Icon;
   iconPosition?: 'left' | 'right';
   iconSize?: number;
+  /** create = pill 48px; action = square 40×12. Defaults: primary sm/danger → action, other primary → create. */
+  shape?: ButtonShape;
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -25,10 +28,29 @@ export const Button: React.FC<ButtonProps> = ({
   icon: IconComponent,
   iconPosition = 'left',
   iconSize,
+  shape,
   className = '',
   ...props
 }) => {
-  const classNames = [styles.btn, styles[variant], styles[size], className]
+  const resolvedShape: ButtonShape | undefined =
+    shape ??
+    (variant === 'danger'
+      ? 'action'
+      : variant === 'primary' && size === 'sm'
+        ? 'action'
+        : variant === 'primary'
+          ? 'create'
+          : undefined);
+
+  const classNames = [
+    styles.btn,
+    styles[variant],
+    variant === 'danger' ? styles.danger : '',
+    styles[size],
+    resolvedShape === 'action' && variant === 'primary' ? styles.shapeAction : '',
+    resolvedShape === 'create' && variant === 'primary' && size === 'sm' ? styles.shapeCreate : '',
+    className,
+  ]
     .filter(Boolean)
     .join(' ');
 
@@ -68,6 +90,7 @@ export const Button: React.FC<ButtonProps> = ({
   return (
     <button
       className={finalClassNames}
+      data-variant={variant}
       disabled={disabled || loading}
       {...props}
     >

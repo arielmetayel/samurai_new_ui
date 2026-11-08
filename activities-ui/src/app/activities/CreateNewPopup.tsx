@@ -7,6 +7,7 @@ import { typography } from "@/design-system";
 import { ArrowLeft, Briefcase, FileText, Users } from "react-feather";
 import { useI18n } from "@/i18n";
 import ChooseActivityTypePopup from "./ChooseActivityTypePopup";
+import CreateDialog from "./CreateDialog";
 
 interface CreateNewPopupProps {
   isOpen: boolean;
@@ -43,13 +44,10 @@ export default function CreateNewPopup({ isOpen, onClose }: CreateNewPopupProps)
     onClose();
   };
 
-  if (!isOpen) return null;
-
-  // Show the activity type popup if it's open
   if (showActivityTypePopup) {
     return (
       <ChooseActivityTypePopup
-        isOpen={true}
+        isOpen={isOpen}
         onClose={onClose}
         onBack={handleActivityTypeBack}
         onNext={handleActivityTypeNext}
@@ -58,8 +56,7 @@ export default function CreateNewPopup({ isOpen, onClose }: CreateNewPopupProps)
   }
 
   return (
-    <div className={styles.popupOverlay} onClick={onClose}>
-      <div className={styles.popupContent} onClick={(e) => e.stopPropagation()}>
+    <CreateDialog open={isOpen} onClose={onClose}>
         {/* Header */}
         <div className={styles.popupHeader}>
           <button className={styles.backButton} onClick={onClose}>
@@ -111,7 +108,7 @@ export default function CreateNewPopup({ isOpen, onClose }: CreateNewPopupProps)
         <div className={styles.popupFooter}>
           <Button 
             type="button" 
-            variant="secondary" 
+            variant="tertiary" 
             onClick={onClose}
             className={styles.cancelButton}
           >
@@ -120,6 +117,7 @@ export default function CreateNewPopup({ isOpen, onClose }: CreateNewPopupProps)
           <Button 
             type="button" 
             variant="primary"
+            shape="action"
             onClick={handleNext}
             disabled={!selectedOption}
             className={styles.nextButton}
@@ -127,7 +125,6 @@ export default function CreateNewPopup({ isOpen, onClose }: CreateNewPopupProps)
             {t("common.next")}
           </Button>
         </div>
-      </div>
-    </div>
+    </CreateDialog>
   );
 }
