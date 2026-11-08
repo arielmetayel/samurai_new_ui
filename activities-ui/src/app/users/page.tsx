@@ -109,7 +109,7 @@ export default function UsersPage() {
   }, [search]);
 
   return (
-    <AppShell title={t("users.title")} onCreateNew={() => setIsCreatePopupOpen(true)}>
+    <AppShell onCreateNew={() => setIsCreatePopupOpen(true)}>
         <div className={styles.headerRow}>
           <h1 className={styles.pageTitle}>{t("users.title")}</h1>
         </div>

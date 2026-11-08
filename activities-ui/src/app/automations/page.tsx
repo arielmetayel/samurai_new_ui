@@ -100,7 +100,7 @@ export default function AutomationsPage() {
   }
 
   return (
-    <AppShell title={t("automations.title")} onCreateNew={() => setIsCreatePopupOpen(true)}>
+    <AppShell onCreateNew={() => setIsCreatePopupOpen(true)}>
         <div className={styles.headerRow}>
           <h1 className={styles.pageTitle}>{t("automations.title")}</h1>
           <Button variant="primary" shape="create" icon={Plus} onClick={() => setIsSetupOpen(true)}>

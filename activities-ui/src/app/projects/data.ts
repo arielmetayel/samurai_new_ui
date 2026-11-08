@@ -245,7 +245,7 @@ const emptyExtras = {
   materials: [] as string[],
 };
 
-export const mockProjects: Project[] = [
+const seedProjects: Project[] = [
   {
     id: "1",
     projectNumber: "216790",
@@ -465,6 +465,51 @@ export const mockProjects: Project[] = [
 
 export const TOTAL_PROJECTS = 348;
 
+const THUMB_TONES: ThumbTone[] = ["rose", "sand", "sage", "sky", "lilac"];
+const PROJECT_STATUS_CYCLE: Array<{
+  status: string;
+  tone: FieldTone;
+  contract: ContractStatus;
+}> = [
+  { status: "In Progress", tone: "ok", contract: "Signed Contract" },
+  { status: "Quote", tone: "pending", contract: "No Contract" },
+  { status: "On Hold", tone: "missing", contract: "No Contract" },
+  { status: "In Progress", tone: "ok", contract: "Signed Contract" },
+];
+
+function expandProjects(seeds: Project[], total: number): Project[] {
+  return Array.from({ length: total }, (_, index) => {
+    const seed = seeds[index % seeds.length];
+    if (index < seeds.length) return seed;
+    const extra = PROJECT_STATUS_CYCLE[index % PROJECT_STATUS_CYCLE.length];
+    return {
+      ...seed,
+      id: String(index + 1),
+      projectNumber: String(216790 - index),
+      thumbTone: THUMB_TONES[index % THUMB_TONES.length],
+      buildingsCount: (index % 5) + 1,
+      contractStatus: extra.contract,
+      projectStatus: extra.status,
+      projectStatusTone: extra.tone,
+      assignees: [...seed.assignees],
+      elements: [...seed.elements],
+      mixes: [...seed.mixes],
+      methods: [...seed.methods],
+      customers: [...seed.customers],
+      tags: [...seed.tags],
+      team: [...seed.team],
+      contacts: seed.contacts.map((contact) => ({ ...contact })),
+      files: seed.files.map((file) => ({ ...file })),
+      authorizations: [...seed.authorizations],
+      quoteFixes: [...seed.quoteFixes],
+      materials: [...seed.materials],
+      activities: seed.activities.map((activity) => ({ ...activity })),
+    };
+  });
+}
+
+export const mockProjects: Project[] = expandProjects(seedProjects, TOTAL_PROJECTS);
+
 export function getProject(id: string) {
   return mockProjects.find((project) => project.id === id);
 }
@@ -587,7 +632,7 @@ export const SYSTEM_USERS = [
 
 export function getSystemListValues(project: Project, source?: string) {
   if (source === "users") return SYSTEM_USERS;
-  if (source === "projects") return mockProjects.map((item) => item.name);
+  if (source === "projects") return [...new Set(mockProjects.map((item) => item.name))];
   return getProjectListValues(project, source);
 }
 

@@ -395,18 +395,13 @@ export default function Home() {
     pinnedActivities.filter((a) => a.status === "Overdue").length;
 
   return (
-    <AppShell
-      title={t("nav.home")}
-      showBack={false}
-      headerExtra={now ? formatHeaderDate(now, locale) : ""}
-      onCreateNew={() => setIsCreatePopupOpen(true)}
-      contentClassName={styles.main}
-    >
+    <AppShell onCreateNew={() => setIsCreatePopupOpen(true)} contentClassName={styles.main}>
         <div className={styles.hero}>
           <div>
             <p className={styles.kicker}>{now ? greetingFor(now.getHours(), t) : t("home.hello")}</p>
             <h2 className={styles.pageTitle}>{t("home.dashboard")}</h2>
           </div>
+          {now ? <p className={styles.headerDate}>{formatHeaderDate(now, locale)}</p> : null}
         </div>
 
         <div className={styles.stats}>

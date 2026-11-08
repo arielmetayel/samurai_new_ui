@@ -199,25 +199,14 @@ export default function ProjectDetailPage() {
 
   if (!project) {
     return (
-      <AppShell
-        title={t("create.project")}
-        backLabel={t("common.back")}
-        onBack={() => router.push("/projects")}
-        onCreateNew={() => setIsCreatePopupOpen(true)}
-      >
+      <AppShell onCreateNew={() => setIsCreatePopupOpen(true)}>
         <p className={styles.missing}>{t("projects.missing")}</p>
       </AppShell>
     );
   }
 
   return (
-    <AppShell
-      title={t("create.project")}
-      backLabel={t("common.back")}
-      onBack={() => router.push("/projects")}
-      onCreateNew={() => setIsCreatePopupOpen(true)}
-      contentClassName={styles.main}
-    >
+    <AppShell onCreateNew={() => setIsCreatePopupOpen(true)} contentClassName={styles.main}>
         <div className={styles.tabs}>
           <button
             type="button"

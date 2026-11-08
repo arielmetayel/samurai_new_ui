@@ -86,8 +86,9 @@ export default function DesignSystemCatalogPage() {
   const [checked, setChecked] = useState(true);
 
   return (
-    <AppShell title="מערכת עיצוב" showBack={false}>
+    <AppShell>
       <div className={styles.main}>
+        <h1 className={styles.pageTitle}>מערכת עיצוב</h1>
         <p className={styles.note}>
           קטלוג חי של הטוקנים והקומפוננטות. מסכי הרשימה מתחברים לטבלה; עמודות
           נשארות של כל מסך.

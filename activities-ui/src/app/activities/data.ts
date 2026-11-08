@@ -553,8 +553,30 @@ const linkedActivities: Activity[] = [
   }),
 ];
 
+export const TOTAL_ACTIVITIES = 186;
+
+function expandActivities(seeds: Activity[], total: number): Activity[] {
+  return Array.from({ length: total }, (_, index) => {
+    const seed = seeds[index % seeds.length];
+    if (index < seeds.length) return seed;
+    const date = new Date(seed.dateTime);
+    date.setUTCDate(date.getUTCDate() - Math.floor(index / seeds.length) * 3 - (index % 7));
+    return {
+      ...seed,
+      id: String(index + 1),
+      dateTime: date.toISOString(),
+      assignees: [...seed.assignees],
+    };
+  });
+}
+
+export const listActivities: Activity[] = expandActivities(
+  [...mockActivities, ...linkedActivities],
+  TOTAL_ACTIVITIES
+);
+
 export function getActivityById(id: string): Activity | undefined {
-  return [...mockActivities, ...linkedActivities].find((activity) => activity.id === id);
+  return listActivities.find((activity) => activity.id === id);
 }
 
 export function activityHref(id: string) {

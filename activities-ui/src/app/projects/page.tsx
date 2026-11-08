@@ -8,7 +8,8 @@ import { MoreVertical, Filter, FileText, Search } from "react-feather";
 import CreateNewPopup from "../activities/CreateNewPopup";
 import { useI18n } from "@/i18n";
 import AppShell from "../AppShell";
-import { mockProjects, TOTAL_PROJECTS } from "./data";
+import { mockProjects } from "./data";
+import { useInfiniteList } from "../useInfiniteList";
 
 function displayValue(value: string | number | null | undefined) {
   if (value === null || value === undefined || value === "") return "0";
@@ -36,14 +37,19 @@ export default function ProjectsPage() {
     );
   }, [search]);
 
+  const { visible, hasMore, sentinelRef } = useInfiniteList(filtered);
+
   function toggleSelected(id: string) {
     setSelectedId((prev) => (prev === id ? null : id));
   }
 
   return (
-    <AppShell title={t("projects.title")} onCreateNew={() => setIsCreatePopupOpen(true)}>
+    <AppShell onCreateNew={() => setIsCreatePopupOpen(true)}>
         <div className={styles.headerRow}>
-          <h1 className={styles.pageTitle}>{t("projects.title")}</h1>
+          <h1 className={styles.pageTitle}>
+            {t("projects.title")}
+            <span className={styles.titleCount}>{filtered.length}</span>
+          </h1>
         </div>
         <div className={styles.searchRow}>
           <div className={styles.mainSearchWrapper}>
@@ -65,10 +71,6 @@ export default function ProjectsPage() {
           </div>
         </div>
 
-        <div className={styles.counterRow}>
-          {filtered.length} | {TOTAL_PROJECTS}
-        </div>
-
         <Table className={styles.table}>
           <TableHeader className={styles.tableHeader}>
             <div className={styles.colCheckbox}></div>
@@ -83,7 +85,7 @@ export default function ProjectsPage() {
             <div className={styles.colMenu}></div>
           </TableHeader>
 
-          {filtered.map((p) => {
+          {visible.map((p) => {
             const selected = selectedId === p.id;
             return (
               <TableRow
@@ -151,6 +153,7 @@ export default function ProjectsPage() {
             );
           })}
         </Table>
+        {hasMore ? <div ref={sentinelRef} className={styles.infiniteSentinel} aria-hidden /> : null}
 
       <CreateNewPopup
         isOpen={isCreatePopupOpen}

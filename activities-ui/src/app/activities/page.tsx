@@ -4,7 +4,7 @@ import React, { Suspense, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import styles from "./styles.module.css";
 import { Activity, listPreviewQuestions, questionAnswerText } from "@/types";
-import { getActivityById, mockActivities } from "./data";
+import { getActivityById, listActivities } from "./data";
 import {
   Button,
   Checkbox,
@@ -46,6 +46,7 @@ import FilterActivitiesPopup, {
   filtersEqual,
   removeFilterChip,
 } from "./FilterActivitiesPopup";
+import { useInfiniteList } from "../useInfiniteList";
 
 function ActivityGlyph({ icon, size = 18 }: { icon: string; size?: number }) {
   const props = { size, strokeWidth: 2 };
@@ -110,7 +111,7 @@ function ActivitiesPageContent() {
 
   const filtered = useMemo(() => {
     const lower = search.toLowerCase();
-    return mockActivities
+    return listActivities
       .filter((a) =>
         [a.projectName, a.activityType, localize(a.activityType), a.status, localize(a.status)].some((v) =>
           v.toLowerCase().includes(lower)
@@ -118,6 +119,8 @@ function ActivitiesPageContent() {
       )
       .filter((a) => activityMatchesFilters(a, appliedFilters));
   }, [search, appliedFilters]);
+
+  const { visible, hasMore, sentinelRef } = useInfiniteList(filtered);
 
   function toggleExpand(id: string) {
     setExpandedRowIds((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -185,9 +188,12 @@ function ActivitiesPageContent() {
   }
 
   return (
-    <AppShell title={t("activities.title")} onCreateNew={() => setIsCreatePopupOpen(true)}>
+    <AppShell onCreateNew={() => setIsCreatePopupOpen(true)}>
         <div className={styles.headerRow}>
-          <h1 className={styles.pageTitle}>{t("activities.title")}</h1>
+          <h1 className={styles.pageTitle}>
+            {t("activities.title")}
+            <span className={styles.titleCount}>{filtered.length}</span>
+          </h1>
         </div>
         <div className={styles.searchRow}>
           <div className={styles.mainSearchWrapper}>
@@ -298,7 +304,7 @@ function ActivitiesPageContent() {
               </Button>
             </div>
           ) : null}
-          {filtered.map((a) => {
+          {visible.map((a) => {
             const expanded = !!expandedRowIds[a.id];
             const previewQuestions = listPreviewQuestions(a);
             const dateParts = formatDateParts(a.dateTime);
@@ -392,6 +398,7 @@ function ActivitiesPageContent() {
             );
           })}
         </Table>
+        {hasMore ? <div ref={sentinelRef} className={styles.infiniteSentinel} aria-hidden /> : null}
 
       <CreateNewPopup 
         isOpen={isCreatePopupOpen}
@@ -403,7 +410,7 @@ function ActivitiesPageContent() {
           isOpen
           value={appliedFilters}
           matchCount={(filters) =>
-            mockActivities.filter((activity) => activityMatchesFilters(activity, filters)).length
+            listActivities.filter((activity) => activityMatchesFilters(activity, filters)).length
           }
           onClose={() => setIsFilterPopupOpen(false)}
           onApply={(next) => {

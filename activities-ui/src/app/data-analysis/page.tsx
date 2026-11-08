@@ -100,7 +100,7 @@ export default function DataAnalysisPage() {
   }
 
   return (
-    <AppShell title={t("reports.title")} onCreateNew={() => setIsCreatePopupOpen(true)}>
+    <AppShell onCreateNew={() => setIsCreatePopupOpen(true)}>
         <div className={styles.headerRow}>
           <h1 className={styles.pageTitle}>{t("reports.title")}</h1>
         </div>

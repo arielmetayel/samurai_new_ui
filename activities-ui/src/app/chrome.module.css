@@ -10,59 +10,6 @@
   transition: grid-template-columns 0.2s ease;
 }
 
-.topHeader {
-  position: fixed;
-  top: 0;
-  inset-inline-start: var(--sidebar-width);
-  inset-inline-end: 0;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--color-border);
-  z-index: var(--z-header);
-  padding: 16px 32px;
-  transition: inset-inline-start 0.2s ease;
-}
-
-.topHeaderContent {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-}
-
-.backLink {
-  appearance: none;
-  background: transparent;
-  cursor: pointer;
-  text-decoration: none;
-  color: var(--color-text-muted);
-  font-size: 14px;
-  font-weight: 500;
-  padding: 8px 16px;
-  border-radius: var(--radius-sm);
-  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-  border: 1px solid var(--color-border-strong);
-}
-
-.backLink:hover {
-  background: var(--color-surface-muted);
-  color: var(--color-text);
-  border-color: var(--color-text-muted);
-}
-
-.topHeaderTitle {
-  margin: 0;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--color-text);
-}
-
-.headerExtra {
-  margin-inline-start: auto;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--color-text-muted);
-}
-
 .sidebar {
   background: var(--color-surface);
   border-inline-end: 1px solid var(--color-border);
@@ -232,19 +179,13 @@
 
 .main {
   padding: 24px 32px 48px;
-  padding-top: 80px;
   min-width: 0;
   min-height: 0;
   overflow: auto;
 }
 
 @media (max-width: 900px) {
-  .topHeader {
-    padding: 12px 16px;
-  }
-
   .main {
     padding: 16px 16px 28px;
-    padding-top: 80px;
   }
 }

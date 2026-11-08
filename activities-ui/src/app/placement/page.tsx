@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from "react";
 import CreateNewPopup from "../activities/CreateNewPopup";
 import { createInitialDays, employees } from "./data";
 import { BoardDayKey, DayBoard, FilterType } from "./types";
-import TopBar from "./TopBar";
 import EmployeeSidebar from "./EmployeeSidebar";
 import AssignmentBoard from "./AssignmentBoard";
 import FilterPlacementPopup, {
@@ -98,8 +97,6 @@ export default function PlacementPage() {
 
   return (
     <div className={styles.pageWrapper}>
-      <TopBar />
-
       <AppSidebar onCreateNew={() => setIsCreatePopupOpen(true)} />
 
       <main className={styles.main}>

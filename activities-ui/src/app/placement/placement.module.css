@@ -32,49 +32,6 @@
   transition: grid-template-columns 0.2s ease;
 }
 
-.topHeader {
-  position: fixed;
-  top: 0;
-  inset-inline-start: var(--sidebar-width);
-  inset-inline-end: 0;
-  background: color-mix(in srgb, var(--color-surface) 95%, transparent);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--color-border);
-  z-index: 100;
-  padding: 16px 32px;
-  transition: inset-inline-start 0.2s ease;
-}
-
-.topHeaderContent {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  width: 100%;
-}
-
-.backLink {
-  text-decoration: none;
-  color: var(--color-text-muted);
-  font-weight: 500;
-  padding: 8px 16px;
-  border-radius: 8px;
-  transition: all 0.2s ease;
-  border: 1px solid var(--color-border-strong);
-}
-
-.backLink:hover {
-  background: var(--color-surface-muted);
-  color: var(--color-text);
-  border-color: var(--color-text-muted);
-}
-
-.topHeaderTitle {
-  margin: 0;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--color-text);
-}
-
 .appSidebar {
   background: var(--color-surface);
   border-right: 1px solid var(--color-border);
@@ -150,7 +107,6 @@
   min-height: 0;
   height: 100vh;
   padding: 16px 32px 24px;
-  padding-top: 96px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
